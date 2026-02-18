@@ -6,7 +6,7 @@ My personal configuration "babies," managed with **GNU Stow**.
 To set up a new machine, clone this repo and run the install script:
 
 \`\`\`bash
-git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
+git clone https://github.com/lanre647/my_dotfiles.git ~/dotfiles
 cd ~/dotfiles
 chmod +x install.sh
 ./install.sh
