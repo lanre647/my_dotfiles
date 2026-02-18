@@ -1,0 +1,184 @@
+format = """\
+[╭─](fg:arrow)\
+$os\
+$sudo\
+$username\
+$directory\
+$git_branch\
+$git_status\
+$fill\
+$custom\
+$memory_usage\
+$cpu\
+$battery\
+$time\
+$cmd_duration
+[╰─](fg:arrow)\
+$status\
+$character\
+$python\
+$conda\
+$nodejs\
+$rust\
+$java\
+$c\
+"""
+
+scan_timeout = 500
+add_newline = true
+palette = "normal"
+
+[palettes.normal]
+arrow = "#333533"
+os = "#16f4d0"
+os_admin = "#e4ff1a"
+directory = "#9ffff5"
+git = "#f17f29"
+python = "#edf67d"
+conda = "#70e000"
+node = "#a5e6ba"
+java = "#F86279"
+rust = "#ffdac6"
+clang = "#caf0f8"
+duration = "#ce4257"
+memory = "#8d99ae"
+heap = "#f4a261"
+heap_warn = "#ef233c" 
+text_light = "#26272A"
+time = "#bdfffd"
+
+[sudo]
+symbol = "󱐋 "
+style = "bold os_admin"
+format = "[$symbol]($style)"
+disabled = false
+
+[username]
+show_always = true
+style_user = "bold os"
+style_root = "bold os_admin"
+format = " [$user]($style) "
+
+[status]
+symbol = "✘ "
+style = "bold fg:heap_warn"
+format = "[$symbol$common_meaning$signal_name]($style) "
+map_symbol = true
+disabled = false
+
+[time]
+disabled = false
+time_format = "%R" # 24-hour clock
+style = "bold fg:time"
+format = "at [󱑈 $time]($style) "
+
+[custom.node_heap]
+description = "Show Node.js heap usage"
+command = """
+node -e "
+  const heap = Math.round(process.memoryUsage().heapUsed / 1024 / 1024);
+  process.stdout.write(heap > 1000 ? ' ' + heap + 'MB' : heap + 'MB');
+"
+"""
+detect_files = ["package.json", "node_modules"]
+style = "bold fg:heap"
+format = "heap [$output]($style) "
+disabled = false
+
+[memory_usage]
+disabled = false
+threshold = 75 
+symbol = "󰀦 RAM "
+style = "bold fg:heap_warn"
+format = "[$symbol$ram]($style) "
+
+[cpu]
+threshold = 80
+style = "bold fg:heap_warn"
+symbol = " "
+format = "[$symbol$percentage]($style) "
+disabled = false
+
+[battery]
+full_symbol = "󰁹 "
+charging_symbol = "󰂄 "
+discharging_symbol = "󰂃 "
+format = "[$symbol$percentage]($style) "
+disabled = false
+
+[[battery.display]]
+threshold = 20
+style = "bold fg:heap_warn"
+
+[os]
+disabled = false
+format = "[$symbol]($style)"
+style = "bold os"
+
+[os.symbols]
+Windows = "󰍲 "
+Ubuntu = "󰕈 "
+Macos = "󰀵 "
+Linux = "󰌽 "
+Arch = "󰣇 "
+
+[directory]
+style = "bold directory"
+format = "in [$path]($style) "
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = " "
+style = "bold git"
+format = "on [$symbol$branch]($style) "
+
+[git_status]
+style = "bold git"
+format = "([\\[$all_status$ahead_behind\\]]($style) )"
+
+[fill]
+symbol = " "
+
+[cmd_duration]
+min_time = 500
+style = "bold duration"
+format = "took [󱎫 $duration]($style)"
+
+[character]
+success_symbol = "[󰍟](fg:arrow)"
+error_symbol = "[󰍟](fg:red)"
+
+[python]
+symbol = " "
+style = "bg:python fg:text_light"
+format = "[ $symbol($version) ]($style)"
+
+[conda]
+symbol = " "
+style = "bg:conda fg:text_light"
+format = "[ $symbol$environment ]($style)"
+
+[nodejs]
+symbol = " "
+style = "bg:node fg:text_light"
+format = "[ $symbol($version) ]($style)"
+
+[rust]
+symbol = " "
+style = "bg:rust fg:text_light"
+format = "[ $symbol($version) ]($style)"
+disabled = true
+
+[java]
+symbol = " "
+style = "bg:java fg:text_light"
+format = "[ $symbol($version) ]($style)"
+disabled = true
+
+[c]
+symbol = " "
+style = "bg:clang fg:text_light"
+format = "[ $symbol($version) ]($style)"
+disabled = true
+
