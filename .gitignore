@@ -1,0 +1,10 @@
+.env
+*.env
+.ssh
+*.ssh
+node_modules      
+.DS_Store
+*.swp
+*.swo
+.netrwhist
+undo/
