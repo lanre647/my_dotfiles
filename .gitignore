@@ -8,3 +8,5 @@ node_modules
 *.swo
 .netrwhist
 undo/
+tmux/.tmux/plugins/*
+!tmux/.tmux/plugins/tpm
