@@ -116,12 +116,17 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 #  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# Check if Tor is up; if not, start it and wait 5s for the circuit to build
+alias tor-on="pgrep -x tor > /dev/null && echo '✅ Tor already running' || (tor && echo '🚀 Starting Tor...' && sleep 5)"
 
+# Clean kill
+alias tor-off="pkill -9 tor && echo '🛑 Tor stopped.'"
 
+# Check status using a Tor-specific API
+alias tor-check="pxc curl -s https://check.torproject.org/api/ip"
 
-# Start/Stop Tor quickly
-alias tor-on="pkg install tor -y && tor &"
-alias tor-off="pkill tor"
+# Monitor Tor in real-time (requires 'nyx')
+alias tstat="nyx"
 
 # Force any CLI tool through Tor/ProxyChains
 alias pxc="proxychains4 -q"
@@ -167,20 +172,11 @@ eval "$(starship init zsh)"
 # bash ~/scripts/daily_brief.sh
 # bash ~/scripts/terminal_banner.sh
 export TZ="Africa/Lagos"
-# echo "W E L C O M E  B A C K,  L A N R E" | boxes -a vcjchc -d dragon 
+alias dev="~/.tmux-start.sh"
+# echo "W E L C O M E  B A C K,  L A N R E"|lolcat -f| boxes -a vcjchc -d dragon 
 
 # --- BANNER CONFIG ---
 source ~/rbanner.sh
-
-# Refresh banner every 5 minutes (300s) on command prompt
-LAST_REFRESH=$(date +%s)
-precmd() {
-    local now=$(date +%s)
-    if (( now - LAST_REFRESH > 300 )); then
-        source ~/rbanner.sh
-        LAST_REFRESH=$now
-    fi
-}
 
 # To-do Management
 todo() {
@@ -208,12 +204,13 @@ bt() {
     fi
 }
 
+# Refresh banner every 30 minutes (1800s) on command prompt
 # Modify your existing precmd hook to respect this toggle:
 precmd() {
     if [[ "$SHOW_BANNER" != "false" ]]; then
         local now=$(date +%s)
-        if (( now - LAST_REFRESH > 300 )); then
-            source ~/rbanner.sh
+        if (( now - LAST_REFRESH > 1800 )); then
+           # source ~/rbanner.sh
             LAST_REFRESH=$now
         fi
     fi

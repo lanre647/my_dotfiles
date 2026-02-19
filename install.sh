@@ -18,7 +18,7 @@ install_packages() {
 
     echo "📦 Checking for missing babies (packages)..."
     # List the actual software packages here
-    APPS=(stow git tmux vim zsh nvim)
+    APPS=(stow git tmux vim zsh)
     
     for app in "${APPS[@]}"; do
         if ! command -v "$app" &> /dev/null; then
