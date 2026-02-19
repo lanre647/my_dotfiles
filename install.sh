@@ -1,42 +1,72 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-# 1. Detect OS and install missing packages
+echo "🔍 Detecting platform..."
+
 install_packages() {
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        # Ubuntu/Debian/Linux Mint
-        PM="sudo apt install -y"
+        if command -v apt-get >/dev/null 2>&1; then
+            sudo apt-get update -y
+            PM="sudo apt-get install -y"
+        else
+            echo "Unsupported Linux distro. Install packages manually."
+            exit 1
+        fi
+
     elif [[ "$OSTYPE" == "darwin"* ]]; then
-        # macOS
+        if ! command -v brew >/dev/null 2>&1; then
+            echo "❌ Homebrew not found."
+            echo "👉 Install from: https://brew.sh"
+            exit 1
+        fi
         PM="brew install"
+
     elif [[ "$OSTYPE" == "linux-android"* ]]; then
-        # Termux (Android)
-        PM="pkg install"
+        pkg update -y
+        PM="pkg install -y"
+
     else
         echo "Unknown OS. Please install packages manually."
-        return
+        exit 1
     fi
 
-    echo "📦 Checking for missing babies (packages)..."
-    # List the actual software packages here
+    echo "📦 Checking required packages..."
     APPS=(stow git tmux vim zsh)
-    
+
     for app in "${APPS[@]}"; do
-        if ! command -v "$app" &> /dev/null; then
+        if ! command -v "$app" >/dev/null 2>&1; then
             echo "Installing $app..."
             $PM "$app"
+        else
+            echo "$app already installed"
         fi
     done
 }
 
-# 2. Run the logic
-cd "$(dirname "$0")"
-install_packages
+backup_if_exists() {
+    local file="$1"
+    if [[ -e "$file" && ! -L "$file" ]]; then
+        echo "📦 Backing up $file -> $file.bak"
+        mv "$file" "$file.bak"
+    fi
+}
 
-echo "🧹 Cleaning and Stowing..."
-rm -f ~/.zshrc ~/.bashrc ~/.tmux.conf ~/.vimrc
+main() {
+    cd "$(dirname "$0")"
 
-# Stow everything in the current directory
-stow -v -R git tmux vim zsh config scripts
+    install_packages
 
-echo "✨ Everything is linked and software is installed!"
+    echo "🧹 Preparing dotfiles..."
 
+    backup_if_exists ~/.zshrc
+    backup_if_exists ~/.bashrc
+    backup_if_exists ~/.tmux.conf
+    backup_if_exists ~/.vimrc
+
+    echo "🔗 Stowing configs..."
+    stow -v -R git tmux vim zsh config
+
+    echo "✨ Everything is linked and ready!"
+}
+
+main "$@"
