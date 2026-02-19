@@ -5,12 +5,6 @@ My personal configuration "babies," managed with **GNU Stow**.
 ## 🚀 Quick Start
 To set up a new machine, clone this repo and run the install script:
 
-\`\`\`bash
-git clone https://github.com/lanre647/my_dotfiles.git ~/dotfiles
-cd ~/dotfiles
-chmod +x install.sh
-./install.sh
-\`\`\`
 
 ## 🛠 Included Configs
 * **Zsh**: Custom prompt and aliases.
