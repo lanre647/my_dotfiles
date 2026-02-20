@@ -141,7 +141,7 @@ alias nuke="rm -f ~/.zsh_history && history -c && pkill -u $(whoami) && exit"
 # The "Quiet Nuke" (Wipes logs but keeps the session open)
 alias wipe="rm -f ~/.zsh_history && truncate -s 0 ~/.zsh_history && history -p && clear"
 
-alias grab="~/grab.sh"
+alias grab="~/.shortcuts/grab.sh"
 alias kali="nh"
 alias nv='nvim' 
 alias ytdlmp4='yt-dlp -f "bv[ext!=webm][height<=720]+ba/b[ext!=webm][height<=720]" --merge-output-format mp4 -o "%(title)s.%(ext)s"'
@@ -176,16 +176,16 @@ alias dev="~/.tmux-start.sh"
 # echo "W E L C O M E  B A C K,  L A N R E"|lolcat -f| boxes -a vcjchc -d dragon 
 
 # --- BANNER CONFIG ---
-source ~/rbanner.sh
+source ~/scripts/rbanner.sh
 
 # To-do Management
 todo() {
     if [[ -z "$1" ]]; then
         cat -n ~/.todo 2>/dev/null || echo "No tasks."
     elif [[ "$1" == "clear" ]]; then
-        > ~/.todo && echo "Cleared." && source ~/rbanner.sh
+        > ~/.todo && echo "Cleared." && source ~/scripts/rbanner.sh
     else
-        echo "$*" >> ~/.todo && source ~/rbanner.sh
+        echo "$*" >> ~/.todo && source ~/scripts/rbanner.sh
     fi
 }
 
@@ -195,8 +195,8 @@ todo() {
 bt() {
     if [[ "$SHOW_BANNER" == "false" ]]; then
         export SHOW_BANNER="true"
-        source ~/rbanner.sh
         echo "Banner: ENABLED"
+        source ~/scripts/rbanner.sh
     else
         export SHOW_BANNER="false"
         clear
@@ -210,7 +210,7 @@ precmd() {
     if [[ "$SHOW_BANNER" != "false" ]]; then
         local now=$(date +%s)
         if (( now - LAST_REFRESH > 1800 )); then
-           # source ~/rbanner.sh
+           source ~/scripts/rbanner.sh
             LAST_REFRESH=$now
         fi
     fi
