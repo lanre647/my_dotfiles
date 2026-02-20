@@ -57,7 +57,9 @@ autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. R
 " --- Highlight Yank ---
 augroup highlight_yank
   autocmd!
-  au TextYankPost * silent! lua vim.highlight.on_yank({higroup="Visual", timeout=200})
+  if has('nvim')
+    autocmd TextYankPost * silent! lua vim.highlight.on_yank({higroup="Visual", timeout=200})
+  endif
 augroup END
 
 set number 
@@ -65,8 +67,8 @@ set relativenumber
 set scrolloff=8
 set termguicolors
 
-colorscheme tokyonight
 let g:tokyonight_style = 'night' " options: night, storm
+colorscheme tokyonight
 let g:airline_theme = 'tokyonight'
 
 set clipboard=unnamed,unnamedplus
@@ -81,13 +83,39 @@ set expandtab
 set shiftwidth=2
 set softtabstop=2
 set tabstop=2
+" Performance
+set hidden
+set updatetime=300
+set signcolumn=yes
+set noswapfile
+set ttyfast
+set lazyredraw
+" Better searching
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
 
-" --- Persistent Undo ---
-if has("undofile")
-  set undodir=~/.vim/undodir
+" Better splits
+set splitright
+set splitbelow
+
+" Command line completion
+set wildmenu
+set wildmode=longest:full,full
+set shortmess+=c
+
+"" --- Persistent Undo ---
+if has("persistent_undo")
+  let target_path = expand('~/.vim/undodir')
+
+  if !isdirectory(target_path)
+    call mkdir(target_path, "p", 0700)
+  endif
+
+  let &undodir = target_path
   set undofile
 endif
-
 " =========================================================
 " 4. PLUGIN CONFIGURATION
 " =========================================================
@@ -98,7 +126,6 @@ let g:airline#extensions#tabline#enabled = 1
 let g:user_emmet_leader_key=','
 let g:user_emmet_settings = { 'javascript' : { 'extends' : 'jsx' } }
 
-let g:ale_fix_on_save = 1
 let g:ale_sign_column_always = 1
 
 let g:UltiSnipsExpandTrigger="<C-l>"
@@ -106,6 +133,21 @@ let g:UltiSnipsExpandTrigger="<C-l>"
 let g:gitgutter_sign_added = '+'
 let g:gitgutter_sign_modified = '~'
 let g:gitgutter_sign_removed = '-'
+let g:gitgutter_realtime = 0
+let g:gitgutter_eager = 0
+
+" ALE improvements
+let g:ale_fix_on_save = 1
+let g:ale_sign_column_always = 1
+let g:ale_completion_enabled = 1
+
+let g:ale_fixers = {
+\ 'javascript': ['prettier'],
+\ 'typescript': ['prettier'],
+\ 'json': ['prettier'],
+\}
+
+let $FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 
 " =========================================================
 " 5. KEY MAPPINGS
@@ -120,8 +162,10 @@ nnoremap <leader>p :Files<CR>
 nnoremap <leader>s :Rg<CR>
 
 " --- Terminal ---
-nnoremap <leader>t :botright split +terminal \| resize 10<CR>
+
 tnoremap <Esc> <C-\><C-n>
+nnoremap <leader>t :botright 10split | terminal<CR>
+startinsert
 
 " --- Buffer Navigation ---
 nnoremap <S-l> :bnext<CR>
@@ -129,8 +173,8 @@ nnoremap <S-h> :bprevious<CR>
 nnoremap <leader>x :bd<CR>
 
 " --- Movement ---
-nnoremap J 10j
-nnoremap K 10k
+nnoremap <leader>j 10j
+nnoremap <leader>k 10k
 nnoremap <C-d> <C-d>zz
 nnoremap <C-u> <C-u>zz
 nnoremap <Tab> %
