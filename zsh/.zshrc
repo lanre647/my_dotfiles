@@ -116,67 +116,70 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 #  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# The Nuke Alias
+alias nuke="rm -f ~/.zsh_history && history -c && pkill -u $(whoami) && exit"
+# The "Quiet Nuke" (Wipes logs but keeps the session open)
+alias wipe="rm -f ~/.zsh_history && truncate -s 0 ~/.zsh_history && history -p && clear"
+alias grab="~/.shortcuts/grab.sh"
+alias kali="nh"
+alias ytdlmp4='yt-dlp -f "bv[ext!=webm][height<=720]+ba/b[ext!=webm][height<=720]" --merge-output-format mp4 -o "%(title)s.%(ext)s"'
+# Download as High Quality MP3 (Audio)
+alias getmp3='yt-dlp -x --audio-format mp3 --audio-quality 0 --add-metadata --embed-thumbnail -o "~/storage/downloads/%(title)s.%(ext)s"'
+# Download as Best Quality Video (MP4)
+alias getvid='yt-dlp -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" --add-metadata -o "~/storage/downloads/%(title)s.%(ext)s"'
+alias rm="rm -i"
+# One-command commit and push
+alias gpush="git add . && git commit -m 'update' && git push"
+# Safety check: Search for secret keys before pushing
+alias check-secrets="grep -rE 'API_KEY|SECRET|PASSWORD' ."
+alias ksh='rish -c "nh"'
+alias lg='lazygit'
+alias mst='echo "--- Home Directory Usage ---" && du -h -d 1 "$HOME" | sort -hr | head -n 5 && echo "--- Total Termux App Usage ---" && du -sh "$PREFIX/.."'
+alias ops='bash ~/scripts/dashboard.sh'
+alias sweep='rm -rf ~/.cache/* $PREFIX/tmp/* && npm cache clean --force && go clean -cache && apt autoremove -y && apt clean'
+alias ls='eza --all --long --group --group-directories-first --icons --header --time-style long-iso'   
+alias rlinux="termux-open ~/'Linux-Tutorial (1).pdf'"
+alias wiki='w3m en.wikipedia.org'
+alias reddit='w3m old.reddit.com'
+alias news='w3m news.ycombinator.com'
+s() {
+    local query=$(echo "$*" | sed 's/ /+/g')
+    w3m "https://duckduckgo.com/html/?q=$query"
+}
+alias play="ffplay -nodisp -autoexit"
+# -----------------------------------------------------
+# NETWORK AND SECURITY  ALIAS'S  
+
 # Check if Tor is up; if not, start it and wait 5s for the circuit to build
 alias tor-on="pgrep -x tor > /dev/null && echo '✅ Tor already running' || (tor && echo '🚀 Starting Tor...' && sleep 5)"
-
 # Clean kill
 alias tor-off="pkill -9 tor && echo '🛑 Tor stopped.'"
-
 # Check status using a Tor-specific API
 alias tor-check="pxc curl -s https://check.torproject.org/api/ip"
-
 # Monitor Tor in real-time (requires 'nyx')
-alias tstat="nyx"
-
-# Force any CLI tool through Tor/ProxyChains
 alias pxc="proxychains4 -q"
-
 # Check your external IP vs Tor IP
 alias myip="curl -s https://ifconfig.me"
 alias torip="pxc curl -s https://ifconfig.me"
 
-# The Nuke Alias
-alias nuke="rm -f ~/.zsh_history && history -c && pkill -u $(whoami) && exit"
+# User-Agent Strings
+UA_IPHONE="Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1"
+UA_WINDOWS="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+UA_LINUX="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
 
-# The "Quiet Nuke" (Wipes logs but keeps the session open)
-alias wipe="rm -f ~/.zsh_history && truncate -s 0 ~/.zsh_history && history -p && clear"
+# Identity Aliases
+alias curl-iphone="curl -A '$UA_IPHONE'"
+alias curl-win="curl -A '$UA_WINDOWS'"
+alias curl-linux="curl -A '$UA_LINUX'"
 
-alias grab="~/.shortcuts/grab.sh"
-alias kali="nh"
-alias nv='nvim' 
-alias ytdlmp4='yt-dlp -f "bv[ext!=webm][height<=720]+ba/b[ext!=webm][height<=720]" --merge-output-format mp4 -o "%(title)s.%(ext)s"'
-
-# Download as High Quality MP3 (Audio)
-alias getmp3='yt-dlp -x --audio-format mp3 --audio-quality 0 --add-metadata --embed-thumbnail -o "~/storage/downloads/%(title)s.%(ext)s"'
-
-# Download as Best Quality Video (MP4)
-alias getvid='yt-dlp -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" --add-metadata -o "~/storage/downloads/%(title)s.%(ext)s"'
-alias rm="rm -i"
-
-alias ksh='rish -c "nh"'
-
-
-eval "$(zoxide init zsh)"
-source <(fzf --zsh)
-alias lg='lazygit'
-
-alias clean='clear && cowsay -r "welcome back, master" | lolcat'
-alias figlett='figlet -d ~/.local/share/figlet'
-alias mst='echo "--- Home Directory Usage ---" && du -h -d 1 "$HOME" | sort -hr | head -n 5 && echo "--- Total Termux App Usage ---" && du -sh "$PREFIX/.."'
-alias ops='bash ~/scripts/dashboard.sh'
-alias sweep='rm -rf ~/.cache/* $PREFIX/tmp/* && npm cache clean --force && go clean -cache && apt autoremove -y && apt clean'
-clear
-# cowsay -r "welcome back, master" | lolcat
-alias ls='eza --all --long --group --group-directories-first --icons --header --time-style long-iso'   
-eval "$(starship init zsh)"
-# bash ~/scripts/daily_brief.sh
-# bash ~/scripts/terminal_banner.sh
-export TZ="Africa/Lagos"
-alias dev="~/.tmux-start.sh"
-# echo "W E L C O M E  B A C K,  L A N R E"|lolcat -f| boxes -a vcjchc -d dragon 
-
+# The "Stealth-Global" Function
+# Usage: pxc-stealth-win nmap -sT [target]
+pxc-stealth-win() {
+    proxychains4 -q curl -A "$UA_WINDOWS" "$@"
+}
+# ------------------------------------------------------
 # --- BANNER CONFIG ---
-source ~/scripts/rbanner.sh
+# source ~/scripts/rbanner.sh
 
 # To-do Management
 todo() {
@@ -203,16 +206,21 @@ bt() {
         echo "Banner: DISABLED"
     fi
 }
+bt()
 
-# Refresh banner every 30 minutes (1800s) on command prompt
+# Refresh banner every 1hr 30 minutes (4680s) on command prompt
 # Modify your existing precmd hook to respect this toggle:
 precmd() {
     if [[ "$SHOW_BANNER" != "false" ]]; then
         local now=$(date +%s)
-        if (( now - LAST_REFRESH > 1800 )); then
+        if (( now - LAST_REFRESH > 4680 )); then
            source ~/scripts/rbanner.sh
             LAST_REFRESH=$now
         fi
     fi
 }
+
+eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
+source <(fzf --zsh)
 

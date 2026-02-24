@@ -9,7 +9,6 @@ $git_status\
 $fill\
 $custom\
 $memory_usage\
-$cpu\
 $battery\
 $time\
 $cmd_duration
@@ -91,13 +90,6 @@ threshold = 75
 symbol = "󰀦 RAM "
 style = "bold fg:heap_warn"
 format = "[$symbol$ram]($style) "
-
-[cpu]
-threshold = 80
-style = "bold fg:heap_warn"
-symbol = " "
-format = "[$symbol$percentage]($style) "
-disabled = false
 
 [battery]
 full_symbol = "󰁹 "
@@ -181,4 +173,5 @@ symbol = " "
 style = "bg:clang fg:text_light"
 format = "[ $symbol($version) ]($style)"
 disabled = true
+
 

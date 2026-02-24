@@ -20,4 +20,4 @@ jobs:
       - name: Dry-run stow
         run: |
           mkdir -p "$HOME"
-          stow -n -v -R git tmux vim zsh config
+          stow -n -v -R git tmux vim zsh starship 
