@@ -49,6 +49,8 @@ call plug#end()
 syntax on
 filetype plugin indent on
 
+" ---- format command shortcut
+command! F :%!prettier --stdin-filepath %
 " --- Auto Reload ---
 set autoread
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
@@ -164,8 +166,8 @@ nnoremap <leader>s :Rg<CR>
 " --- Terminal ---
 
 tnoremap <Esc> <C-\><C-n>
-nnoremap <leader>t :botright 10split | terminal<CR>
-startinsert
+" nnoremap <leader>t :botright 10split | terminal<CR>
+" startinsert
 
 " --- Buffer Navigation ---
 nnoremap <S-l> :bnext<CR>

@@ -64,7 +64,7 @@ main() {
     backup_if_exists ~/.vimrc
 
     echo "🔗 Stowing configs..."
-    stow -v -R git tmux vim zsh config
+    stow -v -R git tmux vim zsh starship 
 
     echo "✨ Everything is linked and ready!"
 }
