@@ -223,4 +223,6 @@ precmd() {
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 source <(fzf --zsh)
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
 
