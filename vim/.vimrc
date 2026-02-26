@@ -67,6 +67,7 @@ augroup END
 set cursorline
 set number 
 set relativenumber
+highlight CursorLineNr cterm=bold ctermfg=Yellow gui=bold guifg=#FFD700
 set scrolloff=8
 set termguicolors
 set background=dark
@@ -185,8 +186,9 @@ nnoremap <C-n> :call OpenDirvishSidebar()<CR>
 
 " --- Utils ---
 nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q<CR>
 nnoremap <leader>u :UndotreeToggle<CR>
-nnoremap <leader>a :silent !live-server --port=8080 &<CR>:redraw!<CR>
+" nnoremap <leader>a :silent !live-server --port=8080 &<CR>:redraw!<CR>
 nnoremap <leader>g :Git blame<CR>
 nnoremap <leader><space> :noh<CR>
 

@@ -129,8 +129,8 @@ alias getmp3='yt-dlp -x --audio-format mp3 --audio-quality 0 --add-metadata --em
 alias getvid='yt-dlp -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" --add-metadata -o "~/storage/downloads/%(title)s.%(ext)s"'
 alias rm="rm -i"
 # One-command commit and push
-alias gpush="git add . && git commit -m 'update' && git push"
-# Safety check: Search for secret keys before pushing
+alias gpush='git add . && git commit -m "Auto-save $(date)" && git push origin main'
+# Sa qfety check: Search for secret keys before pushing
 alias check-secrets="grep -rE 'API_KEY|SECRET|PASSWORD' ."
 alias ksh='rish -c "nh"'
 alias lg='lazygit'
@@ -138,7 +138,7 @@ alias mst='echo "--- Home Directory Usage ---" && du -h -d 1 "$HOME" | sort -hr 
 alias ops='bash ~/scripts/dashboard.sh'
 alias sweep='rm -rf ~/.cache/* $PREFIX/tmp/* && npm cache clean --force && go clean -cache && apt autoremove -y && apt clean'
 alias ls='eza --all --long --group --group-directories-first --icons --header --time-style long-iso'   
-alias rlinux="termux-open ~/'Linux-Tutorial (1).pdf'"
+alias open="termux-open"
 alias wiki='w3m en.wikipedia.org'
 alias reddit='w3m old.reddit.com'
 alias news='w3m news.ycombinator.com'
