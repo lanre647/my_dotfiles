@@ -5,7 +5,7 @@ $custom$memory_usage$battery$time$cmd_duration
 [╰─](fg:arrow)\
 $status$character$python$conda$nodejs$rust$java$c
 """
-
+# welcome back
 scan_timeout = 500
 add_newline = true
 palette = "bold"
