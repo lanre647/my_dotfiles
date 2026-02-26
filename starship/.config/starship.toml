@@ -1,75 +1,58 @@
 format = """\
 [╭─](fg:arrow)\
-$os\
-$sudo\
-$username\
-$directory\
-$git_branch\
-$git_status\
-$fill\
-$custom\
-$memory_usage\
-$battery\
-$time\
-$cmd_duration
+$os$sudo$username$directory$git_branch$git_status$fill\
+$custom$memory_usage$battery$time$cmd_duration
 [╰─](fg:arrow)\
-$status\
-$character\
-$python\
-$conda\
-$nodejs\
-$rust\
-$java\
-$c\
+$status$character$python$conda$nodejs$rust$java$c
 """
 
 scan_timeout = 500
 add_newline = true
-palette = "normal"
+palette = "bold"
 
-[palettes.normal]
-arrow = "#333533"
-os = "#16f4d0"
-os_admin = "#e4ff1a"
-directory = "#9ffff5"
-git = "#f17f29"
-python = "#edf67d"
-conda = "#70e000"
-node = "#a5e6ba"
-java = "#F86279"
-rust = "#ffdac6"
-clang = "#caf0f8"
-duration = "#ce4257"
-memory = "#8d99ae"
-heap = "#f4a261"
-heap_warn = "#ef233c" 
-text_light = "#26272A"
-time = "#bdfffd"
+[palettes.bold]
+arrow = "#2C2C2C"
+os = "#00F5D4"
+os_admin = "#FFB703"
+directory = "#90E0EF"
+git = "#FF6B6B"
+python = "#FFD60A"
+conda = "#9EF01A"
+node = "#06D6A0"
+java = "#EF476F"
+rust = "#F77F00"
+clang = "#118AB2"
+duration = "#8338EC"
+memory = "#8D99AE"
+heap = "#F4A261"
+heap_warn = "#D00000"
+text_light = "#1A1A1A"
+time = "#00BBF9"
 
 [sudo]
-symbol = "󱐋 "
-style = "bold os_admin"
-format = "[$symbol]($style)"
+symbol = "⚡"
+style = "bg:os_admin fg:text_light"
+format = "[$symbol]($style)"
 disabled = false
 
 [username]
 show_always = true
-style_user = "bold os"
-style_root = "bold os_admin"
-format = " [$user]($style) "
+style_user = "bg:os fg:text_light"
+style_root = "bg:os_admin fg:text_light"
+format = "[$user]($style)"
 
 [status]
-symbol = "✘ "
-style = "bold fg:heap_warn"
-format = "[$symbol$common_meaning$signal_name]($style) "
+symbol = "✘"
+style = "bg:heap_warn fg:text_light"
+format = "[$symbol $common_meaning $signal_name]($style)"
 map_symbol = true
 disabled = false
 
 [time]
 disabled = false
-time_format = "%R" # 24-hour clock
-style = "bold fg:time"
-format = "at [󱑈 $time]($style) "
+time_format = "%R"
+style = "bg:time fg:text_light"
+format = "[$time]($style)"
 
 [custom.node_heap]
 description = "Show Node.js heap usage"
@@ -80,98 +63,96 @@ node -e "
 "
 """
 detect_files = ["package.json", "node_modules"]
-style = "bold fg:heap"
-format = "heap [$output]($style) "
+style = "bg:heap fg:text_light"
+format = "[$output]($style)"
 disabled = false
 
 [memory_usage]
 disabled = false
 threshold = 75 
-symbol = "󰀦 RAM "
-style = "bold fg:heap_warn"
-format = "[$symbol$ram]($style) "
+symbol = "🖥 RAM"
+style = "bg:heap_warn fg:text_light"
+format = "[$symbol $ram]($style)"
 
 [battery]
-full_symbol = "󰁹 "
-charging_symbol = "󰂄 "
-discharging_symbol = "󰂃 "
-format = "[$symbol$percentage]($style) "
+full_symbol = "🔋"
+charging_symbol = "⚡"
+discharging_symbol = "🔌"
+format = "[$symbol $percentage]($style)"
 disabled = false
 
 [[battery.display]]
 threshold = 20
-style = "bold fg:heap_warn"
+style = "bg:heap_warn fg:text_light"
 
 [os]
 disabled = false
-format = "[$symbol]($style)"
-style = "bold os"
+format = "[$symbol]($style)"
+style = "bg:os fg:text_light"
 
 [os.symbols]
-Windows = "󰍲 "
-Ubuntu = "󰕈 "
-Macos = "󰀵 "
-Linux = "󰌽 "
-Arch = "󰣇 "
+Windows = ""
+Ubuntu = ""
+Macos = ""
+Linux = ""
+Arch = ""
 
 [directory]
-style = "bold directory"
-format = "in [$path]($style) "
+style = "bg:directory fg:text_light"
+format = "[$path]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
 
 [git_branch]
-symbol = " "
-style = "bold git"
-format = "on [$symbol$branch]($style) "
+symbol = ""
+style = "bg:git fg:text_light"
+format = "[$symbol $branch]($style)"
 
 [git_status]
-style = "bold git"
-format = "([\\[$all_status$ahead_behind\\]]($style) )"
+style = "bg:git fg:text_light"
+format = "[\\[$all_status $ahead_behind\\]]($style)"
 
 [fill]
 symbol = " "
 
 [cmd_duration]
 min_time = 500
-style = "bold duration"
-format = "took [󱎫 $duration]($style)"
+style = "bg:duration fg:text_light"
+format = "[$duration]($style)"
 
 [character]
-success_symbol = "[󰍟](fg:arrow)"
-error_symbol = "[󰍟](fg:red)"
+success_symbol = "❯"
+error_symbol = "✘"
 
 [python]
-symbol = " "
+symbol = ""
 style = "bg:python fg:text_light"
-format = "[ $symbol($version) ]($style)"
+format = "[$symbol $version]($style)"
 
 [conda]
-symbol = " "
+symbol = ""
 style = "bg:conda fg:text_light"
-format = "[ $symbol$environment ]($style)"
+format = "[$symbol $environment]($style)"
 
 [nodejs]
-symbol = " "
+symbol = ""
 style = "bg:node fg:text_light"
-format = "[ $symbol($version) ]($style)"
+format = "[$symbol $version]($style)"
 
 [rust]
-symbol = " "
+symbol = ""
 style = "bg:rust fg:text_light"
-format = "[ $symbol($version) ]($style)"
-disabled = true
+format = "[$symbol $version]($style)"
+disabled = false
 
 [java]
-symbol = " "
+symbol = ""
 style = "bg:java fg:text_light"
-format = "[ $symbol($version) ]($style)"
-disabled = true
+format = "[$symbol $version]($style)"
+disabled = false
 
 [c]
-symbol = " "
+symbol = ""
 style = "bg:clang fg:text_light"
-format = "[ $symbol($version) ]($style)"
-disabled = true
-
-
+format = "[$symbol $version]($style)"
+disabled = false
