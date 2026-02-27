@@ -27,6 +27,9 @@ Plug 'preservim/nerdtree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
+" --- command suggestions ---
+Plug 'gelguy/wilder.nvim', { 'do': ':UpdateRemotePlugins' }
+
 " --- Language Support ---
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
@@ -71,6 +74,11 @@ set cursorline
 set number 
 set relativenumber
 highlight CursorLineNr cterm=bold ctermfg=Yellow gui=bold guifg=#FFD700
+highlight GitGutterAdd ctermfg=Green guifg=#a9b665
+highlight GitGutterChange ctermfg=Yellow guifg=#d8a657
+highlight GitGutterDelete ctermfg=Red guifg=#ea6962 
+hi MatchParen cterm=bold ctermbg=NONE ctermfg=cyan gui=bold guibg=NONE guifg=#83a598
+
 set scrolloff=8
 set termguicolors
 set background=dark
@@ -152,6 +160,24 @@ let g:ale_fixers = {
 \ 'html': ['prettier'],
 \}
 
+" --- Wilder.nvim Config (Vim-Safe Version) ---
+call wilder#setup({'modes': [':', '/', '?']})
+
+" Use a simpler popup menu that doesn't rely on mask functions
+call wilder#set_option('renderer', wilder#popupmenu_renderer({
+      \ 'highlighter': wilder#basic_highlighter(),
+      \ 'left': [
+      \   ' ', wilder#popupmenu_devicons(),
+      \ ],
+      \ 'right': [
+      \   ' ', wilder#popupmenu_scrollbar(),
+      \ ],
+      \ }))
+
+" Keybinds to navigate the Wilder menu with Tab / Shift-Tab
+cmap <expr> <Tab> wilder#in_context() ? wilder#next() : "\<Tab>"
+cmap <expr> <S-Tab> wilder#in_context() ? wilder#previous() : "\<S-Tab>"
+
 " =========================================================
 " 5. KEY MAPPINGS
 " =========================================================
@@ -161,6 +187,14 @@ let mapleader = " "
 nnoremap <leader>t :terminal<CR>
 tnoremap <Esc> <C-\><C-n>
 " autocmd TermOpen * setlocal nonumber norelativenumber " Clean terminal look
+"
+" Auto-clean UI for Terminal (Vim Version)
+if has('terminal')
+  augroup terminal_settings
+    autocmd!
+    autocmd TerminalOpen * setlocal nonumber norelativenumber signcolumn=no
+  augroup END
+endif
 
 " --- Navigation ---
 nnoremap <leader>p :Files<CR>
@@ -174,6 +208,9 @@ nnoremap <leader>j 10j
 nnoremap <leader>k 10k
 nnoremap <C-d> <C-d>zz
 nnoremap <C-u> <C-u>zz
+" Keep the cursor centered when searching (THIS IS HUGE)
+nnoremap n nzzzv
+nnoremap N Nzzzv
 nnoremap <Tab> %
 
 " --- Window Movement ---
@@ -181,6 +218,15 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+" --- Ultimate Sidebar Jumps ---
+nnoremap <leader>1 :1wincmd w<CR>
+nnoremap <leader>2 :2wincmd w<CR>
+
+" Save the current session (splits, tabs, etc.)
+nnoremap <leader>SS :mksession! ~/.vim/session.vim<CR>
+" Reload the last saved session
+nnoremap <leader>RL :source ~/.vim/session.vim<CR>
+
 
 " --- Dirvish Sidebar (New & Improved) ---
 " function! OpenDirvishSidebar()
