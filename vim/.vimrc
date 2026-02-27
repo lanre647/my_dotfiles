@@ -18,9 +18,12 @@ Plug 'ghifarit53/tokyonight-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'sainnhe/gruvbox-material'
+
 
 " --- Navigation & Search ---
-Plug 'justinmk/vim-dirvish'
+Plug 'preservim/nerdtree'
+" Plug 'justinmk/vim-dirvish'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
@@ -82,8 +85,11 @@ let g:PaperColor_Theme_Options = {
   \   }
   \ }
 
-colorscheme PaperColor
-let g:airline_theme='papercolor'
+" colorscheme PaperColor
+" let g:airline_theme='papercolor'
+let g:gruvbox_material_background = 'soft' " options: hard, medium, soft
+colorscheme gruvbox-material
+let g:airline_theme = 'gruvbox_material'
 
 set clipboard=unnamed,unnamedplus
 set pastetoggle=<F2>
@@ -177,12 +183,13 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 " --- Dirvish Sidebar (New & Improved) ---
-function! OpenDirvishSidebar()
-    topleft vertical 30split
-    execute 'Dirvish %:p:h'
-    setlocal winfixwidth
-endfunction
-nnoremap <C-n> :call OpenDirvishSidebar()<CR>
+" function! OpenDirvishSidebar()
+"     topleft vertical 30split
+"     execute 'Dirvish %:p:h'
+"     setlocal winfixwidth
+" endfunction
+" nnoremap <C-n> :call OpenDirvishSidebar()<CR>
+nnoremap <C-n> :NERDTreeToggle<CR>
 
 " --- Utils ---
 nnoremap <leader>w :w<CR>
