@@ -1,158 +1,229 @@
+# =========================================
+# 🚀 Elite Powerline Gruvbox Prompt (FIXED)
+# =========================================
+
 format = """\
-[╭─](fg:arrow)\
-$os$sudo$username$directory$git_branch$git_status$fill\
-$custom$memory_usage$battery$time$cmd_duration
-[╰─](fg:arrow)\
-$status$character$python$conda$nodejs$rust$java$c
+[](fg:bg0)\
+$os\
+$username\
+[](fg:green bg:blue)\
+$directory\
+[](fg:blue bg:orange)\
+$git_branch\
+$git_status\
+[](fg:orange bg:bg0)\
+$fill\
+$aws\
+$kubernetes\
+$docker_context\
+$cmd_duration\
+$time\
+$battery\
+$memory_usage\
+[ ](fg:bg0)\
+$line_break\
+$character\
+$python\
+$nodejs\
+$conda\
 """
-# welcome back
-scan_timeout = 500
+
+scan_timeout = 40
+command_timeout = 400
 add_newline = true
-palette = "bold"
+palette = "gruvbox_power_bold"
 
-[palettes.bold]
-arrow = "#2C2C2C"
-os = "#00F5D4"
-os_admin = "#FFB703"
-directory = "#90E0EF"
-git = "#FF6B6B"
-python = "#FFD60A"
-conda = "#9EF01A"
-node = "#06D6A0"
-java = "#EF476F"
-rust = "#F77F00"
-clang = "#118AB2"
-duration = "#8338EC"
-memory = "#8D99AE"
-heap = "#F4A261"
-heap_warn = "#D00000"
-text_light = "#1A1A1A"
-time = "#00BBF9"
+# =========================================
+# 🎨 Palette
+# =========================================
 
-[sudo]
-symbol = "⚡"
-style = "bg:os_admin fg:text_light"
-format = "[$symbol]($style)"
+[palettes.gruvbox_power_bold]
+bg0 = "#282828"
+bg1 = "#3c3836"
+green = "#8ec07c"
+blue = "#83a598"
+orange = "#fe8019"
+yellow = "#fabd2f"
+red = "#fb4934"
+aqua = "#8ec07c"
+purple = "#d3869b"
+fg0 = "#fbf1c7"
+
+# =========================================
+# 💻 OS
+# =========================================
+
+[os]
 disabled = false
+style = "bg:bg0 fg:green bold"
+format = "[ 🖥 ]($style)"
+
+# =========================================
+# 👤 Username
+# =========================================
 
 [username]
 show_always = true
-style_user = "bg:os fg:text_light"
-style_root = "bg:os_admin fg:text_light"
-format = "[$user]($style)"
+style_user = "bg:bg0 fg:green bold"
+style_root = "bg:bg0 fg:red bold"
+format = "[  $user ]($style)"
 
-[status]
-symbol = "✘"
-style = "bg:heap_warn fg:text_light"
-format = "[$symbol $common_meaning $signal_name]($style)"
-map_symbol = true
+# =========================================
+# 📁 Directory
+# =========================================
+
+[directory]
+style = "bg:blue fg:bg0 bold"
+format = "[  $path ]($style)"
+truncation_length = 3
+truncate_to_repo = true
+truncation_symbol = "…/"
+
+# =========================================
+# 🌿 Git
+# =========================================
+
+[git_branch]
+symbol = " "
+style = "bg:orange fg:bg0 bold"
+format = "[ $symbol$branch ]($style)"
+
+[git_status]
+style = "bg:orange fg:bg0 bold"
+format = "[$all_status$ahead_behind ]($style)"
+
+# =========================================
+# ☁️ AWS (SINGLE BLOCK — FIXED)
+# =========================================
+
+[aws]
+symbol = "☁️ "
+format = "[ $symbol$profile ]($style)"
+style = "bg:yellow fg:bg0 bold"
 disabled = false
+
+# 🚨 highlight prod-like profiles
+[aws.profile_aliases]
+production = "prod"
+prod = "prod"
+
+# =========================================
+# ☸️ Kubernetes (SMART + DANGER)
+# =========================================
+
+[kubernetes]
+symbol = "☸️ "
+disabled = false
+format = "[ $symbol$context(::$namespace) ]($style)"
+style = "bg:purple fg:bg0 bold"
+
+# ✂️ smart shortening
+[kubernetes.context_aliases]
+".*eks.*" = "eks"
+".*gke.*" = "gke"
+".*aks.*" = "aks"
+
+# 🚨 prod detection
+[[kubernetes.contexts]]
+context_pattern = "(?i)prod|production|live|main|prd"
+style = "bg:red fg:bg0 bold blink"
+symbol = "🚨☸️ "
+
+# =========================================
+# 🐳 Docker
+# =========================================
+
+[docker_context]
+symbol = "🐳 "
+style = "bg:aqua fg:bg0 bold"
+format = "[ $symbol$context ]($style)"
+disabled = false
+
+# =========================================
+# 🧠 Memory
+# =========================================
+
+[memory_usage]
+disabled = false
+threshold = 85
+symbol = "󰍛 "
+style = "bg:bg1 fg:yellow bold"
+format = "[ $symbol$ram ]($style)"
+
+# =========================================
+# 🔋 Battery
+# =========================================
+
+[battery]
+disabled = false
+full_symbol = "🔋 "
+charging_symbol = "⚡ "
+discharging_symbol = "🔋 "
+format = "[ $symbol$percentage ]($style)"
+style = "bg:bg1 fg:green bold"
+
+[[battery.display]]
+threshold = 25
+style = "bg:bg1 fg:red bold"
+
+# =========================================
+# ⏱ Duration
+# =========================================
+
+[cmd_duration]
+min_time = 1000
+style = "bg:bg1 fg:orange bold"
+format = "[ ⏱ $duration ]($style)"
+
+# =========================================
+# ⏰ Time
+# =========================================
 
 [time]
 disabled = false
 time_format = "%R"
-style = "bg:time fg:text_light"
-format = "[$time]($style)"
+style = "bg:bg1 fg:aqua bold"
+format = "[ 🕒 $time ]($style)"
 
-[custom.node_heap]
-description = "Show Node.js heap usage"
-command = """
-node -e "
-  const heap = Math.round(process.memoryUsage().heapUsed / 1024 / 1024);
-  process.stdout.write(heap > 1000 ? ' ' + heap + 'MB' : heap + 'MB');
-"
-"""
-detect_files = ["package.json", "node_modules"]
-style = "bg:heap fg:text_light"
-format = "[$output]($style)"
-disabled = false
+# =========================================
+# 🎯 Character
+# =========================================
 
-[memory_usage]
-disabled = false
-threshold = 75 
-symbol = "🖥 RAM"
-style = "bg:heap_warn fg:text_light"
-format = "[$symbol $ram]($style)"
+[character]
+success_symbol = "[❯](bold fg:green)"
+error_symbol = "[❯](bold fg:red)"
+vimcmd_symbol = "[❮](bold fg:yellow)"
 
-[battery]
-full_symbol = "🔋"
-charging_symbol = "⚡"
-discharging_symbol = "🔌"
-format = "[$symbol $percentage]($style)"
-disabled = false
+# =========================================
+# 🐍 Python
+# =========================================
 
-[[battery.display]]
-threshold = 20
-style = "bg:heap_warn fg:text_light"
+[python]
+symbol = "🐍 "
+style = "bg:yellow fg:bg0 bold"
+format = "[ $symbol($version) ]($style)"
 
-[os]
-disabled = false
-format = "[$symbol]($style)"
-style = "bg:os fg:text_light"
+# =========================================
+# 🟢 Node
+# =========================================
 
-[os.symbols]
-Windows = ""
-Ubuntu = ""
-Macos = ""
-Linux = ""
-Arch = ""
+[nodejs]
+symbol = "🟢 "
+style = "bg:green fg:bg0 bold"
+format = "[ $symbol($version) ]($style)"
 
-[directory]
-style = "bg:directory fg:text_light"
-format = "[$path]($style)"
-truncation_length = 3
-truncation_symbol = "…/"
+# =========================================
+# 🧪 Conda
+# =========================================
 
-[git_branch]
-symbol = ""
-style = "bg:git fg:text_light"
-format = "[$symbol $branch]($style)"
+[conda]
+symbol = "🧪 "
+style = "bg:purple fg:bg0 bold"
+format = "[ $symbol$environment ]($style)"
 
-[git_status]
-style = "bg:git fg:text_light"
-format = "[\\[$all_status $ahead_behind\\]]($style)"
+# =========================================
+# filler
+# =========================================
 
 [fill]
 symbol = " "
-
-[cmd_duration]
-min_time = 500
-style = "bg:duration fg:text_light"
-format = "[$duration]($style)"
-
-[character]
-success_symbol = "❯"
-error_symbol = "✘"
-
-[python]
-symbol = ""
-style = "bg:python fg:text_light"
-format = "[$symbol $version]($style)"
-
-[conda]
-symbol = ""
-style = "bg:conda fg:text_light"
-format = "[$symbol $environment]($style)"
-
-[nodejs]
-symbol = ""
-style = "bg:node fg:text_light"
-format = "[$symbol $version]($style)"
-
-[rust]
-symbol = ""
-style = "bg:rust fg:text_light"
-format = "[$symbol $version]($style)"
-disabled = false
-
-[java]
-symbol = ""
-style = "bg:java fg:text_light"
-format = "[$symbol $version]($style)"
-disabled = false
-
-[c]
-symbol = ""
-style = "bg:clang fg:text_light"
-format = "[$symbol $version]($style)"
-disabled = false
