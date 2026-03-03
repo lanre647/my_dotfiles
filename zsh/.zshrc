@@ -129,7 +129,7 @@ alias getmp3='yt-dlp -x --audio-format mp3 --audio-quality 0 --add-metadata --em
 alias getvid='yt-dlp -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" --add-metadata -o "~/storage/downloads/%(title)s.%(ext)s"'
 alias rm="rm -i"
 # One-command commit and push
-alias gpush='git add . && git commit -m "Auto-save $(date)" && git push origin main'
+alias gpush='git add . && git commit -m "Auto-save $(date +"%Y-%m-%d %H:%M")" && git push origin main'
 # Sa qfety check: Search for secret keys before pushing
 alias check-secrets="grep -rE 'API_KEY|SECRET|PASSWORD' ."
 alias ksh='rish -c "nh"'
@@ -225,4 +225,5 @@ eval "$(zoxide init zsh)"
 source <(fzf --zsh)
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
-
+clear
+date +"%H:%M" | figlet -t -c -f "3d"

@@ -1,5 +1,14 @@
 # =========================================
-# 🚀 Elite Powerline Gruvbox Prompt (FIXED)
+# 🚀 Elite Powerline Gruvbox MAX
+# =========================================
+
+command_timeout = 400
+scan_timeout = 25
+add_newline = true
+palette = "gruvbox_power_bold"
+
+# =========================================
+# 🧬 MASTER FORMAT (boxed powerline)
 # =========================================
 
 format = """\
@@ -11,7 +20,7 @@ $directory\
 [](fg:blue bg:orange)\
 $git_branch\
 $git_status\
-[](fg:orange bg:bg0)\
+[](fg:orange bg:bg1)\
 $fill\
 $aws\
 $kubernetes\
@@ -20,18 +29,14 @@ $cmd_duration\
 $time\
 $battery\
 $memory_usage\
-[ ](fg:bg0)\
+[](fg:bg1)\
 $line_break\
+$status\
 $character\
 $python\
 $nodejs\
 $conda\
 """
-
-scan_timeout = 40
-command_timeout = 400
-add_newline = true
-palette = "gruvbox_power_bold"
 
 # =========================================
 # 🎨 Palette
@@ -50,13 +55,13 @@ purple = "#d3869b"
 fg0 = "#fbf1c7"
 
 # =========================================
-# 💻 OS
+# 🖥 OS (smarter icon)
 # =========================================
 
 [os]
 disabled = false
 style = "bg:bg0 fg:green bold"
-format = "[ 🖥 ]($style)"
+format = "[ 󰌽 ]($style)"
 
 # =========================================
 # 👤 Username
@@ -66,7 +71,7 @@ format = "[ 🖥 ]($style)"
 show_always = true
 style_user = "bg:bg0 fg:green bold"
 style_root = "bg:bg0 fg:red bold"
-format = "[  $user ]($style)"
+format = "[  $user ]($style)"
 
 # =========================================
 # 📁 Directory
@@ -74,45 +79,52 @@ format = "[  $user ]($style)"
 
 [directory]
 style = "bg:blue fg:bg0 bold"
-format = "[  $path ]($style)"
+format = "[  $path ]($style)"
 truncation_length = 3
 truncate_to_repo = true
 truncation_symbol = "…/"
 
 # =========================================
-# 🌿 Git
+# 🌿 Git Branch
 # =========================================
 
 [git_branch]
-symbol = " "
+symbol = " "
 style = "bg:orange fg:bg0 bold"
 format = "[ $symbol$branch ]($style)"
+
+# =========================================
+# 🧠 Git Heatmap (ahead/behind bars)
+# =========================================
 
 [git_status]
 style = "bg:orange fg:bg0 bold"
 format = "[$all_status$ahead_behind ]($style)"
 
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+
 # =========================================
-# ☁️ AWS (SINGLE BLOCK — FIXED)
+# ☁️ AWS (danger aware)
 # =========================================
 
 [aws]
-symbol = "☁️ "
+symbol = " "
 format = "[ $symbol$profile ]($style)"
 style = "bg:yellow fg:bg0 bold"
 disabled = false
 
-# 🚨 highlight prod-like profiles
-[aws.profile_aliases]
-production = "prod"
-prod = "prod"
+[[aws.profile_aliases]]
+profile_pattern = "(?i)prod|production|live"
+alias = "🚨PROD"
 
 # =========================================
-# ☸️ Kubernetes (SMART + DANGER)
+# ☸️ Kubernetes (cluster color intelligence)
 # =========================================
 
 [kubernetes]
-symbol = "☸️ "
+symbol = "󱃾 "
 disabled = false
 format = "[ $symbol$context(::$namespace) ]($style)"
 style = "bg:purple fg:bg0 bold"
@@ -122,22 +134,70 @@ style = "bg:purple fg:bg0 bold"
 ".*eks.*" = "eks"
 ".*gke.*" = "gke"
 ".*aks.*" = "aks"
+".*minikube.*" = "mini"
 
-# 🚨 prod detection
+# 🚨 PROD — blinking red
 [[kubernetes.contexts]]
 context_pattern = "(?i)prod|production|live|main|prd"
 style = "bg:red fg:bg0 bold blink"
-symbol = "🚨☸️ "
+symbol = " "
+
+# 🛰️ staging — yellow
+[[kubernetes.contexts]]
+context_pattern = "(?i)stage|staging|test"
+style = "bg:yellow fg:bg0 bold"
+symbol = "󰙨 "
+
+# 🧪 dev — green calm
+[[kubernetes.contexts]]
+context_pattern = "(?i)dev|local|minikube"
+style = "bg:green fg:bg0 bold"
+symbol = "󰌗 "
 
 # =========================================
 # 🐳 Docker
 # =========================================
 
 [docker_context]
-symbol = "🐳 "
+symbol = " "
 style = "bg:aqua fg:bg0 bold"
 format = "[ $symbol$context ]($style)"
 disabled = false
+
+# =========================================
+# ⏱ Duration (heat feel)
+# =========================================
+
+[cmd_duration]
+min_time = 1000
+style = "bg:bg1 fg:orange bold"
+format = "[ 󰔟 $duration ]($style)"
+
+# =========================================
+# ⏰ Time
+# =========================================
+
+[time]
+disabled = false
+time_format = "%R"
+style = "bg:bg1 fg:aqua bold"
+format = "[ 󰥔 $time ]($style)"
+
+# =========================================
+# 🔋 Battery
+# =========================================
+
+[battery]
+disabled = false
+full_symbol = "󰁹 "
+charging_symbol = "󰂄 "
+discharging_symbol = "󰂃 "
+format = "[ $symbol$percentage ]($style)"
+style = "bg:bg1 fg:green bold"
+
+[[battery.display]]
+threshold = 25
+style = "bg:bg1 fg:red bold"
 
 # =========================================
 # 🧠 Memory
@@ -151,39 +211,15 @@ style = "bg:bg1 fg:yellow bold"
 format = "[ $symbol$ram ]($style)"
 
 # =========================================
-# 🔋 Battery
+# 🌈 Dynamic Exit Code Indicator
 # =========================================
 
-[battery]
+[status]
 disabled = false
-full_symbol = "🔋 "
-charging_symbol = "⚡ "
-discharging_symbol = "🔋 "
-format = "[ $symbol$percentage ]($style)"
-style = "bg:bg1 fg:green bold"
-
-[[battery.display]]
-threshold = 25
-style = "bg:bg1 fg:red bold"
-
-# =========================================
-# ⏱ Duration
-# =========================================
-
-[cmd_duration]
-min_time = 1000
-style = "bg:bg1 fg:orange bold"
-format = "[ ⏱ $duration ]($style)"
-
-# =========================================
-# ⏰ Time
-# =========================================
-
-[time]
-disabled = false
-time_format = "%R"
-style = "bg:bg1 fg:aqua bold"
-format = "[ 🕒 $time ]($style)"
+symbol = "✖ "
+success_symbol = ""
+style = "bold fg:red"
+format = "[$symbol$status]($style) "
 
 # =========================================
 # 🎯 Character
@@ -199,7 +235,7 @@ vimcmd_symbol = "[❮](bold fg:yellow)"
 # =========================================
 
 [python]
-symbol = "🐍 "
+symbol = " "
 style = "bg:yellow fg:bg0 bold"
 format = "[ $symbol($version) ]($style)"
 
@@ -208,7 +244,7 @@ format = "[ $symbol($version) ]($style)"
 # =========================================
 
 [nodejs]
-symbol = "🟢 "
+symbol = " "
 style = "bg:green fg:bg0 bold"
 format = "[ $symbol($version) ]($style)"
 
@@ -217,7 +253,7 @@ format = "[ $symbol($version) ]($style)"
 # =========================================
 
 [conda]
-symbol = "🧪 "
+symbol = " "
 style = "bg:purple fg:bg0 bold"
 format = "[ $symbol$environment ]($style)"
 
