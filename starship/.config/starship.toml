@@ -1,5 +1,5 @@
 # =========================================
-# 🚀 Elite Powerline Gruvbox MAX
+# 🚀 Elite Powerline Gruvbox MAX (FIXED)
 # =========================================
 
 command_timeout = 400
@@ -55,7 +55,7 @@ purple = "#d3869b"
 fg0 = "#fbf1c7"
 
 # =========================================
-# 🖥 OS (smarter icon)
+# 🖥 OS
 # =========================================
 
 [os]
@@ -94,7 +94,7 @@ style = "bg:orange fg:bg0 bold"
 format = "[ $symbol$branch ]($style)"
 
 # =========================================
-# 🧠 Git Heatmap (ahead/behind bars)
+# 🧠 Git Status
 # =========================================
 
 [git_status]
@@ -106,7 +106,7 @@ behind = "⇣${count}"
 diverged = "⇕⇡${ahead_count}⇣${behind_count}"
 
 # =========================================
-# ☁️ AWS (danger aware)
+# ☁️ AWS (FIXED)
 # =========================================
 
 [aws]
@@ -115,12 +115,13 @@ format = "[ $symbol$profile ]($style)"
 style = "bg:yellow fg:bg0 bold"
 disabled = false
 
-[[aws.profile_aliases]]
-profile_pattern = "(?i)prod|production|live"
-alias = "🚨PROD"
+[aws.profile_aliases]
+"(?i)prod|production|live" = "🚨PROD"
+"(?i)stage|staging|test" = "🟡STAGE"
+"(?i)dev|sandbox|local" = "🟢DEV"
 
 # =========================================
-# ☸️ Kubernetes (cluster color intelligence)
+# ☸️ Kubernetes
 # =========================================
 
 [kubernetes]
@@ -129,26 +130,22 @@ disabled = false
 format = "[ $symbol$context(::$namespace) ]($style)"
 style = "bg:purple fg:bg0 bold"
 
-# ✂️ smart shortening
 [kubernetes.context_aliases]
 ".*eks.*" = "eks"
 ".*gke.*" = "gke"
 ".*aks.*" = "aks"
 ".*minikube.*" = "mini"
 
-# 🚨 PROD — blinking red
 [[kubernetes.contexts]]
 context_pattern = "(?i)prod|production|live|main|prd"
 style = "bg:red fg:bg0 bold blink"
 symbol = " "
 
-# 🛰️ staging — yellow
 [[kubernetes.contexts]]
 context_pattern = "(?i)stage|staging|test"
 style = "bg:yellow fg:bg0 bold"
 symbol = "󰙨 "
 
-# 🧪 dev — green calm
 [[kubernetes.contexts]]
 context_pattern = "(?i)dev|local|minikube"
 style = "bg:green fg:bg0 bold"
@@ -165,7 +162,7 @@ format = "[ $symbol$context ]($style)"
 disabled = false
 
 # =========================================
-# ⏱ Duration (heat feel)
+# ⏱ Duration
 # =========================================
 
 [cmd_duration]
@@ -211,7 +208,7 @@ style = "bg:bg1 fg:yellow bold"
 format = "[ $symbol$ram ]($style)"
 
 # =========================================
-# 🌈 Dynamic Exit Code Indicator
+# 🌈 Status
 # =========================================
 
 [status]
