@@ -1,11 +1,11 @@
 # =========================================
-# 🚀 Elite Powerline Gruvbox MAX (FIXED)
+# 🚀 Elite Powerline Cyberpunk Neon
 # =========================================
 
 command_timeout = 400
 scan_timeout = 25
 add_newline = true
-palette = "gruvbox_power_bold"
+palette = "cyberpunk_neon"
 
 # =========================================
 # 🧬 MASTER FORMAT (boxed powerline)
@@ -15,12 +15,12 @@ format = """\
 [](fg:bg0)\
 $os\
 $username\
-[](fg:green bg:blue)\
+[](fg:neon_green bg:neon_blue)\
 $directory\
-[](fg:blue bg:orange)\
+[](fg:neon_blue bg:neon_purple)\
 $git_branch\
 $git_status\
-[](fg:orange bg:bg1)\
+[](fg:neon_purple bg:bg1)\
 $fill\
 $aws\
 $kubernetes\
@@ -39,20 +39,23 @@ $conda\
 """
 
 # =========================================
-# 🎨 Palette
+# 🎨 Cyberpunk Neon Palette
 # =========================================
 
-[palettes.gruvbox_power_bold]
-bg0 = "#282828"
-bg1 = "#3c3836"
-green = "#8ec07c"
-blue = "#83a598"
-orange = "#fe8019"
-yellow = "#fabd2f"
-red = "#fb4934"
-aqua = "#8ec07c"
-purple = "#d3869b"
-fg0 = "#fbf1c7"
+[palettes.cyberpunk_neon]
+
+bg0 = "#0b0f1a"
+bg1 = "#141a2a"
+
+neon_green = "#39ff14"
+neon_blue = "#00d9ff"
+neon_purple = "#9d00ff"
+neon_pink = "#ff2bd6"
+neon_yellow = "#ffe600"
+neon_red = "#ff3b3b"
+neon_aqua = "#00ffc6"
+
+fg0 = "#e6f1ff"
 
 # =========================================
 # 🖥 OS
@@ -60,7 +63,7 @@ fg0 = "#fbf1c7"
 
 [os]
 disabled = false
-style = "bg:bg0 fg:green bold"
+style = "bg:bg0 fg:neon_green bold"
 format = "[ 󰌽 ]($style)"
 
 # =========================================
@@ -69,8 +72,8 @@ format = "[ 󰌽 ]($style)"
 
 [username]
 show_always = true
-style_user = "bg:bg0 fg:green bold"
-style_root = "bg:bg0 fg:red bold"
+style_user = "bg:bg0 fg:neon_green bold"
+style_root = "bg:bg0 fg:neon_red bold"
 format = "[  $user ]($style)"
 
 # =========================================
@@ -78,7 +81,7 @@ format = "[  $user ]($style)"
 # =========================================
 
 [directory]
-style = "bg:blue fg:bg0 bold"
+style = "bg:neon_blue fg:bg0 bold"
 format = "[  $path ]($style)"
 truncation_length = 3
 truncate_to_repo = true
@@ -90,7 +93,7 @@ truncation_symbol = "…/"
 
 [git_branch]
 symbol = " "
-style = "bg:orange fg:bg0 bold"
+style = "bg:neon_purple fg:bg0 bold"
 format = "[ $symbol$branch ]($style)"
 
 # =========================================
@@ -98,7 +101,7 @@ format = "[ $symbol$branch ]($style)"
 # =========================================
 
 [git_status]
-style = "bg:orange fg:bg0 bold"
+style = "bg:neon_purple fg:bg0 bold"
 format = "[$all_status$ahead_behind ]($style)"
 
 ahead = "⇡${count}"
@@ -106,13 +109,13 @@ behind = "⇣${count}"
 diverged = "⇕⇡${ahead_count}⇣${behind_count}"
 
 # =========================================
-# ☁️ AWS (FIXED)
+# ☁️ AWS
 # =========================================
 
 [aws]
 symbol = " "
 format = "[ $symbol$profile ]($style)"
-style = "bg:yellow fg:bg0 bold"
+style = "bg:neon_yellow fg:bg0 bold"
 disabled = false
 
 [aws.profile_aliases]
@@ -128,7 +131,7 @@ disabled = false
 symbol = "󱃾 "
 disabled = false
 format = "[ $symbol$context(::$namespace) ]($style)"
-style = "bg:purple fg:bg0 bold"
+style = "bg:neon_pink fg:bg0 bold"
 
 [kubernetes.context_aliases]
 ".*eks.*" = "eks"
@@ -138,17 +141,17 @@ style = "bg:purple fg:bg0 bold"
 
 [[kubernetes.contexts]]
 context_pattern = "(?i)prod|production|live|main|prd"
-style = "bg:red fg:bg0 bold blink"
+style = "bg:neon_red fg:bg0 bold blink"
 symbol = " "
 
 [[kubernetes.contexts]]
 context_pattern = "(?i)stage|staging|test"
-style = "bg:yellow fg:bg0 bold"
+style = "bg:neon_yellow fg:bg0 bold"
 symbol = "󰙨 "
 
 [[kubernetes.contexts]]
 context_pattern = "(?i)dev|local|minikube"
-style = "bg:green fg:bg0 bold"
+style = "bg:neon_green fg:bg0 bold"
 symbol = "󰌗 "
 
 # =========================================
@@ -157,7 +160,7 @@ symbol = "󰌗 "
 
 [docker_context]
 symbol = " "
-style = "bg:aqua fg:bg0 bold"
+style = "bg:neon_aqua fg:bg0 bold"
 format = "[ $symbol$context ]($style)"
 disabled = false
 
@@ -167,7 +170,7 @@ disabled = false
 
 [cmd_duration]
 min_time = 1000
-style = "bg:bg1 fg:orange bold"
+style = "bg:bg1 fg:neon_purple bold"
 format = "[ 󰔟 $duration ]($style)"
 
 # =========================================
@@ -177,7 +180,7 @@ format = "[ 󰔟 $duration ]($style)"
 [time]
 disabled = false
 time_format = "%R"
-style = "bg:bg1 fg:aqua bold"
+style = "bg:bg1 fg:neon_aqua bold"
 format = "[ 󰥔 $time ]($style)"
 
 # =========================================
@@ -190,11 +193,11 @@ full_symbol = "󰁹 "
 charging_symbol = "󰂄 "
 discharging_symbol = "󰂃 "
 format = "[ $symbol$percentage ]($style)"
-style = "bg:bg1 fg:green bold"
+style = "bg:bg1 fg:neon_green bold"
 
 [[battery.display]]
 threshold = 25
-style = "bg:bg1 fg:red bold"
+style = "bg:bg1 fg:neon_red bold"
 
 # =========================================
 # 🧠 Memory
@@ -204,7 +207,7 @@ style = "bg:bg1 fg:red bold"
 disabled = false
 threshold = 85
 symbol = "󰍛 "
-style = "bg:bg1 fg:yellow bold"
+style = "bg:bg1 fg:neon_yellow bold"
 format = "[ $symbol$ram ]($style)"
 
 # =========================================
@@ -215,7 +218,7 @@ format = "[ $symbol$ram ]($style)"
 disabled = false
 symbol = "✖ "
 success_symbol = ""
-style = "bold fg:red"
+style = "bold fg:neon_red"
 format = "[$symbol$status]($style) "
 
 # =========================================
@@ -223,9 +226,9 @@ format = "[$symbol$status]($style) "
 # =========================================
 
 [character]
-success_symbol = "[❯](bold fg:green)"
-error_symbol = "[❯](bold fg:red)"
-vimcmd_symbol = "[❮](bold fg:yellow)"
+success_symbol = "[❯](bold fg:neon_aqua)"
+error_symbol = "[❯](bold fg:neon_red)"
+vimcmd_symbol = "[❮](bold fg:neon_yellow)"
 
 # =========================================
 # 🐍 Python
@@ -233,7 +236,7 @@ vimcmd_symbol = "[❮](bold fg:yellow)"
 
 [python]
 symbol = " "
-style = "bg:yellow fg:bg0 bold"
+style = "bg:neon_yellow fg:bg0 bold"
 format = "[ $symbol($version) ]($style)"
 
 # =========================================
@@ -242,7 +245,7 @@ format = "[ $symbol($version) ]($style)"
 
 [nodejs]
 symbol = " "
-style = "bg:green fg:bg0 bold"
+style = "bg:neon_green fg:bg0 bold"
 format = "[ $symbol($version) ]($style)"
 
 # =========================================
@@ -251,7 +254,7 @@ format = "[ $symbol($version) ]($style)"
 
 [conda]
 symbol = " "
-style = "bg:purple fg:bg0 bold"
+style = "bg:neon_purple fg:bg0 bold"
 format = "[ $symbol$environment ]($style)"
 
 # =========================================
