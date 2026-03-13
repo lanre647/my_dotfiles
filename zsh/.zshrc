@@ -147,6 +147,8 @@ s() {
     w3m "https://duckduckgo.com/html/?q=$query"
 }
 alias play="ffplay -nodisp -autoexit"
+alias r60='termdown 60 && termux-vibrate'
+alias r90='termdown 90 && termux-vibrate'
 # -----------------------------------------------------
 # NETWORK AND SECURITY  ALIAS'S  
 
@@ -228,4 +230,3 @@ ssh-add ~/.ssh/id_ed25519
 pulseaudio --kill >/dev/null 2>&1
 pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
 clear
-date +"%H:%M" | figlet -t -c -f "3d"
