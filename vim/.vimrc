@@ -14,7 +14,6 @@ call plug#begin('~/.vim/plugged')
 
 " --- Theme & UI ---
 Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'ghifarit53/tokyonight-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'NLKNguyen/papercolor-theme'
@@ -83,7 +82,7 @@ set scrolloff=8
 set termguicolors
 set background=dark
 
-let g:PaperColor_Theme_Options = {
+ let g:PaperColor_Theme_Options = {
   \   'theme': {
   \     'default': {
   \       'transparent_background': 0,
@@ -93,11 +92,9 @@ let g:PaperColor_Theme_Options = {
   \   }
   \ }
 
-" colorscheme PaperColor
-" let g:airline_theme='papercolor'
-let g:gruvbox_material_background = 'soft' " options: hard, medium, soft
-colorscheme gruvbox-material
-let g:airline_theme = 'gruvbox_material'
+colorscheme PaperColor
+hi Normal guibg=NONE ctermbg=NONE
+let g:airline_theme='papercolor'
 
 set clipboard=unnamed,unnamedplus
 set pastetoggle=<F2>
