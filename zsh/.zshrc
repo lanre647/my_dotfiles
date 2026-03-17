@@ -137,7 +137,8 @@ alias lg='lazygit'
 alias mst='echo "--- Home Directory Usage ---" && du -h -d 1 "$HOME" | sort -hr | head -n 5 && echo "--- Total Termux App Usage ---" && du -sh "$PREFIX/.."'
 alias ops='bash ~/scripts/dashboard.sh'
 alias sweep='rm -rf ~/.cache/* $PREFIX/tmp/* && npm cache clean --force && go clean -cache && apt autoremove -y && apt clean'
-alias ls='eza --all --long --group --group-directories-first --icons --header --time-style long-iso'   
+# alias ls='eza --all --long --group --group-directories-first --icons --header --time-style long-iso'   
+alias ls ls='eza --icons'
 alias open="termux-open"
 alias wiki='w3m en.wikipedia.org'
 alias reddit='w3m old.reddit.com'
@@ -147,8 +148,8 @@ s() {
     w3m "https://duckduckgo.com/html/?q=$query"
 }
 alias play="ffplay -nodisp -autoexit"
-alias r60='termdown 60 && termux-vibrate'
-alias r90='termdown 90 && termux-vibrate'
+alias r60='termdown 60 -f fire_font-k && termux-vibrate'
+alias r90='termdown 90 -f fire_font-k && termux-vibrate'
 # -----------------------------------------------------
 # NETWORK AND SECURITY  ALIAS'S  
 
