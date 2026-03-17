@@ -13,7 +13,6 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " --- Theme & UI ---
-Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'NLKNguyen/papercolor-theme'
@@ -82,20 +81,23 @@ set scrolloff=8
 set termguicolors
 set background=dark
 
- let g:PaperColor_Theme_Options = {
-  \   'theme': {
-  \     'default': {
-  \       'transparent_background': 0,
-  \       'allow_bold': 1,
-  \       'allow_italic': 1
-  \     }
-  \   }
-  \ }
+ " let g:PaperColor_Theme_Options = {
+ "  \   'theme': {
+ "  \     'default': {
+ "  \       'transparent_background': 0,
+ "  \       'allow_bold': 1,
+ "  \       'allow_italic': 1
+ "  \     }
+ "  \   }
+ "  \ }
 
-colorscheme PaperColor
-hi Normal guibg=NONE ctermbg=NONE
-let g:airline_theme='papercolor'
-
+" colorscheme PaperColor
+" hi Normal guibg=NONE ctermbg=NONE
+" let g:airline_theme='papercolor'
+colorscheme gruvbox-material
+let g:gruvbox_material_background = 'soft'
+let g:gruvbox_material_better_performance = 1
+let g:airline_theme='gruvbox_material'
 set clipboard=unnamed,unnamedplus
 set pastetoggle=<F2>
 set foldmethod=indent
