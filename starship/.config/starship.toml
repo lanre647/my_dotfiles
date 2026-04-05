@@ -1,265 +1,102 @@
-# =========================================
-# 🚀 Elite Powerline Cyberpunk Neon
-# =========================================
+# ~/.config/starship.toml
 
-command_timeout = 400
-scan_timeout = 25
-add_newline = true
-palette = "cyberpunk_neon"
-
-# =========================================
-# 🧬 MASTER FORMAT (boxed powerline)
-# =========================================
-
-format = """\
-[](fg:bg0)\
-$os\
-$username\
-[](fg:neon_green bg:neon_blue)\
-$directory\
-[](fg:neon_blue bg:neon_purple)\
-$git_branch\
-$git_status\
-[](fg:neon_purple bg:bg1)\
-$fill\
-$aws\
-$kubernetes\
-$docker_context\
-$cmd_duration\
-$time\
-$battery\
-$memory_usage\
-[](fg:bg1)\
-$line_break\
-$status\
-$character\
-$python\
-$nodejs\
-$conda\
+add_newline = false
+command_timeout = 100
+format = """
+$os$username$hostname$kubernetes$directory$git_branch$git_status
+ 
 """
 
-# =========================================
-# 🎨 Cyberpunk Neon Palette
-# =========================================
+# Drop ugly default prompt characters
+[character]
+success_symbol = ''
+error_symbol = ''
 
-[palettes.cyberpunk_neon]
-
-bg0 = "#0b0f1a"
-bg1 = "#141a2a"
-
-neon_green = "#39ff14"
-neon_blue = "#00d9ff"
-neon_purple = "#9d00ff"
-neon_pink = "#ff2bd6"
-neon_yellow = "#ffe600"
-neon_red = "#ff3b3b"
-neon_aqua = "#00ffc6"
-
-fg0 = "#e6f1ff"
-
-# =========================================
-# 🖥 OS
-# =========================================
+# ---
 
 [os]
+format = '[$symbol](bold white) '
 disabled = false
-style = "bg:bg0 fg:neon_green bold"
-format = "[ 󰌽 ]($style)"
 
-# =========================================
-# 👤 Username
-# =========================================
+[os.symbols]
+Windows = ' '
+Arch = '󰣇'
+Ubuntu = ''
+Macos = '󰀵'
 
+# ---
+
+# Shows the username
 [username]
+style_user = 'white bold'
+style_root = 'black bold'
+format = '[$user]($style) '
+disabled = false
 show_always = true
-style_user = "bg:bg0 fg:neon_green bold"
-style_root = "bg:bg0 fg:neon_red bold"
-format = "[  $user ]($style)"
 
-# =========================================
-# 📁 Directory
-# =========================================
+# Shows the hostname
+[hostname]
+ssh_only = false
+format = 'on [$hostname](bold yellow) '
+disabled = false
 
+# Shows current directory
 [directory]
-style = "bg:neon_blue fg:bg0 bold"
-format = "[  $path ]($style)"
-truncation_length = 3
-truncate_to_repo = true
-truncation_symbol = "…/"
+truncation_length = 1
+truncation_symbol = '…/'
+home_symbol = '󰋜 ~'
+read_only_style = '197'
+read_only = '  '
+format = 'at [$path]($style)[$read_only]($read_only_style) '
 
-# =========================================
-# 🌿 Git Branch
-# =========================================
-
+# Shows current git branch
 [git_branch]
-symbol = " "
-style = "bg:neon_purple fg:bg0 bold"
-format = "[ $symbol$branch ]($style)"
+symbol = ' '
+format = 'via [$symbol$branch]($style)'
+# truncation_length = 4
+truncation_symbol = '…/'
+style = 'bold green'
 
-# =========================================
-# 🧠 Git Status
-# =========================================
-
+# Shows current git status
 [git_status]
-style = "bg:neon_purple fg:bg0 bold"
-format = "[$all_status$ahead_behind ]($style)"
+format = '([ \( $all_status$ahead_behind\)]($style) )'
+style = 'bold green'
+conflicted = '[ confliced=${count}](red) '
+up_to_date = '[󰘽 up-to-date](green) '
+untracked = '[󰋗 untracked=${count}](red) '
+ahead = ' ahead=${count}'
+diverged = ' ahead=${ahead_count}  behind=${behind_count}'
+behind = ' behind=${count}'
+stashed = '[ stashed=${count}](green) '
+modified = '[󰛿 modified=${count}](yellow) '
+staged = '[󰐗 staged=${count}](green) '
+renamed = '[󱍸 renamed=${count}](yellow) '
+deleted = '[󰍶 deleted=${count}](red) '
 
-ahead = "⇡${count}"
-behind = "⇣${count}"
-diverged = "⇕⇡${ahead_count}⇣${behind_count}"
-
-# =========================================
-# ☁️ AWS
-# =========================================
-
-[aws]
-symbol = " "
-format = "[ $symbol$profile ]($style)"
-style = "bg:neon_yellow fg:bg0 bold"
-disabled = false
-
-[aws.profile_aliases]
-"(?i)prod|production|live" = "🚨PROD"
-"(?i)stage|staging|test" = "🟡STAGE"
-"(?i)dev|sandbox|local" = "🟢DEV"
-
-# =========================================
-# ☸️ Kubernetes
-# =========================================
-
+# Shows kubernetes context and namespace
 [kubernetes]
-symbol = "󱃾 "
+format = 'via [󱃾 $context\($namespace\)](bold purple) '
 disabled = false
-format = "[ $symbol$context(::$namespace) ]($style)"
-style = "bg:neon_pink fg:bg0 bold"
 
-[kubernetes.context_aliases]
-".*eks.*" = "eks"
-".*gke.*" = "gke"
-".*aks.*" = "aks"
-".*minikube.*" = "mini"
+# ---
 
-[[kubernetes.contexts]]
-context_pattern = "(?i)prod|production|live|main|prd"
-style = "bg:neon_red fg:bg0 bold blink"
-symbol = " "
-
-[[kubernetes.contexts]]
-context_pattern = "(?i)stage|staging|test"
-style = "bg:neon_yellow fg:bg0 bold"
-symbol = "󰙨 "
-
-[[kubernetes.contexts]]
-context_pattern = "(?i)dev|local|minikube"
-style = "bg:neon_green fg:bg0 bold"
-symbol = "󰌗 "
-
-# =========================================
-# 🐳 Docker
-# =========================================
+[vagrant]
+disabled = true
 
 [docker_context]
-symbol = " "
-style = "bg:neon_aqua fg:bg0 bold"
-format = "[ $symbol$context ]($style)"
-disabled = false
+disabled = true
 
-# =========================================
-# ⏱ Duration
-# =========================================
-
-[cmd_duration]
-min_time = 1000
-style = "bg:bg1 fg:neon_purple bold"
-format = "[ 󰔟 $duration ]($style)"
-
-# =========================================
-# ⏰ Time
-# =========================================
-
-[time]
-disabled = false
-time_format = "%R"
-style = "bg:bg1 fg:neon_aqua bold"
-format = "[ 󰥔 $time ]($style)"
-
-# =========================================
-# 🔋 Battery
-# =========================================
-
-[battery]
-disabled = false
-full_symbol = "󰁹 "
-charging_symbol = "󰂄 "
-discharging_symbol = "󰂃 "
-format = "[ $symbol$percentage ]($style)"
-style = "bg:bg1 fg:neon_green bold"
-
-[[battery.display]]
-threshold = 25
-style = "bg:bg1 fg:neon_red bold"
-
-# =========================================
-# 🧠 Memory
-# =========================================
-
-[memory_usage]
-disabled = false
-threshold = 85
-symbol = "󰍛 "
-style = "bg:bg1 fg:neon_yellow bold"
-format = "[ $symbol$ram ]($style)"
-
-# =========================================
-# 🌈 Status
-# =========================================
-
-[status]
-disabled = false
-symbol = "✖ "
-success_symbol = ""
-style = "bold fg:neon_red"
-format = "[$symbol$status]($style) "
-
-# =========================================
-# 🎯 Character
-# =========================================
-
-[character]
-success_symbol = "[❯](bold fg:neon_aqua)"
-error_symbol = "[❯](bold fg:neon_red)"
-vimcmd_symbol = "[❮](bold fg:neon_yellow)"
-
-# =========================================
-# 🐍 Python
-# =========================================
+[helm]
+disabled = true
 
 [python]
-symbol = " "
-style = "bg:neon_yellow fg:bg0 bold"
-format = "[ $symbol($version) ]($style)"
-
-# =========================================
-# 🟢 Node
-# =========================================
+disabled = false
 
 [nodejs]
-symbol = " "
-style = "bg:neon_green fg:bg0 bold"
-format = "[ $symbol($version) ]($style)"
+disabled = true
 
-# =========================================
-# 🧪 Conda
-# =========================================
+[ruby]
+disabled = true
 
-[conda]
-symbol = " "
-style = "bg:neon_purple fg:bg0 bold"
-format = "[ $symbol$environment ]($style)"
-
-# =========================================
-# filler
-# =========================================
-
-[fill]
-symbol = " "
+[terraform]
+disabled = true
