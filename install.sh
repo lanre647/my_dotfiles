@@ -3,45 +3,7 @@ set -euo pipefail
 
 echo "🔍 Detecting platform..."
 
-install_packages() {
-    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        if command -v apt-get >/dev/null 2>&1; then
-            sudo apt-get update -y
-            PM="sudo apt-get install -y"
-        else
-            echo "Unsupported Linux distro. Install packages manually."
-            exit 1
-        fi
-
-    elif [[ "$OSTYPE" == "darwin"* ]]; then
-        if ! command -v brew >/dev/null 2>&1; then
-            echo "❌ Homebrew not found."
-            echo "👉 Install from: https://brew.sh"
-            exit 1
-        fi
-        PM="brew install"
-
-    elif [[ "$OSTYPE" == "linux-android"* ]]; then
-        pkg update -y
-        PM="pkg install -y"
-
-    else
-        echo "Unknown OS. Please install packages manually."
-        exit 1
-    fi
-
-    echo "📦 Checking required packages..."
-    APPS=(stow git tmux vim zsh)
-
-    for app in "${APPS[@]}"; do
-        if ! command -v "$app" >/dev/null 2>&1; then
-            echo "Installing $app..."
-            $PM "$app"
-        else
-            echo "$app already installed"
-        fi
-    done
-}
+# ... [Keep your existing install_packages function here] ...
 
 backup_if_exists() {
     local file="$1"
@@ -52,21 +14,42 @@ backup_if_exists() {
 }
 
 main() {
+    # Ensure we are in the dotfiles directory
     cd "$(dirname "$0")"
 
     install_packages
 
-    echo "🧹 Preparing dotfiles..."
+    echo "🧹 Preparing environment..."
 
+    # CRITICAL: Create .config as a real folder so Stow doesn't 
+    # try to replace it with a symlink.
+    mkdir -p ~/.config
+
+    # Backup existing files to avoid stow conflicts
     backup_if_exists ~/.zshrc
     backup_if_exists ~/.bashrc
     backup_if_exists ~/.tmux.conf
     backup_if_exists ~/.vimrc
+    backup_if_exists ~/.gitconfig
 
     echo "🔗 Stowing configs..."
-    stow -v -R git tmux vim zsh starship 
+    
+    # Packages to link. Added 'nvim' so it works as soon as you create the folder.
+    PACKAGES=(git tmux vim zsh starship nvim)
+
+    for pkg in "${PACKAGES[@]}"; do
+        if [ -d "$pkg" ]; then
+            echo "Linking $pkg..."
+            # -R: Restow (updates existing links)
+            # --no-folding: Never replace a directory with a symlink
+            stow -v -R --no-folding "$pkg"
+        else
+            echo "⚠️  Skipping $pkg: Folder not found."
+        fi
+    done
 
     echo "✨ Everything is linked and ready!"
 }
 
 main "$@"
+

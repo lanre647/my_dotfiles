@@ -1,0 +1,3 @@
+
+fruit = "orange"
+print(fruit) 
