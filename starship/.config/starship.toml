@@ -19,6 +19,8 @@ format = '[$symbol](bold white) '
 disabled = false
 
 [os.symbols]
+Android = ''
+EndeavourOS = ''
 Windows = ' '
 Arch = '󰣇'
 Ubuntu = ''
