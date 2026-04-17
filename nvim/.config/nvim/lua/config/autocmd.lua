@@ -59,10 +59,10 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 
 -- reload files on external change
---vim.api.nvim_create_autocmd("FocusGained", {
---	pattern = "*",
---	command = "checktime",
---})
+vim.api.nvim_create_autocmd("FocusGained", {
+	pattern = "*",
+	command = "checktime",
+})
 
 
 -- restore cursor pos on file open
