@@ -226,8 +226,16 @@ precmd() {
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 source <(fzf --zsh)
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
+#eval "$(ssh-agent -s)"
+#ssh-add ~/.ssh/id_ed25519
 # pulseaudio --kill >/dev/null 2>&1
 # pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1
 # clear
+
+
+# fnm
+FNM_PATH="/home/lanre/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$FNM_PATH:$PATH"
+  eval "$(fnm env --shell zsh)"
+fi
