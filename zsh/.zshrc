@@ -164,6 +164,7 @@ alias pxc="proxychains4 -q"
 # Check your external IP vs Tor IP
 alias myip="curl -s https://ifconfig.me"
 alias torip="pxc curl -s https://ifconfig.me"
+alias update="sudo pacman -Syu && yay -Syu"
 
 # User-Agent Strings
 UA_IPHONE="Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1"
