@@ -18,8 +18,10 @@ vim.g.start_time = vim.fn.reltime()
 vim.loader.enable() --  SPEEEEEEEEEEED 
 vim.call('plug#begin')
 
-Plug('catppuccin/nvim', { ['as'] = 'catppuccin' }) --colorscheme
-Plug('ellisonleao/gruvbox.nvim', { ['as'] = 'gruvbox' }) --colorscheme 2
+Plug('folke/tokyonight.nvim', { ['as'] = 'tokyonight' })
+Plug('rebelot/kanagawa.nvim', { ['as'] = 'kanagawa' })
+Plug('ellisonleao/gruvbox.nvim', { ['as'] = 'gruvbox' }) 
+Plug('NLKNguyen/papercolor-theme',{['as'] = 'PaperColor'})
 Plug('uZer/pywal16.nvim', { [ 'as' ] = 'pywal16' }) --or, pywal colorscheme
 Plug('nvim-lualine/lualine.nvim') --statusline
 Plug('nvim-tree/nvim-web-devicons') --pretty icons
@@ -41,7 +43,7 @@ Plug('emmanueltouzery/decisive.nvim') --view csv files
 Plug('folke/twilight.nvim') --surrounding dim
 
 vim.call('plug#end')
-
+require("plugins.colorscheme")  -- setup themes first
 -- move config and plugin config to alternate files
 require("config.theme")
 require("config.mappings")
@@ -52,7 +54,6 @@ require("plugins.alpha")
 -- require("plugins.autopairs")
 require("plugins.barbar")
 require("plugins.colorizer")
-require("plugins.colorscheme")
 require("plugins.comment")
 -- require("plugins.fterm")
 -- require("plugins.fzf-lua")
