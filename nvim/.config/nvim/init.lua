@@ -39,7 +39,14 @@ Plug('ron-rs/ron.vim') --ron syntax highlighting
 Plug('MeanderingProgrammer/render-markdown.nvim') --render md inline
 Plug('emmanueltouzery/decisive.nvim') --view csv files
 Plug('folke/twilight.nvim') --surrounding dim
-
+Plug('neovim/nvim-lspconfig') --lsp support
+Plug('williamboman/mason.nvim')
+Plug('williamboman/mason-lspconfig.nvim')
+-- code completionn
+Plug('hrsh7th/nvim-cmp')
+Plug('hrsh7th/cmp-nvim-lsp')
+Plug('L3MON4D3/LuaSnip')
+Plug('saadparwaiz1/cmp_luasnip')
 vim.call('plug#end')
 
 -- move config and plugin config to alternate files
@@ -64,6 +71,8 @@ require("plugins.render-markdown")
 -- require("plugins.treesitter")
 -- require("plugins.twilight")
 -- require("plugins.which-key")
+require("plugins.cmp")
+require("plugins.lsp")
 
 vim.defer_fn(function() 
 		--defer non-essential configs,
