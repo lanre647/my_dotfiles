@@ -9,8 +9,8 @@ local dashboard = require("alpha.themes.dashboard")
 -- 	[[ /|\/|\/|\ /|\ 󰻀 |[]| [] | 󰻀 /|\/|\ /|\/|\/|\ /|\/|\ ]],
 -- }
 
- dashboard.section.header.val = {
-    [[                                                    ]],
+dashboard.section.header.val = {
+	[[                                                    ]],
 	[[ ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗ ]],
 	[[ ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║ ]],
 	[[ ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║ ]],
@@ -33,7 +33,7 @@ dashboard.section.buttons.val = {
 }
 
 dashboard.section.footer.val = function()
-  return vim.g.startup_time_ms or "[[  ]]"
+	return vim.g.startup_time_ms or "[[  ]]"
 end
 
 dashboard.section.buttons.opts.hl = "Keyword"
