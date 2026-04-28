@@ -38,7 +38,7 @@ Plug("nvim-tree/nvim-tree.lua") --file explorer
 Plug("windwp/nvim-autopairs") --autopairs
 Plug("lewis6991/gitsigns.nvim") --git
 Plug("numToStr/Comment.nvim") --easier comments
-Plug("norcalli/nvim-colorizer.lua") --color highlight
+Plug("NvChad/nvim-colorizer.lua") --color highlight
 Plug("ibhagwan/fzf-lua") --fuzzy finder and grep
 Plug("numToStr/FTerm.nvim") --floating terminal
 Plug("ron-rs/ron.vim") --ron syntax highlighting
