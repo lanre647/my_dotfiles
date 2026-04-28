@@ -1,122 +1,134 @@
-//   _____ _____ _____ _____ _____ _____ _____ _____ _____ 
-//  |   __|  _  |   __|_   _|   __|   __|_   _|     |  |  |
-//  |   __|     |__   | | | |   __|   __| | | |   --|     |
-//  |__|  |__|__|_____| |_| |__|  |_____| |_| |_____|__|__|  HYPRLAND
-//
-//  by Bina
-
+// Fastfetch config for dwm + slstatus
+// Cleaned and optimized for X11 minimal setup
+// Keeps the rice, removes the nonsense
 
 {
-    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
-    //"logo": {
-    	//"source": "~/.config/fastfetch/ascii/dino.txt",
-    	//"type": "kitty-direct",
-        //"type": "file",
-    	//"height": 18,
-    	//"padding": {
-    		//"top": 2
-    	//}
-    //},
-    "display": {
-        "separator": " "
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+
+  "display": {
+    "separator": " "
+  },
+
+  "modules": [
+    {
+      "type": "custom",
+      "format": "\u001b[90m  \u001b[31m  \u001b[32m  \u001b[33m  \u001b[34m  \u001b[35m  \u001b[36m  \u001b[37m"
     },
-    "modules": [
-	{
-            "type": "custom",
-            "format": "\u001b[90m  \u001b[31m  \u001b[32m  \u001b[33m  \u001b[34m  \u001b[35m  \u001b[36m  \u001b[37m"
-        },
-	"break",
-	{
-            "type": "title",
-            "keyWidth": 10
-        },
-        "break",
-        {
-            "type": "os",
-            "key": " ",
-            "keyColor": "34",  // = color4
-        },
-        {
-            "type": "kernel",
-            "key": " ",
-            "keyColor": "34",
-        },
-        {
-            "type": "packages",
-            "format": "{} (pacman)",
-            "key": " ",
-            "keyColor": "34",  
-        },
-        {
-            "type": "shell",
-            "key": " ",
-            "keyColor": "34", 
-        },
-        {
-            "type": "terminal",
-            "key": " ",
-            "keyColor": "34", 
-        },
-        {
-            "type": "wm",
-            "key": " ",
-            "keyColor": "34", 
-        },
-        {
-            "type": "display",
-            "key": " ",
-            "keyColor": "34"
-        },
-        {
-            "type": "cpu",
-            "format": "{1}",
-            "key": " ",
-            "keyColor": "34"
-        },
-        {
-            "type": "gpu",
-            "format": "{2}",
-            "key": " ",
-            "keyColor": "34"
-        },
-        {
-            "type": "gpu",
-            "format": "{3}",
-            "key": " ",
-            "keyColor": "34"
-        },
-        {
-             "type": "memory",
-            "key": "󰍛 ",
-            "keyColor": "34"
-        },
-        {
-             "type": "swap",
-            "key": "󰾴 ",
-            "keyColor": "34"
-        },
-        {
-            "type": "disk",
-            "key": " ",
-            "keyColor": "34"
-        },
-        {
-            "type": "uptime",
-            "key": " ",
-            "keyColor": "34", 
-        },
-        {
-            "type": "command",
-            "key": "󱦟 ",
-            "keyColor": "34",
-            "text": "birth_install=$(stat -c %W /); current=$(date +%s); time_progression=$((current - birth_install)); days_difference=$((time_progression / 86400)); echo $days_difference days"
-        },
-        "break",
-        {
-            "type": "custom",
-            "format": "\u001b[90m  \u001b[31m  \u001b[32m  \u001b[33m  \u001b[34m  \u001b[35m  \u001b[36m  \u001b[37m"
-        },
-        "break",
-        "break",
-    ]
+
+    "break",
+
+    {
+      "type": "title",
+      "keyWidth": 10
+    },
+
+    "break",
+
+    {
+      "type": "os",
+      "key": " ",
+      "keyColor": "34"
+    },
+    {
+      "type": "kernel",
+      "key": " ",
+      "keyColor": "34"
+    },
+    {
+      "type": "packages",
+      "format": "{} (pacman)",
+      "key": " ",
+      "keyColor": "34"
+    },
+    {
+      "type": "shell",
+      "key": " ",
+      "keyColor": "34"
+    },
+    {
+      "type": "terminal",
+      "key": " ",
+      "keyColor": "34"
+    },
+    {
+      "type": "display",
+      "key": " ",
+      "keyColor": "34"
+    },
+
+    {
+      "type": "cpu",
+      "format": "{1}",
+      "key": " ",
+      "keyColor": "34"
+    },
+    {
+      "type": "gpu",
+      "format": "{2}",
+      "key": " ",
+      "keyColor": "34"
+    },
+    {
+      "type": "gpu",
+      "format": "{3}",
+      "key": " ",
+      "keyColor": "34"
+    },
+
+    {
+      "type": "memory",
+      "key": " ",
+      "keyColor": "34"
+    },
+    {
+      "type": "swap",
+      "key": "󰾴 ",
+      "keyColor": "34"
+    },
+    {
+      "type": "disk",
+      "key": " ",
+      "keyColor": "34"
+    },
+
+    {
+      "type": "uptime",
+      "key": " ",
+      "keyColor": "34"
+    },
+    {
+      "type": "command",
+      "key": "󱦟 ",
+      "keyColor": "34",
+      "text": "birth=$(stat -c %W /); now=$(date +%s); echo $(((now - birth) / 86400)) days"
+    },
+
+    {
+      "type": "battery",
+      "key": "󰁹 ",
+      "keyColor": "34"
+    },
+    {
+      "type": "localip",
+      "key": "󰩟 ",
+      "keyColor": "34"
+    },
+
+    {
+      "type": "datetime",
+      "format": "{1} {3}",
+      "key": "󰃭 ",
+      "keyColor": "34"
+    },
+
+    "break",
+
+    {
+      "type": "custom",
+      "format": "\u001b[90m  \u001b[31m  \u001b[32m  \u001b[33m  \u001b[34m  \u001b[35m  \u001b[36m  \u001b[37m"
+    },
+
+    "break",
+    "break"
+  ]
 }

@@ -139,6 +139,7 @@ alias ops='bash ~/scripts/dashboard.sh'
 alias sweep='rm -rf ~/.cache/* $PREFIX/tmp/* && npm cache clean --force && go clean -cache && apt autoremove -y && apt clean'
 # alias ls='eza --all --long --group --group-directories-first --icons --header --time-style long-iso'   
 alias ls='eza --icons -F -H --group-directories-first --git -1' 
+alias cd='z'
 alias open="termux-open"
 alias wiki='w3m en.wikipedia.org'
 alias reddit='w3m old.reddit.com'
@@ -240,3 +241,7 @@ if [ -d "$FNM_PATH" ]; then
   export PATH="$FNM_PATH:$PATH"
   eval "$(fnm env --shell zsh)"
 fi
+
+fastfetch
+# export TERMINAL="kitty"
+# export TERM="xterm-256color"
