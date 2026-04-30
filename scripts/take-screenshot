@@ -1,0 +1,22 @@
+#!/bin/sh
+
+DIR="$HOME/Pictures/screen-shots"
+FILE="$DIR/$(date +%Y%m%d_%H%M%S).png"
+
+mkdir -p "$DIR"
+
+if [ "$1" = "select" ]; then
+    # Region selection with strong visible border
+    maim -s -u -b 3 -c 1,1,1,0.8 "$FILE"
+else
+    # Fullscreen screenshot
+    maim -u "$FILE"
+fi
+
+if [ -f "$FILE" ]; then
+    xclip -selection clipboard -t image/png "$FILE"
+
+    notify-send "📸 Screenshot" \
+        "Saved to $(basename "$FILE") and copied to clipboard." \
+        -i camera-photo
+fi
