@@ -1,4 +1,4 @@
-local lualine = require('lualine')
+local lualine = require("lualine")
 
 local diagnostics = {
 	"diagnostics",
@@ -6,7 +6,7 @@ local diagnostics = {
 	sections = { "error", "warn" },
 	symbols = { error = " ", warn = " " },
 	colored = true,
-	update_in_insert = false,
+	update_in_insert = true,
 	always_visible = true,
 	cond = function()
 		return vim.bo.filetype ~= "markdown"
@@ -41,24 +41,29 @@ local progress = function()
 end
 
 lualine.setup({
-options = {
-	icons_enabled = true,
-    theme = nil, -- let theme.lua handle it
-	component_separators = { left = "", right = "" },
-	section_separators = { left = "", right = "" },
-	disabled_filetypes = { "alpha", "dashboard" },
-	always_divide_middle = true,
+	options = {
+		icons_enabled = true,
+		theme = nil, -- let theme.lua handle it
+		component_separators = { left = "", right = "" },
+		section_separators = { left = "", right = "" },
+		disabled_filetypes = { "alpha", "dashboard" },
+		always_divide_middle = true,
+		refresh = {
+			statusline = 100,
+			tabline = 1000,
+			winbar = 1000,
+		},
 	},
 
-sections = {
-	lualine_a = { branch },
-	lualine_b = { mode },
-	lualine_c = { diagnostics },
-	lualine_x = { diff, "fileformat", "filetype" },
-	lualine_y = { "location" },
-	lualine_z = { progress },
+	sections = {
+		lualine_a = { branch },
+		lualine_b = { mode },
+		lualine_c = { diagnostics },
+		lualine_x = { diff, "fileformat", "filetype" },
+		lualine_y = { "location" },
+		lualine_z = { progress },
 	},
-	extensions = { 'nvim-tree' },
+	extensions = { "nvim-tree" },
 })
 
 -- transparency override if using old pywal, shouldn't be needed with 16
