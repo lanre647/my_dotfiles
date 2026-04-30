@@ -15,15 +15,18 @@ call plug#begin('~/.vim/plugged')
 " --- Theme & UI ---
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'NLKNguyen/papercolor-theme'
+Plug 'ryanoasis/vim-devicons'
 Plug 'sainnhe/gruvbox-material'
-
+Plug 'ayu-theme/ayu-vim'
+Plug 'psliwka/vim-smoothie'
 
 " --- Navigation & Search ---
 Plug 'preservim/nerdtree'
 " Plug 'justinmk/vim-dirvish'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'justinmk/vim-sneak'
+
 
 " --- command suggestions ---
 Plug 'gelguy/wilder.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -58,6 +61,15 @@ filetype plugin indent on
 set autoread
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
 
+" Create an augroup (clear existing one first)
+ augroup general
+   autocmd!
+   augroup END
+
+"   " Disable auto comment continuation for filetypes
+   autocmd FileType * execute 'setlocal formatoptions-=c formatoptions-=r formatoptions-=o'
+
+
 " --- Highlight Yank (Improved for Vim) ---
 if !has('nvim')
     map y <Plug>(highlight-yank)
@@ -81,23 +93,16 @@ set scrolloff=8
 set termguicolors
 set background=dark
 
- " let g:PaperColor_Theme_Options = {
- "  \   'theme': {
- "  \     'default': {
- "  \       'transparent_background': 0,
- "  \       'allow_bold': 1,
- "  \       'allow_italic': 1
- "  \     }
- "  \   }
- "  \ }
-
-" colorscheme PaperColor
-" hi Normal guibg=NONE ctermbg=NONE
-" let g:airline_theme='papercolor'
-colorscheme gruvbox-material
-let g:gruvbox_material_background = 'soft'
-let g:gruvbox_material_better_performance = 1
-let g:airline_theme='gruvbox_material'
+let ayucolor="mirage" " for mirage version of theme
+" let ayucolor="dark"   " for dark version of theme
+colorscheme ayu
+" let g:airline_theme='oceanicnext'
+let g:airline_theme='ayu'
+hi Normal guibg=NONE ctermbg=NONE
+" colorscheme gruvbox-material
+" let g:gruvbox_material_background = 'soft'
+" let g:gruvbox_material_better_performance = 1
+" let g:airline_theme='gruvbox_material'
 set clipboard=unnamed,unnamedplus
 set pastetoggle=<F2>
 set foldmethod=indent
@@ -139,6 +144,33 @@ endif
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#ale#enabled = 1
+
+" --- Basic Setup ---
+let g:airline_powerline_fonts = 1
+
+" --- Section Z: The 'Line Stats' customization ---
+" Default is just line/col. This adds Total Lines [%L] in a clean format.
+let g:airline_section_z = airline#section#create(['%3p%% ', ' %l/%L', ' :%c'])
+
+" --- Git Customization ---
+" Shows +lines -lines changed (Requires vim-gitgutter or vim-signify)
+let g:airline#extensions#hunks#enabled = 1
+let g:airline#extensions#hunks#non_zero_only = 1 " Only show if there are changes
+
+" Ensure devicons loads after airline
+let g:webdevicons_enable_airline_tabline = 1
+let g:webdevicons_enable_airline_statusline = 1
+let g:airline#extensions#tabline#show_tab_type = 1
+
+" --- Linter / Error Integration ---
+" Show error/warning counts (Requires ALE or Coc.nvim)
+let g:airline#extensions#ale#enabled = 1
+let g:airline#extensions#coc#enabled = 1
+
+" --- Clean up the middle (Section X/Y) ---
+" Show filetype and encoding, but keep it tight
+let g:airline_section_x = airline#section#create(['tagbar', 'filetype'])
+
 
 " Dirvish Sidebar logic: Hide dotfiles & sort folders first
 let g:dirvish_mode = ':sort ,^.*[\/],'
@@ -203,14 +235,17 @@ nnoremap <S-h> :bprevious<CR>
 nnoremap <leader>x :bd<CR>
 
 " --- Super Movement ---
-nnoremap <leader>j 10j
-nnoremap <leader>k 10k
-nnoremap <C-d> <C-d>zz
-nnoremap <C-u> <C-u>zz
+" nnoremap <leader>j 10j
+" nnoremap <leader>k 10k
+" nnoremap <C-d> <C-d>zz
+" nnoremap <C-u> <C-u>zz
 " Keep the cursor centered when searching (THIS IS HUGE)
 nnoremap n nzzzv
 nnoremap N Nzzzv
 nnoremap <Tab> %
+" if you want to use smoothie for those too:
+" nnoremap <unique> <C-f> <cmd>call smoothie#do("\<C-f>")<CR>
+" nnoremap <unique> <C-b> <cmd>call smoothie#do("\<C-b>")<CR>
 
 " --- Window Movement ---
 nnoremap <C-h> <C-w>h
