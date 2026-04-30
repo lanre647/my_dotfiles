@@ -245,3 +245,5 @@ fi
 fastfetch
 # export TERMINAL="kitty"
 # export TERM="xterm-256color"
+# Import colorscheme from 'wal' asynchronously
+# (cat ~/.cache/wal/sequences &)
