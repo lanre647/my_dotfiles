@@ -11,14 +11,17 @@ wmname LG4D &
 picom --config ~/.config/picom/picom.conf &
 
 # Set the wallpaper 
-while true; do
-feh --bg-fill "$(find ~/Pictures/wallpapers -type f | shuf -n 1)"
-    sleep 1m
-done &
+#while true; do
+#feh --bg-fill "$(find ~/Pictures/wallpapers -type f | shuf -n 1)"
+#    sleep 1m
+#done &
 
 # Start the wallpaper
+feh --bg-fill /home/lanre/Pictures/wallpapers/"arch mono.png"
+
 slstatus &
 dunst &
+clipmenud &
 
 # Start the window manager (Must be last and No '&')
 exec dwm
