@@ -11,19 +11,19 @@ local is_termux = vim.env.PREFIX and vim.env.PREFIX:match("termux")
 -- =========================
 
 vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(args)
-    local bufnr = args.buf
-    local opts = { noremap = true, silent = true, buffer = bufnr }
+	callback = function(args)
+		local bufnr = args.buf
+		local opts = { noremap = true, silent = true, buffer = bufnr }
 
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-    vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-    vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
-    vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-    vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-  end,
+		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+		vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+		vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+		vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+		vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
+		vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+		vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+	end,
 })
 
 -- =========================
@@ -34,50 +34,55 @@ mason.setup()
 
 -- Dynamically build the list of servers for Mason to manage
 local mason_ensure = {
-  "pyright",
-  "ts_ls",
-  "omnisharp",
+	"pyright",
+	"ts_ls",
+	"omnisharp",
+	-- "clangd", -- Added C/C++ support
 }
 
 -- Only let Mason manage lua_ls if we are NOT on Termux
 -- (On Termux, we use 'pkg install lua-language-server' instead)
 if not is_termux then
-  table.insert(mason_ensure, "lua_ls")
+	table.insert(mason_ensure, "lua_ls")
+	table.insert(mason_ensure, "clangd")
 end
 
 mason_lspconfig.setup({
-  ensure_installed = mason_ensure,
+	ensure_installed = mason_ensure,
 })
 
 -- =========================
 -- LSP setup (Modernized for Nvim 0.11/0.12)
 -- =========================
 
+-- 2. Define clangd in your servers table
 local servers = {
-  pyright = {},
-  ts_ls = {},
-  omnisharp = {},
-  lua_ls = {
-    settings = {
-      Lua = {
-        diagnostics = {
-          globals = { "vim" },
-        },
-      },
-    },
-  },
+	pyright = {},
+	ts_ls = {},
+	omnisharp = {},
+	clangd = {
+		-- Required for clangd to work correctly with Neovim's encoding
+		capabilities = {
+			offsetEncoding = { "utf-16" },
+		},
+	},
+	lua_ls = {
+		settings = { Lua = { diagnostics = { globals = { "vim" } } } },
+	},
 }
 
--- If on Termux, inject the custom command to use the native pkg binary
+-- If on Termux, ensure we use the system-provided binaries
 if is_termux then
-  servers.lua_ls.cmd = { "lua-language-server" }
+	servers.lua_ls.cmd = { "lua-language-server" }
+	-- This tells Neovim to use the 'clangd' we just installed via 'pkg install'
+	servers.clangd.cmd = { "clangd", "--background-index" }
 end
 
 for server, config in pairs(servers) do
-  -- Merge capabilities into the server config
-  config.capabilities = vim.tbl_deep_extend("force", capabilities, config.capabilities or {})
-  
-  -- Use the built-in Neovim 0.11+ configuration and activation
-  vim.lsp.config(server, config)
-  vim.lsp.enable(server)
+	-- Merge capabilities into the server config
+	config.capabilities = vim.tbl_deep_extend("force", capabilities, config.capabilities or {})
+
+	-- Use the built-in Neovim 0.11+ configuration and activation
+	vim.lsp.config(server, config)
+	vim.lsp.enable(server)
 end
