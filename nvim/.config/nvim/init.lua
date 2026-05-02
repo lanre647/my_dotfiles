@@ -23,11 +23,12 @@ vim.loader.enable() --  SPEEEEEEEEEEED 
 vim.call("plug#begin")
 
 Plug("folke/tokyonight.nvim", { ["as"] = "tokyonight" })
-Plug("rebelot/kanagawa.nvim", { ["as"] = "kanagawa" })
 Plug("ellisonleao/gruvbox.nvim", { ["as"] = "gruvbox" })
 Plug("NLKNguyen/papercolor-theme", { ["as"] = "PaperColor" })
 Plug("uZer/pywal16.nvim", { ["as"] = "pywal16" }) --or, pywal colorscheme
 Plug("nvim-lualine/lualine.nvim") --statusline
+Plug("gelguy/wilder.nvim")
+Plug("romgrk/fzy-lua-native", { ["do"] = "make" })
 Plug("nvim-tree/nvim-web-devicons") --pretty icons
 Plug("folke/which-key.nvim") --mappings popup
 Plug("romgrk/barbar.nvim") --bufferline
@@ -81,6 +82,7 @@ require("plugins.render-markdown")
 require("plugins.cmp")
 require("plugins.lsp")
 require("plugins.conform")
+require("plugins.wilder")
 
 vim.defer_fn(function()
 	--defer non-essential configs,
