@@ -4,7 +4,6 @@ require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
 		python = { "black" },
-		-- Add C and C++ here
 		c = { "clang-format" },
 		cpp = { "clang-format" },
 		javascript = { "prettier" },
@@ -17,10 +16,14 @@ require("conform").setup({
 		markdown = { "prettier" },
 	},
 
-	format_on_save = {
-		-- On Termux, you might want a slightly longer timeout
-		-- as the CPU on the Itel can sometimes take a second to process
-		timeout_ms = is_termux and 1000 or 500,
-		lsp_fallback = true,
-	},
+	format_on_save = function(bufnr)
+		if vim.g.disable_autoformat then
+			return
+		end
+
+		return {
+			timeout_ms = is_termux and 1000 or 500,
+			lsp_fallback = not vim.tbl_contains({ "c" }, vim.bo.filetype),
+		}
+	end,
 })

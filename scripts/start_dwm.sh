@@ -17,7 +17,7 @@ picom --config ~/.config/picom/picom.conf &
 #done &
 
 # Start the wallpaper
-feh --bg-fill /home/lanre/Pictures/wallpapers/"arch mono.png"
+feh --bg-fill /home/lanre/Pictures/wallpapers/"06. Paranoid Sweet.png"
 
 slstatus &
 dunst &
