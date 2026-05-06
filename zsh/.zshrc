@@ -134,6 +134,7 @@ alias gpush='git add . && git commit -m "Auto-save $(date +"%Y-%m-%d %H:%M")" &&
 alias check-secrets="grep -rE 'API_KEY|SECRET|PASSWORD' ."
 alias ksh='rish -c "nh"'
 alias lg='lazygit'
+alias vi='nvim'
 alias mst='echo "--- Home Directory Usage ---" && du -h -d 1 "$HOME" | sort -hr | head -n 5 && echo "--- Total Termux App Usage ---" && du -sh "$PREFIX/.."'
 alias ops='bash ~/scripts/dashboard.sh'
 alias sweep='rm -rf ~/.cache/* $PREFIX/tmp/* && npm cache clean --force && go clean -cache && apt autoremove -y && apt clean'

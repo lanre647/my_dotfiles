@@ -10,18 +10,19 @@ wmname LG4D &
 # Start the compositor
 picom --config ~/.config/picom/picom.conf &
 
+# bar, popup notifications, clipboard manager, auto mounting disk 
+slstatus &
+dunst &
+clipmenud &
+udiskie &
+
+# Start the wallpaper
+feh --bg-fill /home/lanre/Pictures/wallpapers/"20. Graphite Mono.jpg"
 # Set the wallpaper 
 #while true; do
 #feh --bg-fill "$(find ~/Pictures/wallpapers -type f | shuf -n 1)"
 #    sleep 1m
 #done &
-
-# Start the wallpaper
-feh --bg-fill /home/lanre/Pictures/wallpapers/"06. Paranoid Sweet.png"
-
-slstatus &
-dunst &
-clipmenud &
 
 # Start the window manager (Must be last and No '&')
 exec dwm
