@@ -7,6 +7,11 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 export AWT_TOOLKIT=MToolkit
 wmname LG4D &
 
+# so every dwm sess would see my /home/usr/.local/bin dir :)-|-|
+export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+
+# key repeat
+ xset r rate 200 50 &
 # Start the compositor
 picom --config ~/.config/picom/picom.conf &
 
@@ -17,7 +22,7 @@ clipmenud &
 udiskie &
 
 # Start the wallpaper
-feh --bg-fill /home/lanre/Pictures/wallpapers/"20. Graphite Mono.jpg"
+feh --bg-fill /home/lanre/Pictures/wallpapers/"27. Catppuccin Mocha.png"
 # Set the wallpaper 
 #while true; do
 #feh --bg-fill "$(find ~/Pictures/wallpapers -type f | shuf -n 1)"
