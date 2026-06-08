@@ -56,6 +56,7 @@ Plug("L3MON4D3/LuaSnip")
 Plug("saadparwaiz1/cmp_luasnip")
 -- formating
 Plug("stevearc/conform.nvim")
+Plug("rcarriga/nvim-notify")
 vim.call("plug#end")
 require("plugins.colorscheme") -- setup themes first
 -- move config and plugin config to alternate files
@@ -83,7 +84,7 @@ require("plugins.cmp")
 require("plugins.lsp")
 require("plugins.conform")
 require("plugins.wilder")
-
+require("plugins.notify")
 vim.defer_fn(function()
 	--defer non-essential configs,
 	--purely for experimental purposes:

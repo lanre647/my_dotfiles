@@ -22,11 +22,11 @@ clipmenud &
 udiskie &
 
 # Start the wallpaper
-feh --bg-fill /home/lanre/Pictures/wallpapers/"27. Catppuccin Mocha.png"
+feh --bg-fill /home/lanre/Pictures/wallpapers/"02. Gruvbox Retro.png"
 # Set the wallpaper 
 #while true; do
 #feh --bg-fill "$(find ~/Pictures/wallpapers -type f | shuf -n 1)"
-#    sleep 1m
+#    sleep 3m
 #done &
 
 # Start the window manager (Must be last and No '&')
