@@ -1,4 +1,4 @@
--- bread's neovim config
+-- my flavour of bread's neovim config
 -- keymaps are in lua/config/mappings.lua
 -- install a patched font & ensure your terminal supports glyphs
 -- enjoy :D
@@ -52,11 +52,21 @@ Plug("williamboman/mason-lspconfig.nvim")
 -- code completionn
 Plug("hrsh7th/nvim-cmp")
 Plug("hrsh7th/cmp-nvim-lsp")
+-- debuggers start
+Plug("mfussenegger/nvim-dap")
+Plug("nvim-neotest/nvim-nio")
+Plug("rcarriga/nvim-dap-ui")
+-- Python
+Plug("theHamsta/nvim-dap-virtual-text")
+Plug("mfussenegger/nvim-dap-python")
+-- debuggers stop
 Plug("L3MON4D3/LuaSnip")
 Plug("saadparwaiz1/cmp_luasnip")
--- formating
-Plug("stevearc/conform.nvim")
-Plug("rcarriga/nvim-notify")
+Plug("hrsh7th/cmp-path")
+Plug("hrsh7th/cmp-buffer")
+Plug("stevearc/conform.nvim") -- formating
+Plug("rcarriga/nvim-notify") -- notification
+Plug("rmagatti/auto-session") -- session management
 vim.call("plug#end")
 require("plugins.colorscheme") -- setup themes first
 -- move config and plugin config to alternate files
@@ -83,8 +93,10 @@ require("plugins.render-markdown")
 require("plugins.cmp")
 require("plugins.lsp")
 require("plugins.conform")
+require("plugins.dap")
 require("plugins.wilder")
 require("plugins.notify")
+require("plugins.session")
 vim.defer_fn(function()
 	--defer non-essential configs,
 	--purely for experimental purposes:
