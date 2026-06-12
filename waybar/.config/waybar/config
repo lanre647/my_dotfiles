@@ -1,0 +1,65 @@
+
+{
+  "layer": "top",
+  "position": "top",
+  "height": 28,
+  "spacing": 4,
+ 
+  "modules-left": ["niri/workspaces", "niri/window"],
+  "modules-center": ["clock"],
+  "modules-right": ["pulseaudio", "network", "battery", "tray"],
+ 
+  "niri/workspaces": {
+    "format": "{name}",
+    "on-click": "activate"
+  },
+ 
+  "niri/window": {
+    "max-length": 40
+  },
+ 
+  "clock": {
+	"interval": 1,	  
+    "format": "{:%a %d %b %H:%M:%S}",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+  },
+ 
+  "tray": {
+    "spacing": 6
+  },
+
+  "network": {
+    "interval": 2,
+
+    "format-wifi": "  {essid}",
+    "format-ethernet": "󰈀 {ipaddr}",
+    "format-disconnected": "󰤮",
+
+    "tooltip-format": "{ipaddr}\n↓ {bandwidthDownBits} ↑ {bandwidthUpBits}"
+  },
+  "pulseaudio": {
+    "scroll-step": 5,
+    "max-volume": 150,
+    "format": "{icon} {volume}%",
+    "format-bluetooth": " {volume}%",
+    "format-icons": [
+      "",
+      "",
+      " "
+    ],
+    "nospacing": 1,
+    "format-muted": " ",
+    "on-click": "pavucontrol"
+  },
+  "battery": {
+    "states": {
+        "warning": 30,
+        "critical": 15
+    },
+    "format": "{icon} {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
+    "format-plugged": "󰂄 {capacity}%",
+    "format-full": "󱈑 {capacity}%",
+    "format-icons": ["󱊡", "󱊢", "󱊣"]
+  }
+}
