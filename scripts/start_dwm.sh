@@ -10,6 +10,11 @@ wmname LG4D &
 # so every dwm sess would see my /home/usr/.local/bin dir :)-|-|
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 
+# Some XDG portal backends require desktop-session information.
+# Without these variables, xdg-desktop-portal-gtk may fail under dwm started from startx.
+export XDG_CURRENT_DESKTOP=dwm
+export XDG_SESSION_DESKTOP=dwm
+export XDG_SESSION_TYPE=x11
 # key repeat
  xset r rate 200 50 &
 # Start the compositor
@@ -22,7 +27,7 @@ clipmenud &
 udiskie &
 
 # Start the wallpaper
-feh --bg-fill /home/lanre/Pictures/wallpapers/"02. Gruvbox Retro.png"
+feh --bg-fill /home/lanre/Pictures/wallpapers/"32. Catppuccin Mocha.png"
 # Set the wallpaper 
 #while true; do
 #feh --bg-fill "$(find ~/Pictures/wallpapers -type f | shuf -n 1)"
