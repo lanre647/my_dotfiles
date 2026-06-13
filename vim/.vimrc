@@ -93,16 +93,11 @@ set scrolloff=8
 set termguicolors
 set background=dark
 
-let ayucolor="mirage" " for mirage version of theme
-" let ayucolor="dark"   " for dark version of theme
-colorscheme ayu
-" let g:airline_theme='oceanicnext'
-let g:airline_theme='ayu'
 hi Normal guibg=NONE ctermbg=NONE
-" colorscheme gruvbox-material
-" let g:gruvbox_material_background = 'soft'
-" let g:gruvbox_material_better_performance = 1
-" let g:airline_theme='gruvbox_material'
+colorscheme gruvbox-material
+let g:gruvbox_material_background = 'soft'
+let g:gruvbox_material_better_performance = 1
+let g:airline_theme='gruvbox_material'
 set clipboard=unnamed,unnamedplus
 set pastetoggle=<F2>
 set foldmethod=indent
