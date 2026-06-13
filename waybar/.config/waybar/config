@@ -7,7 +7,7 @@
  
   "modules-left": ["niri/workspaces", "niri/window"],
   "modules-center": ["clock"],
-  "modules-right": ["pulseaudio", "network", "battery", "tray"],
+  "modules-right": ["pulseaudio", "backlight", "network", "battery", "custom/screen-time","tray"],
  
   "niri/workspaces": {
     "format": "{name}",
@@ -50,6 +50,20 @@
     "nospacing": 1,
     "format-muted": " ",
     "on-click": "pavucontrol"
+  },
+  "backlight": {
+    "tooltip": false,
+    "format": "{icon} {percent}%",
+    "format-icons": ["󰃠"],
+    "on-scroll-up": "brightnessctl --exponent=2 set 2%+",
+    "on-scroll-down": "brightnessctl --exponent=2 set 2%-"
+  },
+  "custom/screen-time": {
+    "tooltip": true,
+    "format": " {text}",
+    "exec": "screen-time",
+    "interval": 60,
+	"return-type": "json"
   },
   "battery": {
     "states": {

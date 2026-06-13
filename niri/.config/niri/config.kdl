@@ -20,7 +20,6 @@ input {
         accel-speed 0.0
     }
 }
- 
 // ── Outputs ────────────────────────────────────────────────────────────────
 // niri auto-detects your monitor; uncomment and adjust as needed
 // output "eDP-1" {
@@ -59,10 +58,10 @@ animations {
 }
  
 // ── Workspace names (optional) ─────────────────────────────────────────────
-workspace "web"
-workspace "code"
-workspace "term"
-workspace "misc"
+workspace "1"
+workspace "2"
+workspace "3"
+workspace "4"
  
 // ── Window rules ───────────────────────────────────────────────────────────
 window-rule {
@@ -86,18 +85,28 @@ window-rule {
     open-floating true
 }
  
+window-rule {
+    match app-id="kitty"
+    draw-border-with-background false
+}
 // ── Keybindings ────────────────────────────────────────────────────────────
 binds {
     // ── Launchers ──
     Mod+Return { spawn "kitty"; }
+	Mod+b       { spawn "firefox"; }
+	Mod+e       { spawn "pcmanfm"; }
     Mod+d       { spawn "fuzzel"; }
     Mod+Shift+s { spawn "grim" "-g" "$(slurp)" "/tmp/screenshot.png"; }
     Mod+s       { spawn "grim" "/tmp/screenshot-full.png"; }
- 
+    Mod+v { spawn "~/.local/bin/cliphist-picker"; }
+    Mod+Comma     hotkey-overlay-title="Show emojis: fuzzel"     repeat=false    { spawn "bash" "-c" "pkill fuzzel || fuzzel-emoji"; }
+	Mod+Shift+b   hotkey-overlay-title="Toggle bar: waybar" repeat=false    { spawn "toggle-waybar"; }
+    Mod+w { spawn "kitty" "--app-id" "wallpaper-picker" "-e" "/home/lanre/scripts/wallpaper-picker.sh"; }
+    Mod+O           hotkey-overlay-title="Toggle Overview Mode"                     repeat=false    { toggle-overview; }
     // ── Session ──
-    Mod+Shift+q { close-window; }
-    Mod+Shift+e { quit; }
-    Ctrl+Alt+l  { spawn "swaylock"; }
+    Mod+Shift+c { close-window; }
+    Mod+Shift+q { quit; }
+    Mod+F2  { spawn "swaylock"; }
  
     // ── Focus movement (vim-style) ──
     Mod+h { focus-column-left; }
@@ -130,6 +139,7 @@ binds {
  
     // ── Fullscreen ──
     Mod+shift+f { fullscreen-window; }
+	Mod+Ctrl+f   { maximize-column; }                      
  
     // ── Workspaces ──
     Mod+1 { focus-workspace 1; }
@@ -171,7 +181,8 @@ spawn-at-startup "waybar"
 spawn-at-startup "mako"
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 spawn-at-startup "awww-daemon"
-spawn-at-startup "awww" "img" "/home/lanre/.config/backgrounds/005.jpg"
-
-// spawn-at-startup "swww-daemon"
-// spawn-at-startup "swww" "img" "/path/to/wallpaper.jpg"
+spawn-at-startup "awww" "img" "/home/lanre/Pictures/wallpapers/'32. Catppuccin Mocha.png'"
+spawn-at-startup "wl-paste" "--type" "text" "--watch" "cliphist" "store"
+spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
+// spawn-at-startup "udiskie" "--tray"
+// spawn-at-startup "xwayland-satellite"
