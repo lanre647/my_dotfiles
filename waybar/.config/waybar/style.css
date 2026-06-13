@@ -7,38 +7,132 @@
 }
 
 window#waybar {
-  background: rgba(30, 31, 41, 0.92);
+  background: rgba(17, 17, 27, 0.95);
   color: #cdd6f4;
-  border-bottom: 1px solid rgba(137, 180, 250, 0.2);
+  border-bottom: 1px solid rgba(137, 180, 250, 0.12);
+  border-radius: 12px;
+}
+
+/* ── workspaces ─────────────────────────────── */
+#workspaces {
+  margin: 4px 6px;
+  background: rgba(30, 31, 41, 0.6);
+  border-radius: 12px;
+  border: 1px solid rgba(137, 180, 250, 0.08);
+  padding: 0 4px;
 }
 
 #workspaces button {
-  padding: 0 8px;
-  color: #6c7086;
+  padding: 0 10px;
+  color: #45475a;
   background: transparent;
+  border-radius: 10px;
+  transition:
+    color 0.2s,
+    background 0.2s;
 }
 
 #workspaces button.active {
-  color: #89b4fa;
-  border-bottom: 2px solid #89b4fa;
+  color: #1e1f29;
+  background: #89b4fa;
+  border-radius: 10px;
 }
 
 #workspaces button:hover {
   color: #cdd6f4;
+  background: rgba(137, 180, 250, 0.12);
+  border-radius: 10px;
 }
 
-#clock,
+/* ── window title ───────────────────────────── */
+#window {
+  color: #6c7086;
+  font-style: italic;
+  margin-left: 4px;
+}
+
+/* ── clock (floating pill) ──────────────────── */
+#clock {
+  background: rgba(137, 180, 250, 0.1);
+  color: #cdd6f4;
+  border: 1px solid rgba(137, 180, 250, 0.18);
+  border-radius: 20px;
+  padding: 2px 16px;
+  margin: 4px 0;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+}
+
+/* ── right-side module base ─────────────────── */
 #battery,
 #network,
 #pulseaudio,
-#tray {
-  padding: 0 10px;
+#tray,
+#backlight,
+#custom-screen-time {
+  background: rgba(30, 31, 41, 0.7);
+  border: 1px solid rgba(137, 180, 250, 0.08);
+  border-radius: 12px;
+  padding: 2px 10px;
+  margin: 4px 2px;
   color: #cdd6f4;
+  transition: background 0.2s;
 }
 
-#battery.warning {
+#battery:hover,
+#network:hover,
+#pulseaudio:hover {
+  background: rgba(137, 180, 250, 0.1);
+}
+
+/* ── module accent colors ───────────────────── */
+#network {
+  color: #89dceb;
+}
+
+#pulseaudio {
+  color: #f38ba8;
+}
+
+#pulseaudio.muted {
+  color: #45475a;
+}
+
+#battery {
+  color: #a6e3a1;
+}
+
+#battery.charging,
+#battery.plugged {
+  color: #a6e3a1;
+}
+
+#battery.warning:not(.charging),
+#backlight {
   color: #fab387;
 }
-#battery.critical {
+
+#battery.critical:not(.charging) {
   color: #f38ba8;
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* ── tray ───────────────────────────────────── */
+#tray {
+  padding: 2px 8px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background-color: rgba(243, 139, 168, 0.15);
 }
