@@ -4,13 +4,20 @@ local theme_file = vim.fn.stdpath("config") .. "/lua/config/saved_theme"
 local function apply_theme(colorscheme, lualine)
 	if colorscheme == "PaperColor" then
 		vim.cmd.colorscheme("PaperColor")
-
 		local set_hl = vim.api.nvim_set_hl
 		set_hl(0, "Normal", { bg = "none" })
 		set_hl(0, "NormalFloat", { bg = "none" })
 		set_hl(0, "SignColumn", { bg = "none" })
+	elseif colorscheme == "gruvbox-light" then -- 👈 intercept before cmd
+		vim.cmd("colorscheme gruvbox")
 	else
 		vim.cmd("colorscheme " .. colorscheme)
+	end
+
+	if colorscheme:find("latte") or colorscheme == "gruvbox-light" then
+		vim.o.background = "light"
+	else
+		vim.o.background = "dark"
 	end
 
 	require("lualine").setup({
@@ -32,10 +39,21 @@ _G.load_theme = function()
 	end
 end
 
-local themes = {
+--[[ local themes = {
+	{ "catppuccin", "catppuccin" },
 	{ "gruvbox", "gruvbox" },
-	{ "pywal16", "pywal16-nvim" },
+	-- { "pywal16", "pywal16-nvim" },
 	{ "PaperColor", "auto" }, -- ✅ important fix
+	{ "tokyonight", "tokyonight" },
+} ]]
+
+local themes = {
+	{ "catppuccin-mocha", "catppuccin-mocha" }, -- dark
+	{ "catppuccin-latte", "catppuccin-latte" }, -- light
+	{ "gruvbox", "gruvbox" },
+	{ "gruvbox-light", "gruvbox" },
+	{ "gruvbox", "gruvbox" },
+	{ "PaperColor", "auto" },
 	{ "tokyonight", "tokyonight" },
 }
 

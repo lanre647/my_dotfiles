@@ -41,7 +41,7 @@ wk.add({
 	{ "<leader>fS", desc = "Document symbols" },
 
 	-- Search
-	{ "<leader>g", desc = "Live grep" },
+	{ "<leader>fg", desc = "Live grep" },
 	{ "<leader>G", desc = "Grep word under cursor" },
 
 	-- Files

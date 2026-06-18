@@ -197,6 +197,8 @@ window-rule {
     }
 }
 
+window-rule 
+
 window-rule {
     match app-id=r#"^org\.kde\.kdeconnect\.daemon$"#
     match app-id=r#"^galculator$"#
