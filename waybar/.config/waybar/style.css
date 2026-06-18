@@ -10,7 +10,6 @@ window#waybar {
   background: rgba(17, 17, 27, 0.95);
   color: #cdd6f4;
   border-bottom: 1px solid rgba(137, 180, 250, 0.12);
-  border-radius: 12px;
 }
 
 /* ── workspaces ─────────────────────────────── */
@@ -69,7 +68,8 @@ window#waybar {
 #pulseaudio,
 #tray,
 #backlight,
-#custom-screen-time {
+#custom-screen-time,
+#custom-launcher {
   background: rgba(30, 31, 41, 0.7);
   border: 1px solid rgba(137, 180, 250, 0.08);
   border-radius: 12px;

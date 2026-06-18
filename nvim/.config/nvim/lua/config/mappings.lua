@@ -41,25 +41,31 @@ map("n", "<C-h>", "<C-w>h")
 map("n", "<C-j>", "<C-w>j")
 map("n", "<C-k>", "<C-w>k")
 map("n", "<C-l>", "<C-w>l")
-map("n", "<F5>", ":resize +2<CR>")
-map("n", "<F6>", ":resize -2<CR>")
-map("n", "<F7>", ":vertical resize +2<CR>")
-map("n", "<F8>", ":vertical resize -2<CR>")
+map("n", "<F6>", ":resize +2<CR>")
+map("n", "<F7>", ":resize -2<CR>")
+map("n", "<F8>", ":vertical resize +2<CR>")
+map("n", "<F9>", ":vertical resize -2<CR>")
 
 -- fzf and grep
-map("n", "<leader>f", ":lua require('fzf-lua').files()<CR>") --search cwd
-map("n", "<leader>Fh", ":lua require('fzf-lua').files({ cwd = '~/' })<CR>") --search home
-map("n", "<leader>Fc", ":lua require('fzf-lua').files({ cwd = '~/.config' })<CR>") --search .config
-map("n", "<leader>Fl", ":lua require('fzf-lua').files({ cwd = '~/.local/src' })<CR>") --search .local/src
-map("n", "<leader>Ff", ":lua require('fzf-lua').files({ cwd = '..' })<CR>") --search above
-map("n", "<leader>Fr", ":lua require('fzf-lua').resume()<CR>") --last search
-map("n", "<leader>g", ":lua require('fzf-lua').grep()<CR>") --grep
+map("n", "<leader>ff", ":lua require('fzf-lua').files()<CR>") --search cwd
+map("n", "<leader>fh", ":lua require('fzf-lua').files({ cwd = '~/' })<CR>") --search home
+map("n", "<leader>fc", ":lua require('fzf-lua').files({ cwd = '~/.config' })<CR>") --search .config
+map("n", "<leader>fl", ":lua require('fzf-lua').files({ cwd = '~/.local/src' })<CR>") --search .local/src
+map("n", "<leader>fa", ":lua require('fzf-lua').files({ cwd = '..' })<CR>") --search above
+map("n", "<leader>fr", ":lua require('fzf-lua').resume()<CR>") --last search
+map("n", "<leader>fg", ":lua require('fzf-lua').grep()<CR>") --grep
 map("n", "<leader>G", ":lua require('fzf-lua').grep_cword()<CR>") --grep word under cursor
 map("n", "<leader>fs", function()
 	require("fzf-lua").lsp_workspace_symbols()
 end)
 map("n", "<leader>fS", function()
 	require("fzf-lua").lsp_document_symbols()
+end)
+map("n", "<leader>fC", function()
+	require("fzf-lua").commands()
+end)
+map("n", "<leader>fH", function()
+	require("fzf-lua").help_tags()
 end)
 
 -- misc

@@ -28,10 +28,15 @@ input {
 // }
  
 // ── Layout ─────────────────────────────────────────────────────────────────
+environment {
+     Display ":1"
+     _JAVA_AWT_WM_NONREPARENTING ":1"
+ AWT_TOOLKIT "MToolkit"
+}
 layout {
-    gaps 8
+    gaps 6
     center-focused-column "never"
- 
+    background-color "transparent"
     preset-column-widths {
         proportion 0.33333
         proportion 0.5
@@ -42,21 +47,130 @@ layout {
     default-column-width { proportion 0.5; }
  
     focus-ring {
-        width 2
-        active-color "#88c0d0"
-        inactive-color "#4c566a"
+    width 2
+    active-color "#89b4fa"     // was #88c0d0, now matches waybar blue
+    inactive-color "#313244"   // darker, more contrast
     }
  
     border {
         off
     }
 }
- 
+// prefer-no-csd 
 // ── Appearance ─────────────────────────────────────────────────────────────
-animations {
-    slowdown 1.0   // increase to slow animations, 0 to disable
+//animations {
+//    slowdown 1.0   // increase to slow animations, 0 to disable
+//}
+ animations {
+    // off
+    window-close {
+        duration-ms 120
+        curve "ease-out-quad"
+    }
+
+    screenshot-ui-open {
+        duration-ms 250
+        curve "ease-out-quad"
+    }
+
+    workspace-switch {
+        spring damping-ratio=0.8 stiffness=320 epsilon=0.001
+    }
+
+    config-notification-open-close {
+        spring damping-ratio=0.8 stiffness=320 epsilon=0.001
+    }
+
+    overview-open-close {
+    spring damping-ratio=0.72 stiffness=400 epsilon=0.0005
+    }
+
+    horizontal-view-movement {
+        spring damping-ratio=0.8 stiffness=320 epsilon=0.001
+    }
+
+    window-resize {
+        spring damping-ratio=0.8 stiffness=320 epsilon=0.001
+    }
+
+    window-open {
+        spring damping-ratio=0.8 stiffness=320 epsilon=0.001
+    }
+
+    window-movement {
+        spring damping-ratio=0.8 stiffness=320 epsilon=0.001
+    }
+
+    // slowdown 3.0
 }
- 
+
+layer-rule {
+    match namespace="waybar"
+    opacity 0.8
+    background-effect {
+        xray true
+        blur true
+    }
+}
+
+layer-rule {
+    match namespace="swaync-notification-window"
+    block-out-from "screen-capture"
+}
+
+layer-rule {
+    match namespace="swaync-control-center"
+    match namespace="syshud"
+    background-effect {
+        xray false
+        blur true
+    }
+}
+
+layer-rule {
+    match namespace="syshud"
+    background-effect {
+        xray false
+        blur true
+    }
+    geometry-corner-radius 24
+}
+
+layer-rule {
+    match namespace="launcher"
+    background-effect {
+        xray false
+        blur true
+    }
+
+    geometry-corner-radius 6
+}
+
+layer-rule {
+    match namespace=r#"^logout_dialog$"#
+    background-effect {
+        xray false
+        blur true
+    }
+}
+
+layer-rule {
+		match namespace="^awww-daemonwallpaper$"
+		place-within-backdrop true
+}
+
+overview {
+    // Dark frosted backdrop — matches your waybar bg
+    backdrop-color "#11111bcc"
+    // Workspace spacing & layout
+    workspace-shadow {
+        on
+        softness 40
+        spread 5
+        offset x=0 y=8
+        color "#00000066"
+    }
+}
 // ── Workspace names (optional) ─────────────────────────────────────────────
 workspace "1"
 workspace "2"
@@ -64,6 +178,193 @@ workspace "3"
 workspace "4"
  
 // ── Window rules ───────────────────────────────────────────────────────────
+
+window-rule {
+    draw-border-with-background false
+    geometry-corner-radius 9
+    clip-to-geometry true
+}
+
+window-rule {
+    match app-id=r#"^org.gnome.Nautilus$"#
+    match app-id=r#"^org.gnome.Papers$"#
+    match app-id=r#"^org.gnome.Loupe$"#
+    match app-id=r#"^io.github.celluloid_player.Celluloid$"#
+    match app-id=r#"^zenity$"#
+    background-effect {
+        xray false
+        blur true
+    }
+}
+
+window-rule {
+    match app-id=r#"^org\.kde\.kdeconnect\.daemon$"#
+    match app-id=r#"^galculator$"#
+    match app-id=r#"^org.kde.kdeconnect.handler$"#
+    match app-id=r#"^thunar$"# title="^Rename*"
+    match app-id=r#"^Vivado$"# title="^win0$"
+    match app-id=r#"^java$"#
+    match app-id=r#"^Eclipse$"# title="^Eclipse IDE Launcher $"
+    match app-id=r#"^STM32CubeIDE$"# title="^STM32CubeIDE Launcher $"
+    match app-id=r#"^com-st-microxplorer-maingui-STM32CubeMX$"# title="^win0$"
+    match app-id=r#"^Java$"#
+    match app-id=r#"^zenity$"#
+    match app-id=r#"^org.kde.kcalc$"#
+    match app-id=r#"^Vivado 2022.2 Installer$"#
+    match app-id=r#"^org.gnome.Calendar$"#
+    match app-id=r#"^Tk$"#
+    match app-id=r#"^org.gnome.Loupe$"#
+
+    open-floating true
+}
+
+
+window-rule {
+    match app-id=r#"^thunar$"# title="^File Operation Progress$"
+
+    baba-is-float true
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^thunar$"#
+    match app-id=r#"^org.gnome.Nautilus$"#
+    min-width 800
+    max-width 1176
+    min-height 600
+    max-height 600
+
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^.*$"# title="^File Upload*"
+    match app-id=r#"^.*$"# title="^Select Folder to Upload*"
+    min-width 800
+    max-width 1176
+    min-height 900
+    max-height 900
+
+    open-floating true
+}
+
+window-rule {
+    match app-id="polkit-gnome-authentication-agent-1"
+    match app-id="Bitwarden"
+    block-out-from "screen-capture"
+}
+
+window-rule {
+    match app-id=r#"zen$"# title="^Picture-in-Picture$"
+    match app-id=r#"librewolf$"# title="^Picture-in-Picture$"
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^kitty$"#
+    open-on-workspace "1"
+    background-effect {
+        xray true
+        blur true
+    }
+    default-column-width {proportion 0.5;}
+}
+
+window-rule {
+    match app-id=r#"zen$"#
+    match app-id=r#"vivaldi-stable$"#
+    match app-id=r#"chromium$"#
+    match app-id=r#"librewolf$"#
+    match app-id=r#"google-chrome$"#
+    match app-id=r#"firefox$"#
+    opacity 0.92
+
+    background-effect {
+        blur true
+    }
+
+    open-on-workspace "2"
+    open-focused true
+
+    // open-maximized-to-edges true
+    default-column-width {proportion 0.9;}
+}
+
+window-rule {
+    match app-id=r#"^neovide$"#
+    match app-id=r#"^dev.zed.Zed$"#
+    match app-id=r#"^jetbrains-idea$"#
+    match app-id=r#"^codium$"#
+    match app-id=r#"^Vivado$"# title="^Vivado 2022.2$"
+    match app-id=r#"^Vitis IDE$"#
+    match app-id=r#"^uv4.exe"#
+    match app-id=r#"^Eclipse$"#
+    match app-id=r#"^STM32CubeIDE$"# title="^*STM32CubeIDE $"
+    match app-id=r#"^labwc$"#
+    match app-id=r#"^kitty$"# title=r#"^\[nvim\]$"#
+    match app-id=r#"^gvim$"#
+    
+    open-on-workspace "3"
+    open-focused true
+    open-maximized true
+}
+
+
+window-rule {
+    match app-id=r#"^codium$"#
+    match app-id=r#"^dev.zed.Zed$"#
+    background-effect {
+        blur true
+    }
+    opacity 0.9
+}
+
+
+window-rule {
+    match app-id=r#"org.pwmt.zathura"#
+    match app-id=r#"com.github.johnfactotum.Foliate"#
+    match app-id=r#"^org.gnome.Papers$"#
+
+    open-on-workspace "4"
+    open-focused true
+    default-column-width {proportion 0.75;}
+}
+
+window-rule {
+    match app-id=r#"^com.obsproject.Studio$"#
+    match app-id=r#"^vesktop$"#
+    match app-id=r#"^org.gnome.Snapshot$"#
+
+    open-on-workspace "4"
+    open-focused true
+}
+
+window-rule {
+    match app-id=r#"^virt-manager$"# title=r#"^.*QEMU/KVM$"#
+    match app-id=r#"^libreoffice.*$"#
+    match app-id=r#"^soffice$"#
+
+    open-on-workspace "4"
+    open-maximized true
+    open-focused true
+}
+
+window-rule {
+    match app-id=r#"QtScrcpy$"# title="^Phone-+"
+    default-column-width {proportion 0.25;}
+}
+
+window-rule {
+    match app-id=r#"QtScrcpy$"# title="^Tool$"
+    open-floating false
+    default-column-width {}
+}
+
+hotkey-overlay {
+    skip-at-startup
+}
+
 window-rule {
     match app-id="firefox"
     default-column-width { proportion 0.66667; }
@@ -74,24 +375,18 @@ window-rule {
     shadow { on; }
 }
  
-// Float specific apps
-window-rule {
-    match app-id="org.gnome.Calculator"
-    open-floating true
-}
- 
-window-rule {
-    match title="Picture-in-Picture"
-    open-floating true
-}
- 
 window-rule {
     match app-id="kitty"
     draw-border-with-background false
 }
+window-rule {
+    match app-id=r#"^kitty$"#
+    open-maximized true
+}
 // ── Keybindings ────────────────────────────────────────────────────────────
 binds {
     // ── Launchers ──
+    Mod+Shift+Slash { show-hotkey-overlay; }
     Mod+Return { spawn "kitty"; }
 	Mod+b       { spawn "firefox"; }
 	Mod+e       { spawn "pcmanfm"; }
@@ -129,6 +424,8 @@ binds {
     // ── Column width ──
     Mod+minus { set-column-width "-10%"; }
     Mod+equal { set-column-width "+10%"; }
+    Mod+Shift+minus { set-window-height "-10%"; }
+    Mod+Shift+equal { set-window-height "+10%"; }
     Mod+0     { set-column-width "100%"; }
  
     // Cycle preset widths (1/3 → 1/2 → 2/3 → full)
@@ -181,8 +478,10 @@ spawn-at-startup "waybar"
 spawn-at-startup "mako"
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 spawn-at-startup "awww-daemon"
-spawn-at-startup "awww" "img" "/home/lanre/Pictures/wallpapers/'32. Catppuccin Mocha.png'"
+spawn-at-startup "awww-daemon" "-n" "wallpaper"
+spawn-at-startup "awww" "img" "/home/lanre/Pictures/wallpapers/32. Catppuccin Mocha.png"
 spawn-at-startup "wl-paste" "--type" "text" "--watch" "cliphist" "store"
 spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
-// spawn-at-startup "udiskie" "--tray"
-// spawn-at-startup "xwayland-satellite"
+spawn-at-startup "udiskie" "--tray"
+spawn-at-startup "xwayland-satellite"
+spawn-at-startup "wname" "LG4D"
