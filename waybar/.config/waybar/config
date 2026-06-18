@@ -5,10 +5,16 @@
   "height": 28,
   "spacing": 4,
  
-  "modules-left": ["niri/workspaces", "niri/window"],
+  "modules-left": ["custom/launcher" ,"niri/workspaces", "niri/window"],
   "modules-center": ["clock"],
   "modules-right": ["pulseaudio", "backlight", "network", "battery", "custom/screen-time","tray"],
  
+  "custom/launcher": {
+        "format": " ",
+        "on-click": "pkill fuzzel || fuzzel",
+        "tooltip-format": "Launcher"
+    },
+
   "niri/workspaces": {
     "format": "{name}",
     "on-click": "activate"

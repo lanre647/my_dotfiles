@@ -31,12 +31,12 @@ wk.add({
 	{ "<leader>z", desc = "Toggle terminal" },
 
 	-- FZF
-	{ "<leader>f", desc = "Find files" },
-	{ "<leader>Fh", desc = "Find files (home)" },
-	{ "<leader>Fc", desc = "Find files (.config)" },
-	{ "<leader>Fl", desc = "Find files (.local/src)" },
-	{ "<leader>Ff", desc = "Find files (parent dir)" },
-	{ "<leader>Fr", desc = "Resume last search" },
+	{ "<leader>ff", desc = "Find files" },
+	{ "<leader>fh", desc = "Find files (home)" },
+	{ "<leader>fc", desc = "Find files (.config)" },
+	{ "<leader>fl", desc = "Find files (.local/src)" },
+	{ "<leader>ff", desc = "Find files (parent dir)" },
+	{ "<leader>fr", desc = "Resume last search" },
 	{ "<leader>fs", desc = "Workspace symbols" },
 	{ "<leader>fS", desc = "Document symbols" },
 
@@ -83,5 +83,4 @@ wk.add({
 	{ "<leader>g", group = "Git" },
 	{ "<leader>d", group = "Debug" },
 	{ "<leader>t", group = "Test" },
-	{ "<leader>f", group = "Find" },
 })
