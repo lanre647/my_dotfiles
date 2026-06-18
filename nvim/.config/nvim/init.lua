@@ -23,11 +23,12 @@ vim.loader.enable() --  SPEEEEEEEEEEED 
 vim.call("plug#begin")
 
 Plug("folke/tokyonight.nvim", { ["as"] = "tokyonight" })
+Plug("catppuccin/nvim", { ["as"] = "catppuccin" })
 Plug("ellisonleao/gruvbox.nvim", { ["as"] = "gruvbox" })
 Plug("NLKNguyen/papercolor-theme", { ["as"] = "PaperColor" })
-Plug("uZer/pywal16.nvim", { ["as"] = "pywal16" }) --or, pywal colorscheme
+-- Plug("uZer/pywal16.nvim", { ["as"] = "pywal16" }) --or, pywal colorscheme
 Plug("nvim-lualine/lualine.nvim") --statusline
-Plug("gelguy/wilder.nvim")
+-- Plug("gelguy/wilder.nvim")
 Plug("romgrk/fzy-lua-native", { ["do"] = "make" })
 Plug("nvim-tree/nvim-web-devicons") --pretty icons
 Plug("folke/which-key.nvim") --mappings popup
@@ -37,6 +38,7 @@ Plug("nvim-treesitter/nvim-treesitter") --improved syntax
 Plug("mfussenegger/nvim-lint") --async linter
 Plug("nvim-tree/nvim-tree.lua") --file explorer
 Plug("windwp/nvim-autopairs") --autopairs
+Plug("lukas-reineke/indent-blankline.nvim") --Indent Line
 Plug("lewis6991/gitsigns.nvim") --git
 Plug("numToStr/Comment.nvim") --easier comments
 Plug("NvChad/nvim-colorizer.lua") --color highlight
@@ -64,6 +66,7 @@ Plug("L3MON4D3/LuaSnip")
 Plug("saadparwaiz1/cmp_luasnip")
 Plug("hrsh7th/cmp-path")
 Plug("hrsh7th/cmp-buffer")
+Plug("hrsh7th/cmp-cmdline")
 Plug("stevearc/conform.nvim") -- formating
 Plug("rcarriga/nvim-notify") -- notification
 Plug("rmagatti/auto-session") -- session management
@@ -80,6 +83,7 @@ require("plugins.alpha")
 require("plugins.barbar")
 require("plugins.colorizer")
 require("plugins.comment")
+require("plugins.ibl")
 -- require("plugins.fterm")
 -- require("plugins.fzf-lua")
 require("plugins.gitsigns")
@@ -94,7 +98,7 @@ require("plugins.cmp")
 require("plugins.lsp")
 require("plugins.conform")
 require("plugins.dap")
-require("plugins.wilder")
+-- require("plugins.wilder")
 require("plugins.notify")
 require("plugins.session")
 vim.defer_fn(function()
