@@ -22,7 +22,7 @@ require("conform").setup({
 		end
 
 		return {
-			timeout_ms = is_termux and 1000 or 500,
+			timeout_ms = is_termux and 3000 or 500,
 			lsp_fallback = not vim.tbl_contains({ "c" }, vim.bo.filetype),
 		}
 	end,

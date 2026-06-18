@@ -1,5 +1,7 @@
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
-local lspconfig = require("lspconfig")
+-- Note: 'require("lspconfig")' isn't strictly needed anymore with vim.lsp.config(),
+-- but keeping it loaded ensures default server definitions are initialized.
+require("lspconfig")
 local mason = require("mason")
 local mason_lspconfig = require("mason-lspconfig")
 
@@ -40,11 +42,9 @@ local mason_ensure = {
 	"pyright",
 	"ts_ls",
 	"omnisharp",
-	-- "clangd", -- Added C/C++ support
 }
 
--- Only let Mason manage lua_ls if we are NOT on Termux
--- (On Termux, we use 'pkg install lua-language-server' instead)
+-- Only let Mason manage lua_ls and clangd if we are NOT on Termux
 if not is_termux then
 	table.insert(mason_ensure, "lua_ls")
 	table.insert(mason_ensure, "clangd")
@@ -58,13 +58,11 @@ mason_lspconfig.setup({
 -- LSP setup (Modernized for Nvim 0.11/0.12)
 -- =========================
 
--- 2. Define clangd in your servers table
 local servers = {
 	pyright = {},
 	ts_ls = {},
 	omnisharp = {},
 	clangd = {
-		-- Required for clangd to work correctly with Neovim's encoding
 		capabilities = {
 			offsetEncoding = { "utf-16" },
 		},
@@ -72,32 +70,29 @@ local servers = {
 	lua_ls = {
 		settings = {
 			Lua = {
-				diagnostics = {
-					globals = { "vim" },
-				},
-				workspace = {
-					checkThirdParty = false,
-				},
-				telemetry = {
-					enable = false,
-				},
+				diagnostics = { globals = { "vim" } },
+				workspace = { checkThirdParty = false },
+				telemetry = { enable = false },
 			},
 		},
 	},
 }
 
--- If on Termux, ensure we use the system-provided binaries
+-- Apply system-provided binary overrides directly into our configuration table
 if is_termux then
 	servers.lua_ls.cmd = { "lua-language-server" }
-	-- This tells Neovim to use the 'clangd' we just installed via 'pkg install'
 	servers.clangd.cmd = { "clangd", "--background-index" }
 end
 
+-- Proper configuration merging loop using Neovim's native lsp.config API
 for server, config in pairs(servers) do
-	-- Merge capabilities into the server config
+	-- Cleanly merge autocompletion capabilities
 	config.capabilities = vim.tbl_deep_extend("force", capabilities, config.capabilities or {})
 
-	-- Use the built-in Neovim 0.11+ configuration and activation
+	-- Modern way: Feed settings into the existing native configuration skeleton
+	-- without completely overriding filetype matching rules.
 	vim.lsp.config(server, config)
+
+	-- Auto-activate the language server dynamically
 	vim.lsp.enable(server)
 end
