@@ -19,15 +19,25 @@ input {
     mouse {
         accel-speed 0.0
     }
+    disable-power-key-handling
 }
 // ── Outputs ────────────────────────────────────────────────────────────────
 // niri auto-detects your monitor; uncomment and adjust as needed
-// output "eDP-1" {
-//     scale 1.0
-//     mode "1920x1080@60.0"
-// }
+    output "eDP-1" {
+     scale 1.0
+     mode "1920x1080@60.0"
+    }
+    
+    output "HDMI-A-1" {
+		scale 1.0	
+	}	
  
 // ── Layout ─────────────────────────────────────────────────────────────────
+
+prefer-no-csd
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
 environment {
      Display ":1"
      _JAVA_AWT_WM_NONREPARENTING ":1"
@@ -36,7 +46,6 @@ environment {
 layout {
     gaps 6
     center-focused-column "never"
-    background-color "transparent"
     preset-column-widths {
         proportion 0.33333
         proportion 0.5
@@ -56,11 +65,7 @@ layout {
         off
     }
 }
-// prefer-no-csd 
-// ── Appearance ─────────────────────────────────────────────────────────────
-//animations {
-//    slowdown 1.0   // increase to slow animations, 0 to disable
-//}
+
  animations {
     // off
     window-close {
@@ -197,13 +202,12 @@ window-rule {
     }
 }
 
-window-rule 
-
 window-rule {
     match app-id=r#"^org\.kde\.kdeconnect\.daemon$"#
     match app-id=r#"^galculator$"#
     match app-id=r#"^org.kde.kdeconnect.handler$"#
     match app-id=r#"^thunar$"# title="^Rename*"
+    match app-id=r#"^pcmanfm$"#
     match app-id=r#"^Vivado$"# title="^win0$"
     match app-id=r#"^java$"#
     match app-id=r#"^Eclipse$"# title="^Eclipse IDE Launcher $"
@@ -277,10 +281,11 @@ window-rule {
     match app-id=r#"zen$"#
     match app-id=r#"vivaldi-stable$"#
     match app-id=r#"chromium$"#
+	match app-id=r#"qutebrowser$"#
     match app-id=r#"librewolf$"#
     match app-id=r#"google-chrome$"#
     match app-id=r#"firefox$"#
-    opacity 0.92
+    opacity 0.72
 
     background-effect {
         blur true
@@ -393,12 +398,12 @@ binds {
 	Mod+b       { spawn "firefox"; }
 	Mod+e       { spawn "pcmanfm"; }
     Mod+d       { spawn "fuzzel"; }
-    Mod+Shift+s { spawn "grim" "-g" "$(slurp)" "/tmp/screenshot.png"; }
-    Mod+s       { spawn "grim" "/tmp/screenshot-full.png"; }
+    Mod+s       { spawn "kitty" "nvim" "/home/lanre/.config/niri/config.kdl"; }
     Mod+v { spawn "~/.local/bin/cliphist-picker"; }
     Mod+Comma     hotkey-overlay-title="Show emojis: fuzzel"     repeat=false    { spawn "bash" "-c" "pkill fuzzel || fuzzel-emoji"; }
 	Mod+Shift+b   hotkey-overlay-title="Toggle bar: waybar" repeat=false    { spawn "toggle-waybar"; }
-    Mod+w { spawn "kitty" "--app-id" "wallpaper-picker" "-e" "/home/lanre/scripts/wallpaper-picker.sh"; }
+    Mod+w repeat=false { spawn "kitty" "--app-id" "wallpaper-picker" "-e" "/home/lanre/scripts/wallpaper-picker.sh"; }
+	Mod+Alt+w hotkey-overlay-title="Random Wallpaper & Animation" { spawn "random-wallpaper"; }
     Mod+O           hotkey-overlay-title="Toggle Overview Mode"                     repeat=false    { toggle-overview; }
     // ── Session ──
     Mod+Shift+c { close-window; }
@@ -429,6 +434,24 @@ binds {
     Mod+Shift+minus { set-window-height "-10%"; }
     Mod+Shift+equal { set-window-height "+10%"; }
     Mod+0     { set-column-width "100%"; }
+
+    Mod+Ctrl+Left  { focus-monitor-left; }
+    Mod+Ctrl+Down  { focus-monitor-down; }
+    Mod+Ctrl+Up    { focus-monitor-up; }
+    Mod+Ctrl+Right { focus-monitor-right; }
+    Mod+Ctrl+H     { focus-monitor-left; }
+    Mod+Ctrl+J     { focus-monitor-down; }
+    Mod+Ctrl+K     { focus-monitor-up; }
+    Mod+Ctrl+L     { focus-monitor-right; }
+
+    Mod+Shift+Ctrl+Left  { move-column-to-monitor-left; }
+    Mod+Shift+Ctrl+Down  { move-column-to-monitor-down; }
+    Mod+Shift+Ctrl+Up    { move-column-to-monitor-up; }
+    Mod+Shift+Ctrl+Right { move-column-to-monitor-right; }
+    Mod+Shift+Ctrl+H     { move-column-to-monitor-left; }
+    Mod+Shift+Ctrl+J     { move-column-to-monitor-down; }
+    Mod+Shift+Ctrl+K     { move-column-to-monitor-up; }
+    Mod+Shift+Ctrl+L     { move-column-to-monitor-right; }
  
     // Cycle preset widths (1/3 → 1/2 → 2/3 → full)
     Mod+r { switch-preset-column-width; }
@@ -461,6 +484,9 @@ binds {
     Mod+Shift+8 { move-column-to-workspace 8; }
     Mod+Shift+9 { move-column-to-workspace 9; }
  
+    Mod+Period  { consume-window-into-column; }
+    Mod+Shift+Period { expel-window-from-column; }
+
     Mod+Tab       { focus-workspace-down; }
     Mod+Shift+Tab { focus-workspace-up; }
  
@@ -473,6 +499,10 @@ binds {
     XF86AudioPlay         { spawn "playerctl" "play-pause"; }
     XF86AudioNext         { spawn "playerctl" "next"; }
     XF86AudioPrev         { spawn "playerctl" "previous"; }
+
+    Print { screenshot; }
+    Ctrl+Print { screenshot-screen; }
+    Alt+Print { screenshot-window; }
 }
  
 // ── Autostart ──────────────────────────────────────────────────────────────

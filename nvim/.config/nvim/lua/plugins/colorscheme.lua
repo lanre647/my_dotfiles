@@ -5,7 +5,7 @@ require("catppuccin").setup({
 		light = "latte",
 		dark = "mocha",
 	},
-	transparent_background = false,
+	transparent_background = true,
 	term_colors = true, -- makes terminal colors match the theme
 	integrations = {
 		treesitter = true,
