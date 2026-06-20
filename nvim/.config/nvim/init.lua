@@ -101,6 +101,7 @@ require("plugins.dap")
 -- require("plugins.wilder")
 require("plugins.notify")
 require("plugins.session")
+-- require("vim._core.ui2").enable()
 vim.defer_fn(function()
 	--defer non-essential configs,
 	--purely for experimental purposes:
