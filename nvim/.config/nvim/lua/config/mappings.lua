@@ -64,8 +64,26 @@ end)
 map("n", "<leader>fC", function()
 	require("fzf-lua").commands()
 end)
-map("n", "<leader>fH", function()
+--[[ map("n", "<leader>fH", function()
 	require("fzf-lua").help_tags()
+end) ]]
+
+--[[ -- Execute commands immediately on select
+vim.keymap.set("n", "<leader>fC", function()
+    require("fzf-lua").commands({
+        actions = {
+            ["default"] = require("fzf-lua").actions.ex_run,
+        }
+    })
+end) ]]
+
+-- Open help tags immediately on select
+vim.keymap.set("n", "<leader>fH", function()
+	require("fzf-lua").help_tags({
+		actions = {
+			["default"] = require("fzf-lua").actions.help,
+		},
+	})
 end)
 
 -- misc
