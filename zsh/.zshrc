@@ -82,7 +82,7 @@ source <(fzf --zsh)
 # CORE ALIASES — Navigation & Utilities
 # ------------------------------------------------------------
 alias c='clear'
-alias vi='nvim'
+alias v='nvim'
 alias open="termux-open"
 alias ls='eza --icons -F -H --group-directories-first --git -1'
 # alias ls='eza --all --long --group --group-directories-first --icons --header --time-style long-iso'
@@ -137,16 +137,16 @@ function update() {
 # ------------------------------------------------------------
 alias recomp='cd ~/suckless-meta/dwm && rm -rf config.h && sudo make clean install'
 alias dwmconf='nvim ~/suckless-meta/dwm/config.def.h'
+alias niriconf='nvim ~/.config/niri/config.kdl'
 alias xconf='nvim ~/dotfiles/scripts/start_dwm.sh'
-
+alias nvimconf= 'z nvim && nvim .'
 
 # ------------------------------------------------------------
 # CORE ALIASES — Neovim
 # ------------------------------------------------------------
-alias v='nvim .'
+alias vi='nvim .'
 alias vrc='nvim ~/.zshrc'
 alias vdots='cd ~/dotfiles && nvim .'
-
 
 # ------------------------------------------------------------
 # CORE ALIASES — Git
@@ -176,7 +176,6 @@ alias ytdlmp4='yt-dlp -f "bv[ext!=webm][height<=720]+ba/b[ext!=webm][height<=720
 alias getmp3='yt-dlp -x --audio-format mp3 --audio-quality 0 --add-metadata --embed-thumbnail -o "~/storage/downloads/%(title)s.%(ext)s"'
 alias getvid='yt-dlp -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" --add-metadata -o "~/storage/downloads/%(title)s.%(ext)s"'
 alias play="ffplay -nodisp -autoexit"
-alias darkwall='feh --bg-fill /home/lanre/Downloads/outline-nord.png'
 
 # ------------------------------------------------------------
 # CORE ALIASES — Audio & Brightness
