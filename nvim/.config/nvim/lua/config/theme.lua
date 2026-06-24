@@ -49,10 +49,9 @@ end
 
 local themes = {
 	{ "catppuccin-mocha", "catppuccin-mocha" }, -- dark
-	-- { "catppuccin-latte", "catppuccin-latte" }, -- light
+	{ "catppuccin-latte", "catppuccin-latte" }, -- light
 	{ "gruvbox", "gruvbox" },
 	-- { "gruvbox-light", "gruvbox" },
-	{ "gruvbox", "gruvbox" },
 	{ "PaperColor", "auto" },
 	{ "tokyonight", "tokyonight" },
 }

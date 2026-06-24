@@ -25,10 +25,9 @@
 local wk = require("which-key")
 
 wk.add({
-	{ "<leader>d", desc = "Duplicate file" },
 	{ "<leader>p", desc = "Switch theme" },
 	{ "<leader>u", desc = "Open URL under cursor" },
-	{ "<leader>z", desc = "Toggle terminal" },
+	{ "<leader>t", desc = "Toggle terminal" },
 
 	-- FZF
 	{ "<leader>ff", desc = "Find files" },
@@ -47,11 +46,10 @@ wk.add({
 	-- Files
 	{ "<leader>x", desc = "Make executable" },
 	{ "<leader>mv", desc = "Move file" },
-	{ "<leader>w", desc = "Save file" },
 	{ "<leader>W", desc = "Toggle wrap" },
 
 	-- Tree / UI
-	{ "<leader>t", desc = "Toggle file explorer" },
+	{ "ctrl-b", desc = "Toggle file explorer" },
 	{ "<leader>l", desc = "Toggle Twilight" },
 	{ "<leader>R", desc = "Reload current config" },
 
@@ -82,5 +80,4 @@ wk.add({
 	{ "<leader>c", group = "CSV" },
 	{ "<leader>g", group = "Git" },
 	{ "<leader>d", group = "Debug" },
-	{ "<leader>t", group = "Test" },
 })
