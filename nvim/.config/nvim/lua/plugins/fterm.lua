@@ -3,8 +3,8 @@ local fterm = require("FTerm")
 fterm.setup({
 	border = "double", -- Available: 'double', 'rounded', 'single', 'shadow', 'none'
 	dimensions = {
-		height = 0.90,
-		width = 0.90,
+		height = 0.9,
+		width = 0.9,
 	},
 })
 

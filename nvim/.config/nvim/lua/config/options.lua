@@ -44,5 +44,5 @@ for k, v in pairs(options) do
 end
 
 vim.diagnostic.config({
-	signs = false,
+	signs = true,
 })

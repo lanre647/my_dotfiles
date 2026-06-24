@@ -26,6 +26,7 @@ Plug("folke/tokyonight.nvim", { ["as"] = "tokyonight" })
 Plug("catppuccin/nvim", { ["as"] = "catppuccin" })
 Plug("ellisonleao/gruvbox.nvim", { ["as"] = "gruvbox" })
 Plug("NLKNguyen/papercolor-theme", { ["as"] = "PaperColor" })
+Plug("eandrju/cellular-automaton.nvim") --cellular-automaton
 -- Plug("uZer/pywal16.nvim", { ["as"] = "pywal16" }) --or, pywal colorscheme
 Plug("nvim-lualine/lualine.nvim") --statusline
 -- Plug("gelguy/wilder.nvim")
@@ -114,5 +115,8 @@ vim.defer_fn(function()
 	require("plugins.twilight")
 	require("plugins.which-key")
 end, 100)
-
+-- Load Neovim 0.12's built-in undo visualizer
+vim.cmd("packadd nvim.undotree")
+-- Load Neovim 0.12's built-in directory/file diff tool
+vim.cmd("packadd nvim.difftool")
 load_theme()
