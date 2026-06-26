@@ -64,9 +64,16 @@ fi
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
 # else
-  export EDITOR='nvim'
+#  export EDITOR='nvim'
 # fi
 
+#------------------------------------------------------
+# Environment Variables
+#-------------------------------------------------------
+export EDITOR="nvim"
+export VISUAL="nvim"
+export SUDO_EDITOR="nvim"
+export FCEDIT="nvim"
 
 # ------------------------------------------------------------
 # TOOL INITIALISATION
@@ -83,6 +90,7 @@ source <(fzf --zsh)
 # ------------------------------------------------------------
 alias c='clear'
 alias v='nvim'
+alias vi='nvim'
 alias open="termux-open"
 alias ls='eza --icons -F -H --group-directories-first --git -1'
 # alias ls='eza --all --long --group --group-directories-first --icons --header --time-style long-iso'
@@ -93,12 +101,39 @@ alias mkd='mkdir -p'
 alias path='echo $PATH | tr ":" "\n"'
 
 
+# Copy and go to the directory
+function cpg() {
+	if [[ -d "$2" ]];then
+		cp "$1" "$2" && cd "$2"
+	else
+		cp "$1" "$2"
+	fi
+}
+
+# Move and go to the directory
+function mvg() {
+	if [[ -d "$2" ]];then
+		mv "$1" "$2" && cd "$2"
+	else
+		mv "$1" "$2"
+	fi
+}
+
+# Create and go to the directory
+function mkdirg() {
+	mkdir -p "$@" && cd "$@"
+}
+
 # ------------------------------------------------------------
 # CORE ALIASES — System & Maintenance
 # ------------------------------------------------------------
 alias mst='echo "--- Home Directory Usage ---" && du -h -d 1 "$HOME" | sort -hr | head -n 5 && echo "--- Total Termux App Usage ---" && du -sh "$PREFIX/.."'
 alias ops='bash ~/scripts/dashboard.sh'
-alias lg='lazygit'
+
+if [[ -x "$(command -v lazygit)" ]]; then
+    alias lg='lazygit'
+fi
+
 alias ports='ss -tulnp'
 alias psg='ps aux | grep'
 
@@ -230,6 +265,22 @@ alias grab="~/.shortcuts/grab.sh"
 alias kali="nh"
 alias ksh='rish -c "nh"'
 
+if [[ -x "$(command -v bat)" ]]; then
+    alias cat='bat'
+fi
+
+if [[ -x "$(command -v fzf)" ]]; then
+    alias fzf='fzf --preview "bat --style=numbers --color=always --line-range :500 {}"'
+    # Alias to fuzzy find files in the current folder(s), preview them, and launch in an editor
+	if [[ -x "$(command -v xdg-open)" ]]; then
+		alias preview='open $(fzf --info=inline --query="${@}")'
+	else
+		alias preview='edit $(fzf --info=inline --query="${@}")'
+	fi
+fi
+
+
+
 
 # ------------------------------------------------------------
 # NETWORK & SECURITY
@@ -256,6 +307,21 @@ alias tor-check="pxc curl -s https://check.torproject.org/api/ip"
 # IP Checking
 alias myip="curl -s https://ifconfig.me"
 alias torip="pxc curl -s https://ifconfig.me"
+
+
+# Get local IP addresses
+if [[ -x "$(command -v ip)" ]]; then
+    alias iplocal="ip -br -c a"
+else
+    alias iplocal="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"
+fi
+
+# Get public IP addresses
+if [[ -x "$(command -v curl)" ]]; then
+    alias ipexternal="curl -s ifconfig.me && echo"
+elif [[ -x "$(command -v wget)" ]]; then
+    alias ipexternal="wget -qO- ifconfig.me && echo"
+fi
 
 # Stealth Function
 # Usage: pxc-stealth-win <command>

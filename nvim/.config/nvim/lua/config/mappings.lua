@@ -127,10 +127,10 @@ end, { desc = "Help tags" })
 -- ─────────────────────────────────────────────
 -- Clipboard (system)
 -- ─────────────────────────────────────────────
-map("v", "<C-c>", '"+y', { desc = "Copy to system clipboard" })
+--[[ map("v", "<C-c>", '"+y', { desc = "Copy to system clipboard" })
 map("v", "<C-x>", '"+x', { desc = "Cut to system clipboard" })
 map({ "n", "v" }, "<C-v>", '"+p', { desc = "Paste from system clipboard" })
-map("i", "<C-v>", "<C-r>+", { desc = "Paste from system clipboard (insert)" })
+map("i", "<C-v>", "<C-r>+", { desc = "Paste from system clipboard (insert)" }) ]]
 
 -- ─────────────────────────────────────────────
 -- File / Editor Utilities
@@ -139,7 +139,7 @@ map({ "n", "i", "v" }, "<C-s>", "<Esc>:w<CR>", { desc = "Save file" })
 map("n", "<C-b>", ":NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
 map("n", "<C-t>", "<cmd>lua require('FTerm').open()<CR>", { desc = "Open terminal" })
 map("t", "<Esc>", '<C-\\><C-n><CMD>lua require("FTerm").close()<CR>', { desc = "Close terminal" })
-
+map("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
 map("n", "<leader>s", ":%s//g<Left><Left>", { desc = "Replace all (in file)" })
 map("n", "<leader>p", switch_theme, { desc = "Cycle themes" })
 map("n", "<leader>P", ":PlugInstall<CR>", { desc = "Run PlugInstall" })
