@@ -15,6 +15,7 @@ local options = {
 	smoothscroll = true,
 	title = true, --automatic window titlebar
 
+	breakindent = true,
 	number = true, --numbering lines
 	relativenumber = true, --toggle bound to leader nn
 	numberwidth = 4,
@@ -37,6 +38,10 @@ local options = {
 	concealcursor = "nc",
 
 	splitkeep = "screen", --stablizie window open/close
+
+	-- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
+	-- instead raise a dialog asking if you wish to save the current file(s)
+	confirm = true,
 }
 
 for k, v in pairs(options) do

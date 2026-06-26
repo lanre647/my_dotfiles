@@ -27,7 +27,7 @@ clipmenud &
 udiskie &
 
 # Start the wallpaper
-feh --bg-fill /home/lanre/Pictures/wallpapers/"32. Catppuccin Mocha.png"
+feh --bg-fill /home/lanre/Pictures/"death-note-apple.webp"
 # Set the wallpaper 
 #while true; do
 #feh --bg-fill "$(find ~/Pictures/wallpapers -type f | shuf -n 1)"

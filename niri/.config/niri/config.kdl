@@ -478,7 +478,8 @@ binds {
     Mod+Space                                                                       { switch-focus-between-floating-and-tiling; }
 
     // ── Fullscreen ──
-    Mod+Shift+f                                                                     { fullscreen-window; }
+    //Mod+Shift+f                                                                     { fullscreen-window; }
+    Mod+Shift+f                                                                     { maximize-window-to-edges; }
     Mod+Ctrl+f                                                                      { maximize-column; }
 
     // ── Workspaces ──
