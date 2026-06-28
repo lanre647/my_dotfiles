@@ -55,9 +55,9 @@ dashboard.section.buttons.val = {
 	dashboard.button("c", "󰘳 Show All Commands", "<cmd>FzfLua commands<CR>"),
 	dashboard.button("f", "󱏒 Open Folder", "<cmd>FzfLua files<CR>"),
 	dashboard.button("r", "󱋡 Open Recent", "<cmd>FzfLua oldfiles<CR>"),
-	-- dashboard.button("s", "󰋚  Find Recent Sessions", "<cmd>AutoSession search<CR>"),
+	dashboard.button("s", "󰋚 Find Recent Sessions", "<cmd>AutoSession search<CR>"),
 	dashboard.button("h", "󰋖 Help Documents", "<cmd>FzfLua help_tags<CR>"),
-	-- dashboard.button("R", "󰑓 Reload Neovim", "<cmd>restart<CR>"),
+	dashboard.button("R", "󰑓 Reload Neovim", "<cmd>restart<CR>"),
 	dashboard.button("q", "󰅙 Quit Neovim", "<cmd>qa!<CR>"),
 }
 
@@ -69,11 +69,11 @@ dashboard.section.footer.val = function()
 end
 
 dashboard.opts.layout = {
-	{ type = "padding", val = 1 },
+	{ type = "padding", val = 2 },
 	dashboard.section.header,
 	{ type = "padding", val = 1 },
 	dashboard.section.buttons,
-	{ type = "padding", val = 1 },
+	{ type = "padding", val = 2 },
 	dashboard.section.footer,
 }
 

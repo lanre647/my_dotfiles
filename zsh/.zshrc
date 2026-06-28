@@ -90,6 +90,7 @@ source <(fzf --zsh)
 # ------------------------------------------------------------
 alias c='clear'
 alias v='nvim'
+alias nvim2="NVIM_APPNAME=nvim2 nvim"
 alias vi='nvim'
 alias open="termux-open"
 alias ls='eza --icons -F -H --group-directories-first --git -1'
