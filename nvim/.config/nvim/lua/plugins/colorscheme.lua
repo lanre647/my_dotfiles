@@ -1,11 +1,11 @@
--- colorscheme plugin setup ONLY (no theme loading here)
+-- colo rscheme plugin setup ONLY (no theme loading here)
 require("catppuccin").setup({
 	flavour = "mocha",
 	background = {
 		light = "latte",
 		dark = "mocha",
 	},
-	transparent_background = true,
+	-- transparent_background = true,
 	term_colors = true, -- makes terminal colors match the theme
 	integrations = {
 		treesitter = true,
@@ -42,20 +42,20 @@ require("gruvbox").setup({
 	palette_overrides = {},
 	overrides = {},
 	dim_inactive = false,
-	transparent_mode = true,
+	-- transparent_mode = true,
 })
 -- vim.o.background = "light"
 -- PaperColor config ONLY (no colorscheme call here)
-vim.g.PaperColor_Theme_Options = {
+--[[ vim.g.PaperColor_Theme_Options = {
 	theme = {
 		default = {
 			transparent_background = 1,
 		},
 	},
-}
+} ]]
 
 -- tokyonight
 require("tokyonight").setup({
 	style = "storm",
-	transparent = true,
+	-- transparent = true,
 })

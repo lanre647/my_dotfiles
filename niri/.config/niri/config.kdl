@@ -23,14 +23,33 @@ input {
 }
 
 // ── Outputs ────────────────────────────────────────────────────────────────
-output "eDP-1" {
+/*output "eDP-1" {
     scale 1.0
     mode "1920x1080@60.0"
 }
 
 output "HDMI-A-1" {
     scale 1.0
+}*/
+output "HDMI-A-1" {
+    mode "1920x1080@60.000"
+    position x=1366 y=0
+    scale 1.5
 }
+
+output "PNP(CTV) CultraviewTV 0x01010101" {
+    // alternate way to match — niri accepts either the connector name
+    // (HDMI-A-1) or the make/model string, connector name is simpler
+}
+
+output "eDP-1" {
+    mode "1366x768@60.000"
+    position x=0 y=0
+    scale 1.0
+}
+/*output "eDP-1" {
+		off
+}*/
 
 // ── Layout ─────────────────────────────────────────────────────────────────
 prefer-no-csd
@@ -180,15 +199,12 @@ overview {
         color "#00000066"
     }
 }
-
 // ── Workspaces ─────────────────────────────────────────────────────────────
-workspace "1"
-workspace "2"
-workspace "3"
-workspace "4"
+workspace " "
+workspace " "
+workspace " "
 
 // ── Window Rules ───────────────────────────────────────────────────────────
-
 // Global defaults
 window-rule {
     draw-border-with-background false
@@ -240,7 +256,7 @@ window-rule {
 window-rule {
     match app-id=r#"^thunar$"#
     match app-id=r#"^org.gnome.Nautilus$"#
-    match app-id=r#"^pcmanfm$"#
+    //match app-id=r#"^pcmanfm$"#
     min-width 800
     max-width 1176
     min-height 600
@@ -277,6 +293,7 @@ window-rule {
 // PCManFM — translucent with blur
 window-rule {
     match app-id=r#"^pcmanfm$"#
+    //open-on-workspace " "
     opacity 0.72
     background-effect {
         xray true
@@ -287,7 +304,7 @@ window-rule {
 // Workspace 1 — Terminal
 window-rule {
     match app-id=r#"^kitty$"#
-    open-on-workspace "1"
+    open-on-workspace " "
     opacity 0.72
     background-effect {
         xray true
@@ -309,7 +326,7 @@ window-rule {
     background-effect {
         blur true
     }
-    open-on-workspace "2"
+    open-on-workspace " "
     open-focused true
     default-column-width { proportion 0.9; }
     // open-maximized-to-edges true
@@ -329,7 +346,7 @@ window-rule {
     match app-id=r#"^labwc$"#
     match app-id=r#"^kitty$"# title=r#"^\[nvim\]$"#
     match app-id=r#"^gvim$"#
-    open-on-workspace "3"
+    //open-on-workspace "3"
     open-focused true
     open-maximized true
 }
@@ -348,7 +365,7 @@ window-rule {
     match app-id=r#"org.pwmt.zathura"#
     match app-id=r#"com.github.johnfactotum.Foliate"#
     match app-id=r#"^org.gnome.Papers$"#
-    open-on-workspace "4"
+    //open-on-workspace "4"
     open-focused true
     default-column-width { proportion 0.75; }
 }
@@ -357,7 +374,7 @@ window-rule {
     match app-id=r#"^com.obsproject.Studio$"#
     match app-id=r#"^vesktop$"#
     match app-id=r#"^org.gnome.Snapshot$"#
-    open-on-workspace "4"
+    //open-on-workspace "4"
     open-focused true
 }
 
@@ -365,7 +382,7 @@ window-rule {
     match app-id=r#"^virt-manager$"# title=r#"^.*QEMU/KVM$"#
     match app-id=r#"^libreoffice.*$"#
     match app-id=r#"^soffice$"#
-    open-on-workspace "4"
+    //open-on-workspace "4"
     open-focused true
     open-maximized true
 }
@@ -423,7 +440,7 @@ binds {
     Mod+O         hotkey-overlay-title="Toggle Overview Mode"     repeat=false       { toggle-overview; }
 
     // ── Session ──
-    Mod+Shift+c                                                                     { close-window; }
+    Mod+q                                                                     { close-window; }
     Mod+Shift+q                                                                     { quit; }
     Mod+F2                                                                          { spawn "swaylock"; }
 
@@ -474,7 +491,7 @@ binds {
     Mod+r                                                                           { switch-preset-column-width; }
 
     // ── Floating ──
-    Mod+f                                                                           { toggle-window-floating; }
+    Mod+Shift+Space                                                                           { toggle-window-floating; }
     Mod+Space                                                                       { switch-focus-between-floating-and-tiling; }
 
     // ── Fullscreen ──
@@ -540,5 +557,5 @@ spawn-at-startup "awww-daemon" "-n" "wallpaper"
 spawn-at-startup "wl-paste" "--type" "text"  "--watch" "cliphist" "store"
 spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
 spawn-at-startup "udiskie" "--tray"
-spawn-at-startup "xwayland-satellite"
+//spawn-at-startup "xwayland-satellite"
 spawn-at-startup "wname" "LG4D"

@@ -62,11 +62,18 @@ local servers = {
 	pyright = {},
 	ts_ls = {},
 	omnisharp = {},
+
+	dartls = {
+		cmd = { "dart", "language-server", "--protocol=lsp" },
+		filetypes = { "dart" },
+	},
+
 	clangd = {
 		capabilities = {
 			offsetEncoding = { "utf-16" },
 		},
 	},
+
 	lua_ls = {
 		settings = {
 			Lua = {

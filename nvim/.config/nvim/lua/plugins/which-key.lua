@@ -73,7 +73,6 @@ wk.add({
 	-- LSP
 	{ "<leader>rn", desc = "Rename symbol" },
 	{ "<leader>ca", desc = "Code action" },
-	{ "<leader>e", desc = "Diagnostics" },
 
 	{ "<leader>f", group = "Find" },
 	{ "<leader>g", group = "Grep" },
