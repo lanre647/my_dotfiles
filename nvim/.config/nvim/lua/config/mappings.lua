@@ -51,8 +51,8 @@ map("n", "<AS-l>", "<Cmd>BufferMoveNext<CR>", { desc = "Move buffer right" })
 -- ─────────────────────────────────────────────
 map("n", "<leader>mj", ":m .+1<CR>==", { desc = "Move line down" })
 map("n", "<leader>mk", ":m .-2<CR>==", { desc = "Move line up" })
-map("i", "<leader>mj", "<Esc>:m .+1<CR>==gi", { desc = "Move line down" })
-map("i", "<leader>mk", "<Esc>:m .-2<CR>==gi", { desc = "Move line up" })
+--[[ map("i", "<leader>mj", "<Esc>:m .+1<CR>==gi", { desc = "Move line down" })
+map("i", "<leader>mk", "<Esc>:m .-2<CR>==gi", { desc = "Move line up" }) ]]
 map("v", "<leader>mj", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
 map("v", "<leader>mk", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 
@@ -136,8 +136,8 @@ map("i", "<C-v>", "<C-r>+", { desc = "Paste from system clipboard (insert)" }) ]
 -- File / Editor Utilities
 -- ─────────────────────────────────────────────
 map({ "n", "i", "v" }, "<C-s>", "<Esc>:w<CR>", { desc = "Save file" })
-map("n", "<C-b>", ":NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
-map("n", "<C-t>", "<cmd>lua require('FTerm').open()<CR>", { desc = "Open terminal" })
+map("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
+map("n", "<leader>t", "<cmd>lua require('FTerm').open()<CR>", { desc = "Open terminal" })
 map("t", "<Esc>", '<C-\\><C-n><CMD>lua require("FTerm").close()<CR>', { desc = "Close terminal" })
 map("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
 map("n", "<leader>s", ":%s//g<Left><Left>", { desc = "Replace all (in file)" })
