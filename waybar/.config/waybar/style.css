@@ -69,6 +69,7 @@ window#waybar {
 #tray,
 #backlight,
 #custom-screen-time,
+#custom-updates,
 #custom-launcher {
   background: rgba(30, 31, 41, 0.7);
   border: 1px solid rgba(137, 180, 250, 0.08);
@@ -88,6 +89,10 @@ window#waybar {
 /* ── module accent colors ───────────────────── */
 #network {
   color: #89dceb;
+}
+
+#custom-screen-time {
+  color: #f9e2af;
 }
 
 #pulseaudio {
