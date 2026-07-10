@@ -8,7 +8,7 @@
  
   "modules-left": ["custom/launcher" ,"niri/workspaces", "niri/window"],
   "modules-center": ["clock"],
-  "modules-right": ["pulseaudio", "backlight", "network", "battery", "custom/screen-time","tray"],
+  "modules-right": ["pulseaudio", "backlight", "network", "battery", "custom/screen-time","custom/updates","tray"],
  
   "custom/launcher": {
         "format": " ",
@@ -72,6 +72,12 @@
     "interval": 60,
 	"return-type": "json"
   },
+  "custom/updates": {
+    "exec": "updates.sh",
+    "interval": 1800,
+    "return-type": "json",
+    "on-click": "kitty -e bash -c 'yay -Syu || sudo pacman -Syu'"
+},
   "battery": {
     "states": {
         "warning": 30,

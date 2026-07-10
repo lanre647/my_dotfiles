@@ -75,11 +75,11 @@ layout {
 
     default-column-width { proportion 0.5; }
 
-    focus-ring {
-        width 2
-        active-color "#89b4fa"   // was #88c0d0, now matches waybar blue
-        inactive-color "#313244" // darker, more contrast
-    }
+focus-ring {
+    width 2
+    active-gradient from="#89b4fa" to="#cba6f7" angle=45 relative-to="workspace-view"
+    inactive-color "#313244"
+}
 
     border {
         off
@@ -550,12 +550,10 @@ binds {
 // ── Autostart ──────────────────────────────────────────────────────────────
 spawn-at-startup "waybar"
 spawn-at-startup "mako"
+spawn-at-startup "niri-screen-time" "-daemon"
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 spawn-at-startup "awww-daemon"
 spawn-at-startup "awww-daemon" "-n" "wallpaper"
-// spawn-at-startup "awww" "img" "/home/lanre/Pictures/wallpapers/32. Catppuccin Mocha.png"
 spawn-at-startup "wl-paste" "--type" "text"  "--watch" "cliphist" "store"
 spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
-spawn-at-startup "udiskie" "--tray"
-//spawn-at-startup "xwayland-satellite"
 spawn-at-startup "wname" "LG4D"
