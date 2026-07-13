@@ -545,6 +545,11 @@ binds {
     Print                                                                           { screenshot; }
     Ctrl+Print                                                                      { screenshot-screen; }
     Alt+Print                                                                       { screenshot-window; }
+
+	// -- Mirroring
+    Mod+P repeat=false {
+        spawn-sh "wl-mirror $(niri msg --json focused-output | jq -r .name)"
+    }
 }
 
 // ── Autostart ──────────────────────────────────────────────────────────────

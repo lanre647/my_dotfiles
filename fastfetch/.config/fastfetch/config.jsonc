@@ -6,8 +6,9 @@
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
 
   "logo": {
-    	"source": "~/.config/fastfetch/images/eos.png",
-    	"type": "auto",
+    	//"source": "$(find \"${XDG_CONFIG_HOME:-$HOME/.config}/fastfetch/images/\" -name \"*.png\" | sort -R | head -1)",
+        "source": "$(fd -e png -e jpg -e jpeg -e webp . \"${XDG_CONFIG_HOME:-$HOME/.config}/fastfetch/images\" | shuf -n 1)",
+    	"type": "kitty",
         //"type": "file",
     	"height": 18,
     	"padding": {
@@ -46,7 +47,6 @@
     },
     {
       "type": "packages",
-      "format": "{} (pacman)",
       "key": " ",
       "keyColor": "34"
     },
@@ -107,13 +107,6 @@
       "keyColor": "34"
     },
     {
-      "type": "command",
-      "key": "󱦟 ",
-      "keyColor": "34",
-      "text": "birth=$(stat -c %W /); now=$(date +%s); echo $(((now - birth) / 86400)) days"
-    },
-
-    {
       "type": "battery",
       "key": "󰁹 ",
       "keyColor": "34"
@@ -121,13 +114,6 @@
     {
       "type": "localip",
       "key": "󰩟 ",
-      "keyColor": "34"
-    },
-
-    {
-      "type": "datetime",
-      "format": "{1} {2}",
-      "key": "󰃭 ",
       "keyColor": "34"
     },
 
