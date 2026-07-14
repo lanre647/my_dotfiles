@@ -187,8 +187,6 @@ alias vdots='cd ~/dotfiles && nvim .'
 # ------------------------------------------------------------
 # CORE ALIASES — Git
 # ------------------------------------------------------------
-alias gst='git status'
-alias glo='git log --oneline --graph --decorate -10'
 alias check-secrets="grep -rE 'API_KEY|SECRET|PASSWORD' ."
 
 function gpush() {
