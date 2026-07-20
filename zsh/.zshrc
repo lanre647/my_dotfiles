@@ -21,7 +21,7 @@ ZSH_THEME=""
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 # CASE_SENSITIVE="true"
 # HYPHEN_INSENSITIVE="true"
-# zstyle ':omz:update' mode disabled
+zstyle ':omz:update' mode disabled
 # zstyle ':omz:update' mode auto
 # zstyle ':omz:update' mode reminder
 # zstyle ':omz:update' frequency 13
@@ -32,10 +32,19 @@ ZSH_THEME=""
 # COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
 # COMPLETION_WAITING_DOTS="true"
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
-# HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="mm/dd/yyyy"
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(
+  git
+  sudo
+  fancy-ctrl-z
+  copypath
+  copyfile
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  zsh-history-substring-search
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -90,8 +99,8 @@ source <(fzf --zsh)
 # ------------------------------------------------------------
 alias c='clear'
 alias v='nvim'
-alias nvim2="NVIM_APPNAME=nvim2 nvim"
 alias vi='nvim'
+alias nvim2="NVIM_APPNAME=nvim2 nvim"
 alias open="termux-open"
 alias ls='eza --icons -F -H --group-directories-first --git -1'
 # alias ls='eza --all --long --group --group-directories-first --icons --header --time-style long-iso'
@@ -207,8 +216,8 @@ function gpush() {
 # CORE ALIASES — Media & Downloads
 # ------------------------------------------------------------
 alias ytdlmp4='yt-dlp -f "bv[ext!=webm][height<=720]+ba/b[ext!=webm][height<=720]" --merge-output-format mp4 -o "%(title)s.%(ext)s"'
-alias getmp3='yt-dlp -x --audio-format mp3 --audio-quality 0 --add-metadata --embed-thumbnail -o "~/storage/downloads/%(title)s.%(ext)s"'
-alias getvid='yt-dlp -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" --add-metadata -o "~/storage/downloads/%(title)s.%(ext)s"'
+alias getmp3='yt-dlp -x --audio-format mp3 --audio-quality 0 --add-metadata --embed-thumbnail -o "~/Downloads/%(title)s.%(ext)s"'
+alias getvid='yt-dlp -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" --add-metadata -o "~/Downloads/%(title)s.%(ext)s"'
 alias play="ffplay -nodisp -autoexit"
 
 # ------------------------------------------------------------
@@ -358,3 +367,11 @@ fastfetch
 
 # Powerlevel10k config
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+set -o vi
+
+# 1. Force zsh-autosuggestions to accept with Ctrl+Space instead of just Right Arrow
+bindkey '^ ' forward-word
+
+# 2. Make History Substring Search work with Up/Down Arrows
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down

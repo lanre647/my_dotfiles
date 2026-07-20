@@ -1,0 +1,45 @@
+#!/bin/bash
+
+screen_time="$(niri-screen-time)"
+text="$(printf '%s' "$screen_time" \
+  | grep 'Summary screen time' \
+  | grep -oP '(?:\d+h\s*)?\d+m(?!s)' \
+  | tr -d '\n')"
+
+summary_line="$(printf '%s' "$screen_time" | grep 'Summary screen time')"
+
+hours="$(printf '%s' "$summary_line" | grep -oP '\d+h')"
+mins="$(printf '%s' "$summary_line" | grep -oP '\d+m(?!s)' | head -1)"
+
+text="${hours} ${mins}"
+text="$(echo "$text" | xargs)"  # trim spaces
+
+[ -z "$text" ] && text="0m"
+
+apps="$(printf '%s\n' "$screen_time" \
+  | sed -n '/^Report period:/,/^Summary screen time:/{
+      /^Report period:/d
+      /^Summary screen time:/d
+      /^[[:space:]]*$/d
+
+      # remove milliseconds
+      s/[[:space:]]*[0-9]\+ms//g
+
+      # if seconds exist but minutes do NOT, insert 0m
+      /[0-9]\+s/{
+        /[0-9]\+m/! s/\([[:space:]]*\)[0-9]\+s/\10m/
+      }
+
+      # remove remaining seconds
+      s/[[:space:]]*[0-9]\+s//g
+
+      p
+    }')"
+
+tooltip="$(printf '%s' "$apps" | sed ':a;N;$!ba;s/\n/\r/g')"
+
+jq -n \
+  --arg text "$text" \
+  --arg tooltip "$tooltip" \
+  '{text: $text, tooltip: $tooltip}' \
+| jq --unbuffered --compact-output

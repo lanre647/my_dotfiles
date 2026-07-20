@@ -1,0 +1,25 @@
+#!/bin/sh
+
+choice=$(printf "  Lock\n  Suspend\n  Logout\n  Reboot\n  Shutdown\n  Cancel" \
+    | dmenu -i -p "Power")
+
+case "$choice" in
+    "  Lock")
+        betterlockscreen -l
+        ;;
+    "  Suspend")
+        betterlockscreen -s
+        ;;
+    "  Logout")
+        pkill dwm
+        ;;
+    "  Reboot")
+        systemctl reboot
+        ;;
+    "  Shutdown")
+        systemctl poweroff
+        ;;
+    *)
+        exit 0
+        ;;
+esac

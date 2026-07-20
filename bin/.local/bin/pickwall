@@ -1,0 +1,24 @@
+#!/bin/bash
+
+DIR="$HOME/Pictures/wallpapers"
+
+#selected=$(
+#find "$DIR" -type f | fzf \
+#  --preview='
+#    kitten icat \
+#      --stdin=no \
+#      --clear \
+#      --scale-up \
+#      --place=80x24@0x0 \
+#      "{}" > /dev/tty
+#  ' \
+#  --preview-window=right:60%
+#)
+selected=$(
+find "$DIR" -type f | fzf \
+  --preview='chafa --size=$(( $FZF_PREVIEW_COLUMNS ))x$(( $FZF_PREVIEW_LINES )) -- {}' \
+  --preview-window=right:60%
+)
+clear
+
+[ -n "$selected" ] && feh --bg-fill "$selected"

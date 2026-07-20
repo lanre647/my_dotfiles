@@ -1,0 +1,11 @@
+#!/bin/bash
+
+WALLDIR="$HOME/Pictures/wallpapers"
+
+chosen=$(find "$WALLDIR" -type f \
+    | sed "s|$WALLDIR/||" \
+    | dmenu -i -l 20 -p "Wallpaper:")
+
+[ -z "$chosen" ] && exit
+
+feh --bg-fill "$WALLDIR/$chosen"

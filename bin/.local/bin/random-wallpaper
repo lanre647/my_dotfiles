@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Path to your wallpaper directory
+WALLPAPER_DIR="$HOME/Pictures/wallpapers"
+
+# Select a random wallpaper
+WALLPAPER=$(find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.png" -o -name "*.jpeg" -o -name "*.webp" \) | shuf -n 1)
+
+# List of available swww animations
+TRANSITIONS=("wipe" "outer" "random" "zoom" "fade" "wave" "grow" "center")
+# Select a random transition style
+ANIME=${TRANSITIONS[$RANDOM % ${#TRANSITIONS[@]}]}
+
+# Apply the wallpaper with random animation attributes
+awww img "$WALLPAPER" \
+    --transition-type "$ANIME" \
+    --transition-fps 60 \
+    --transition-duration 2 \
+    --transition-wave "20,20"
