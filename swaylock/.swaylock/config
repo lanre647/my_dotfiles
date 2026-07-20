@@ -1,0 +1,40 @@
+image=/home/lanre/Pictures/wallpapers/"32. Catppuccin Mocha.png"
+ignore-empty-password
+font=JetBrains Mono Nerd Font
+font-size=24
+indicator-radius=100
+indicator-thickness=10
+line-uses-inside
+
+# Inner circle
+inside-color=1e1e2e
+inside-clear-color=f9e2af33
+inside-caps-lock-color=cba4f733
+inside-ver-color=89b4fa33
+inside-wrong-color=f38ba833
+
+# Outer ring
+ring-color=89b4fa
+ring-clear-color=f9e2af
+ring-caps-lock-color=cba4f7
+ring-ver-color=a6e3a1
+ring-wrong-color=f38ba8
+
+# Highlights
+key-hl-color=a6e3a1
+bs-hl-color=fab387
+
+# Text
+text-color=cdd6f4
+text-clear-color=f9e2af
+text-caps-lock-color=cba4f7
+text-ver-color=89b4fa
+text-wrong-color=f38ba8
+
+# Lines/separator (invisible)
+line-color=00000000
+line-clear-color=00000000
+line-caps-lock-color=00000000
+line-ver-color=00000000
+line-wrong-color=00000000
+separator-color=00000000

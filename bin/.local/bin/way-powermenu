@@ -1,0 +1,25 @@
+#!/bin/sh
+
+choice=$(printf "  Lock\n  Suspend\n  Logout\n  Reboot\n  Shutdown\n  Cancel" \
+    | fuzzel --dmenu --lines=6 --prompt="Power:")
+
+case "$choice" in
+    "  Lock")
+        swaylock
+        ;;
+    "  Suspend")
+        systemctl suspend
+		;;
+    "  Logout")
+        pkill niri
+        ;;
+    "  Reboot")
+        systemctl reboot
+        ;;
+    "  Shutdown")
+        systemctl poweroff
+        ;;
+    *)
+        exit 0
+        ;;
+esac

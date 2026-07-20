@@ -435,13 +435,14 @@ binds {
     Mod+v                                                                           { spawn "~/.local/bin/cliphist-picker"; }
     Mod+Comma     hotkey-overlay-title="Show emojis: fuzzel"     repeat=false       { spawn "bash" "-c" "pkill fuzzel || fuzzel-emoji"; }
     Mod+Shift+b   hotkey-overlay-title="Toggle bar: waybar"      repeat=false       { spawn "toggle-waybar"; }
-    Mod+w         repeat=false                                                      { spawn "kitty" "--app-id" "wallpaper-picker" "-e" "/home/lanre/scripts/wallpaper-picker.sh"; }
+    Mod+w         repeat=false                                                      { spawn "kitty" "--app-id" "wallpaper-picker" "-e" "/home/lanre/dotfiles/scripts/wallpaper-picker.sh"; }
     Mod+Alt+w     hotkey-overlay-title="Random Wallpaper & Animation"               { spawn "random-wallpaper"; }
     Mod+O         hotkey-overlay-title="Toggle Overview Mode"     repeat=false       { toggle-overview; }
 
     // ── Session ──
     Mod+q                                                                     { close-window; }
-    Mod+Shift+q                                                                     { quit; }
+    //Mod+Shift+q                                                                     { quit; }
+    Mod+Shift+q                                                                     { spawn "way-powermenu"; }
     Mod+F2                                                                          { spawn "swaylock"; }
 
     // ── Focus movement (vim-style) ──
@@ -562,3 +563,6 @@ spawn-at-startup "awww-daemon" "-n" "wallpaper"
 spawn-at-startup "wl-paste" "--type" "text"  "--watch" "cliphist" "store"
 spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
 spawn-at-startup "wname" "LG4D"
+xwayland-satellite {
+		off
+}

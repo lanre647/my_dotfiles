@@ -1,4 +1,14 @@
 #!/bin/bash
+#xrandr \
+#    --output eDP-1 --mode 1366x768 --pos 0x0 \
+#    --output HDMI-1 --mode 1920x1080 \
+#    --scale 0.6667x0.6667 \
+#    --pos 1366x0
+
+xrandr \
+    --output eDP-1 --mode 1366x768 --pos 0x0 \
+    --output HDMI-1 --mode 1920x1080 \
+    --pos 1366x0
 # Start the Polkit agent for those EOS apps
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
