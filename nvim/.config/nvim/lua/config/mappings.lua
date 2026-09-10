@@ -1,6 +1,5 @@
 -- keymaps.lua
 -- All keybindings, organized by category.
--- Ctrl-prefixed binds are registered with which-key for discoverability.
 
 local function map(m, k, v, opts)
 	local options = { noremap = true, silent = true }
@@ -24,9 +23,11 @@ map("n", "<S-l>", ":bnext<CR>", { desc = "Next buffer" })
 map("n", "<S-h>", ":bprevious<CR>", { desc = "Previous buffer" })
 map("n", "<C-PageUp>", ":bprevious<CR>", { desc = "Previous open file" })
 map("n", "<C-PageDown>", ":bnext<CR>", { desc = "Next open file" })
-map("n", "<leader>q", ":BufferClose<CR>", { desc = "Close buffer" })
-map("n", "<leader>Q", ":BufferClose!<CR>", { desc = "Force close buffer" })
-map("n", "<leader>U", ":bufdo bd<CR>", { desc = "Close all buffers" })
+map("n", "<leader>bd", ":BufferClose<CR>", { desc = "Delete buffer" })
+map("n", "<leader>bD", ":BufferClose!<CR>", { desc = "Force delete buffer" })
+map("n", "<leader>ba", ":bufdo bd<CR>", { desc = "Delete all buffers" })
+map("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
+map("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" })
 map("n", "<leader>vs", ":vsplit<CR>:bnext<CR>", { desc = "Vertical split + open next buffer" })
 
 -- Buffer goto
@@ -93,8 +94,6 @@ map("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Increase window width
 -- ─────────────────────────────────────────────
 -- FZF / Fuzzy Find / Grep
 -- ─────────────────────────────────────────────
-map("n", "<leader>ff", ":lua require('fzf-lua').files()<CR>", { desc = "Find files (cwd)" })
-map("n", "<C-p>", ":lua require('fzf-lua').files()<CR>", { desc = "Find files (cwd)" })
 map("n", "<leader>fh", ":lua require('fzf-lua').files({ cwd = '~/' })<CR>", { desc = "Find files (home)" })
 map("n", "<leader>fc", ":lua require('fzf-lua').files({ cwd = '~/.config' })<CR>", { desc = "Find files (~/.config)" })
 map(
@@ -105,8 +104,6 @@ map(
 )
 map("n", "<leader>fa", ":lua require('fzf-lua').files({ cwd = '..' })<CR>", { desc = "Find files (parent dir)" })
 map("n", "<leader>fr", ":lua require('fzf-lua').resume()<CR>", { desc = "Resume last search" })
-map("n", "<leader>fg", ":lua require('fzf-lua').grep()<CR>", { desc = "Grep" })
-map("n", "<C-F>", ":lua require('fzf-lua').grep()<CR>", { desc = "Grep" })
 map("n", "<leader>G", ":lua require('fzf-lua').grep_cword()<CR>", { desc = "Grep word under cursor" })
 
 map("n", "<leader>fs", function()
@@ -136,19 +133,16 @@ map("i", "<C-v>", "<C-r>+", { desc = "Paste from system clipboard (insert)" }) ]
 -- File / Editor Utilities
 -- ─────────────────────────────────────────────
 map({ "n", "i", "v" }, "<C-s>", "<Esc>:w<CR>", { desc = "Save file" })
-map("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
-map("n", "<leader>t", "<cmd>lua require('FTerm').open()<CR>", { desc = "Open terminal" })
 map("t", "<Esc>", '<C-\\><C-n><CMD>lua require("FTerm").close()<CR>', { desc = "Close terminal" })
 map("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
-map("n", "<leader>s", ":%s//g<Left><Left>", { desc = "Replace all (in file)" })
-map("n", "<leader>p", switch_theme, { desc = "Cycle themes" })
-map("n", "<leader>P", ":PlugInstall<CR>", { desc = "Run PlugInstall" })
+map("n", "<leader>sr", ":%s//g<Left><Left>", { desc = "Replace all (in file)" })
+map("n", "<leader>pt", switch_theme, { desc = "Cycle themes" })
 map("n", "<leader>x", "<cmd>!chmod +x %<CR>", { desc = "Make file executable" })
 map("n", "<leader>mv", ":!mv % ", { desc = "Move file" })
 map("n", "<leader>R", "<cmd>restart<cr>", { desc = "Hot reload Neovim config" })
 map("n", "<leader>u", "<cmd>Undotree<cr>", { desc = "Toggle undo tree" })
 map("n", "<leader>W", ":set wrap!<CR>", { desc = "Toggle line wrap" })
-map("n", "<leader>l", ":Twilight<CR>", { desc = "Toggle Twilight (focus dim)" })
+map("n", "<leader>lt", ":Twilight<CR>", { desc = "Toggle Twilight (focus dim)" })
 map("v", "<leader>i", "=gv", { desc = "Auto-indent selection" })
 
 -- ─────────────────────────────────────────────
@@ -212,7 +206,7 @@ vim.keymap.set("n", "<leader>z", toggle_zen_mode, { desc = "Toggle Zen Mode" })
 -- ─────────────────────────────────────────────
 -- Line Numbers
 -- ─────────────────────────────────────────────
-map("n", "<leader>nn", function()
+map("n", "<leader>n", function()
 	if vim.wo.relativenumber then
 		vim.wo.relativenumber = false
 		vim.wo.number = true
@@ -303,8 +297,6 @@ if ok then
 		{ "<C-P>", desc = "Command palette" },
 		{ "<C-F>", desc = "Grep" },
 		{ "<C-s>", desc = "Save file" },
-		{ "<C-b>", desc = "Toggle file explorer" },
-		{ "<C-t>", desc = "Open terminal" },
 		{ "<C-\\>", desc = "Split vertically" },
 		-- { "<C-S-\\>", desc = "Split horizontally" },
 		{ "<C-h>", desc = "Move to left split" },

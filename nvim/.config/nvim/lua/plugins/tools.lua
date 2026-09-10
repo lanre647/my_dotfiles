@@ -1,0 +1,59 @@
+-- Navigation & Tools: FZF, NvimTree, Terminal
+
+return {
+	-- FZF-Lua (fuzzy finder)
+	{
+		"ibhagwan/fzf-lua",
+		lazy = true,
+		cmd = "FzfLua",
+		keys = {
+			{ "<leader>ff", ":lua require('fzf-lua').files()<CR>", desc = "Find files" },
+			{ "<C-p>", ":lua require('fzf-lua').files()<CR>", desc = "Find files" },
+			{ "<leader>fg", ":lua require('fzf-lua').grep()<CR>", desc = "Grep" },
+			{ "<C-F>", ":lua require('fzf-lua').grep()<CR>", desc = "Grep" },
+		},
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("plugins.config.fzf-lua")
+		end,
+	},
+
+	-- NvimTree (file explorer)
+	{
+		"nvim-tree/nvim-tree.lua",
+		lazy = false,
+		cmd = "NvimTreeToggle",
+		keys = {
+			{ "<leader>e", ":NvimTreeToggle<CR>", desc = "Toggle file explorer" },
+		},
+		config = function()
+			require("plugins.config.nvim-tree")
+		end,
+	},
+
+	-- Floating Terminal
+	{
+		"numToStr/FTerm.nvim",
+		lazy = true,
+		cmd = "FTerm",
+		keys = {
+			{ "<leader>t", "<cmd>lua require('FTerm').open()<CR>", desc = "Open terminal" },
+		},
+		config = function()
+			require("FTerm").setup()
+		end,
+	},
+
+	-- Plenary (dependency for many plugins)
+	{
+		"nvim-lua/plenary.nvim",
+		lazy = true,
+	},
+
+	-- Fuzzy dependencies
+	{
+		"romgrk/fzy-lua-native",
+		lazy = true,
+		build = "make",
+	},
+}

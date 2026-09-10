@@ -37,7 +37,8 @@ clipmenud &
 udiskie &
 
 # Start the wallpaper
-feh --bg-fill /home/lanre/Pictures/wallpapers/monster-energy-anime_1.webp
+# feh --bg-fill /home/lanre/Pictures/wallpapers/monster-energy-anime_1.webp
+feh --bg-fill /home/lanre/Pictures/wallpapers/linus-torvalds.png
 # Set the wallpaper 
 #while true; do
 #feh --bg-fill "$(find ~/Pictures/wallpapers -type f | shuf -n 1)"

@@ -256,7 +256,7 @@ window-rule {
 window-rule {
     match app-id=r#"^thunar$"#
     match app-id=r#"^org.gnome.Nautilus$"#
-    //match app-id=r#"^pcmanfm$"#
+    match app-id=r#"^pcmanfm$"#
     min-width 800
     max-width 1176
     min-height 600
@@ -293,6 +293,7 @@ window-rule {
 // PCManFM — translucent with blur
 window-rule {
     match app-id=r#"^pcmanfm$"#
+    match app-id=r#"^thunar$"#
     //open-on-workspace " "
     opacity 0.72
     background-effect {
@@ -322,7 +323,7 @@ window-rule {
     match app-id=r#"librewolf$"#
     match app-id=r#"google-chrome$"#
     match app-id=r#"firefox$"#
-    opacity 0.72
+    opacity 0.92
     background-effect {
         blur true
     }
@@ -387,6 +388,23 @@ window-rule {
     open-maximized true
 }
 
+// Prevent OBS control window from getting auto-tiled too narrow
+window-rule {
+    match app-id=r#"^com\.obsproject\.Studio$"#
+
+    // Give OBS a comfortable starting width on the ribbon
+    default-column-width { proportion 0.5; }
+}
+
+// OPTIONAL: Prevent specific sensitive apps from showing up in OBS screen capture
+window-rule {
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+    match app-id=r#"^Bitwarden$"#
+
+    // OBS will record a black box for this window
+    block-out-from "screen-capture"
+}
+
 // QtScrcpy
 window-rule {
     match app-id=r#"QtScrcpy$"# title="^Phone-+"
@@ -429,7 +447,7 @@ binds {
     Mod+Shift+Slash                                                                 { show-hotkey-overlay; }
     Mod+Return                                                                      { spawn "kitty"; }
     Mod+b                                                                           { spawn "firefox"; }
-    Mod+e                                                                           { spawn "pcmanfm"; }
+    Mod+e                                                                           { spawn "thunar"; }
     Mod+d                                                                           { spawn "fuzzel"; }
     Mod+s                                                                           { spawn "kitty" "nvim" "/home/lanre/.config/niri/config.kdl"; }
     Mod+v                                                                           { spawn "~/.local/bin/cliphist-picker"; }
@@ -556,6 +574,7 @@ binds {
 // ── Autostart ──────────────────────────────────────────────────────────────
 spawn-at-startup "waybar"
 spawn-at-startup "mako"
+spawn-at-startup "udiskie" "--smart-tray"
 spawn-at-startup "niri-screen-time" "-daemon"
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 spawn-at-startup "awww-daemon"
@@ -563,6 +582,10 @@ spawn-at-startup "awww-daemon" "-n" "wallpaper"
 spawn-at-startup "wl-paste" "--type" "text"  "--watch" "cliphist" "store"
 spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
 spawn-at-startup "wname" "LG4D"
+spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP" "NIRI_SOCKET"
+spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
+spawn-at-startup "/usr/lib/xdg-desktop-portal-gnome" // Or xdg-desktop-portal-gtk
+spawn-at-startup "/usr/lib/xdg-desktop-portal"
 xwayland-satellite {
 		off
 }

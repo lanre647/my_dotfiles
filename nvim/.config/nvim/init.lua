@@ -1,122 +1,89 @@
--- my flavour of bread's neovim config
--- keymaps are in lua/config/mappings.lua
--- install a patched font & ensure your terminal supports glyphs
--- enjoy :D
+-- Bread's Neovim Config
+-- Initially Bread's but This Neovim configuration has grown on me 😅😅😅😅
+-- Fast, modular, and IDE-level features
 
--- auto install vim-plug and plugins, if not found
-local data_dir = vim.fn.stdpath("data")
-if vim.fn.empty(vim.fn.glob(data_dir .. "/site/autoload/plug.vim")) == 1 then
-	vim.cmd(
-		"silent !curl -fLo "
-			.. data_dir
-			.. "/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-	)
-	vim.o.runtimepath = vim.o.runtimepath
-	vim.cmd("autocmd VimEnter * PlugInstall --sync | source $MYVIMRC")
-end
-
-local vim = vim
-local Plug = vim.fn["plug#"]
-
+-- Performance tracking
 vim.g.start_time = vim.fn.reltime()
-vim.loader.enable() --  SPEEEEEEEEEEED 
-vim.call("plug#begin")
+vim.loader.enable() -- SPEED
 
-Plug("folke/tokyonight.nvim", { ["as"] = "tokyonight" })
-Plug("catppuccin/nvim", { ["as"] = "catppuccin" })
-Plug("ellisonleao/gruvbox.nvim", { ["as"] = "gruvbox" })
-Plug("NLKNguyen/papercolor-theme", { ["as"] = "PaperColor" })
-Plug("eandrju/cellular-automaton.nvim") --cellular-automaton
--- Plug("uZer/pywal16.nvim", { ["as"] = "pywal16" }) --or, pywal colorscheme
-Plug("nvim-lualine/lualine.nvim") --statusline
--- Plug("gelguy/wilder.nvim")
-Plug("romgrk/fzy-lua-native", { ["do"] = "make" })
-Plug("nvim-tree/nvim-web-devicons") --pretty icons
-Plug("folke/which-key.nvim") --mappings popup
-Plug("romgrk/barbar.nvim") --bufferline
-Plug("goolord/alpha-nvim") --pretty startup
-Plug("nvim-treesitter/nvim-treesitter") --improved syntax
-Plug("mfussenegger/nvim-lint") --async linter
-Plug("nvim-tree/nvim-tree.lua") --file explorer
-Plug("windwp/nvim-autopairs") --autopairs
-Plug("lukas-reineke/indent-blankline.nvim") --Indent Line
-Plug("lewis6991/gitsigns.nvim") --git
-Plug("numToStr/Comment.nvim") --easier comments
-Plug("NvChad/nvim-colorizer.lua") --color highlight
-Plug("ibhagwan/fzf-lua") --fuzzy finder and grep
-Plug("numToStr/FTerm.nvim") --floating terminal
-Plug("ron-rs/ron.vim") --ron syntax highlighting
-Plug("MeanderingProgrammer/render-markdown.nvim") --render md inline
-Plug("emmanueltouzery/decisive.nvim") --view csv files
-Plug("folke/twilight.nvim") --surrounding dim
-Plug("neovim/nvim-lspconfig") --lsp support
-Plug("williamboman/mason.nvim")
-Plug("williamboman/mason-lspconfig.nvim")
--- code completionn
-Plug("hrsh7th/nvim-cmp")
-Plug("hrsh7th/cmp-nvim-lsp")
--- debuggers start
-Plug("mfussenegger/nvim-dap")
-Plug("nvim-neotest/nvim-nio")
-Plug("rcarriga/nvim-dap-ui")
--- Python
-Plug("theHamsta/nvim-dap-virtual-text")
-Plug("mfussenegger/nvim-dap-python")
--- debuggers stop
-Plug("L3MON4D3/LuaSnip")
-Plug("saadparwaiz1/cmp_luasnip")
-Plug("hrsh7th/cmp-path")
-Plug("hrsh7th/cmp-buffer")
-Plug("hrsh7th/cmp-cmdline")
-Plug("stevearc/conform.nvim") -- formating
-Plug("rcarriga/nvim-notify") -- notification
-Plug("rmagatti/auto-session") -- session management
-vim.call("plug#end")
-require("plugins.colorscheme") -- setup themes first
--- move config and plugin config to alternate files
-require("config.theme")
-require("config.mappings")
+-- Leader key setup (BEFORE lazy.nvim)
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable",
+		lazypath,
+	})
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- Load core configuration
 require("config.options")
+require("config.theme")
 require("config.autocmd")
+require("config.mappings")
 
-require("plugins.alpha")
--- require("plugins.autopairs")
-require("plugins.barbar")
-require("plugins.colorizer")
-require("plugins.comment")
-require("plugins.ibl")
--- require("plugins.fterm")
--- require("plugins.fzf-lua")
-require("plugins.gitsigns")
-require("plugins.lualine")
-require("plugins.nvim-lint")
--- require("plugins.nvim-tree")
-require("plugins.render-markdown")
--- require("plugins.treesitter")
--- require("plugins.twilight")
--- require("plugins.which-key")
-require("plugins.cmp")
-require("plugins.lsp")
-require("plugins.conform")
-require("plugins.dap")
--- require("plugins.wilder")
-require("plugins.notify")
-require("plugins.session")
--- require("vim._core.ui2").enable()
+-- Initialize lazy.nvim with specs from lua/plugins/
+require("lazy").setup("plugins", {
+	defaults = {
+		lazy = true, -- Default to lazy loading
+		version = false, -- Use latest version by default
+	},
+	install = {
+		missing = true,
+		colorscheme = { "catppuccin" },
+	},
+	change_detection = {
+		enabled = true,
+		notify = true,
+	},
+	ui = {
+		icons = {
+			cmd = "⌘",
+			config = "🛠",
+			event = "📅",
+			favorite = "⭐",
+			ft = "📂",
+			init = "⚙",
+			keys = "🔑",
+			lazy = "💤",
+			loaded = "✓",
+			not_loaded = "✗",
+			plugin = "🔌",
+			runtime = "💻",
+			require = "🌙",
+			source = "📄",
+			start = "🚀",
+			task = "📌",
+			list = {
+				"●",
+				"➜",
+				"★",
+				"‣",
+			},
+		},
+	},
+})
+
+-- Load theme after lazy.nvim setup
 vim.defer_fn(function()
-	--defer non-essential configs,
-	--purely for experimental purposes:
-	--this only makes a difference of +-10ms on initial startup
-	require("plugins.autopairs")
-	require("plugins.fterm")
-	require("plugins.fzf-lua")
-	require("plugins.nvim-tree")
-	require("plugins.treesitter")
-	require("plugins.twilight")
-	require("plugins.which-key")
-end, 100)
--- Load Neovim 0.12's built-in undo visualizer
-vim.cmd("packadd nvim.undotree")
--- Load Neovim 0.12's built-in directory/file diff tool
-vim.cmd("packadd nvim.difftool")
-load_theme()
+	load_theme()
+end, 10)
+
+-- Display startup time (optional)
+vim.api.nvim_create_autocmd("VimEnter", {
+	once = true,
+	callback = function()
+		local time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
+		vim.g.startup_time = time
+		-- Uncomment to see startup time:
+		vim.notify("Neovim startup time: " .. time .. "ms", vim.log.levels.INFO)
+	end,
+})

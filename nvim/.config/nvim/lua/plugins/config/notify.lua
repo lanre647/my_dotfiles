@@ -3,8 +3,8 @@ require("notify").setup({
 	fps = 60,
 	level = 2,
 	minimum_width = 50,
-	render = "compact", -- "default" | "minimal" | "simple" | "compact"
-	stages = "fade", -- "fade" | "slide" | "fade_in_slide_out" | "static"
+	render = "compact",
+	stages = "fade",
 	timeout = 3000,
 	top_down = true,
 })
