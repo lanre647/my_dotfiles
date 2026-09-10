@@ -48,6 +48,16 @@ for k, v in pairs(options) do
 	vim.opt[k] = v
 end
 
+vim.opt.sessionoptions:append("localoptions")
+
 vim.diagnostic.config({
 	signs = true,
+	virtual_text = {
+		prefix = "●",
+		spacing = 2,
+		source = "if_many",
+	},
+	underline = true,
+	severity_sort = true,
+	update_in_insert = true,
 })

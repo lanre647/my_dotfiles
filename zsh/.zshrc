@@ -375,3 +375,16 @@ bindkey '^ ' forward-word
 # 2. Make History Substring Search work with Up/Down Arrows
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+
+# Flutter
+export PATH="$HOME/.local/share/flutter/bin:$PATH"
+
+# Android SDK (Local user directory)
+export ANDROID_HOME="$HOME/Android/Sdk"
+export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/bin"
+export PATH="$PATH:$ANDROID_HOME/platform-tools"
+export PATH="$PATH:$ANDROID_HOME/build-tools/latest"
+export PATH="$PATH:$ANDROID_HOME/build-tools/28.0.3"
+
+# Browser
+export CHROME_EXECUTABLE=/usr/bin/chromium

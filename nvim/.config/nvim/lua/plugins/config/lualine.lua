@@ -1,10 +1,11 @@
+-- Lualine Configuration
 local lualine = require("lualine")
 
 local diagnostics = {
 	"diagnostics",
 	sources = { "nvim_diagnostic" },
 	sections = { "error", "warn" },
-	symbols = { error = " ", warn = " " },
+	symbols = { error = "E ", warn = "W " },
 	colored = true,
 	update_in_insert = true,
 	always_visible = true,
@@ -16,25 +17,25 @@ local diagnostics = {
 local diff = {
 	"diff",
 	colored = true,
-	symbols = { added = " ", modified = " ", removed = " " },
+	symbols = { added = "+ ", modified = "~ ", removed = "- " },
 }
 
 local mode = {
 	"mode",
 	fmt = function(str)
-		return "-- " .. str .. " --"
+		return str
 	end,
 }
 
 local branch = {
 	"branch",
-	icon = "",
+	icon = "",
 }
 
 local progress = function()
 	local current_line = vim.fn.line(".")
 	local total_lines = vim.fn.line("$")
-	local chars = { "", "", "" } --adding more chars will still work
+	local chars = { "", "", "" }
 	local line_ratio = current_line / total_lines
 	local index = math.ceil(line_ratio * #chars)
 	return chars[index] .. " " .. math.floor(line_ratio * 100) .. "%%"
@@ -45,29 +46,28 @@ lualine.setup({
 		icons_enabled = true,
 		theme = nil, -- let theme.lua handle it
 		component_separators = { left = "", right = "" },
-		section_separators = { left = "", right = "" },
+		section_separators = { left = "", right = "" },
 		disabled_filetypes = { "alpha", "dashboard" },
 		always_divide_middle = true,
-		refresh = {
-			statusline = 100,
-			tabline = 1000,
-			winbar = 1000,
-		},
 	},
-
 	sections = {
-		lualine_a = { branch },
-		lualine_b = { mode },
-		lualine_c = { diagnostics },
-		lualine_x = { diff, "fileformat", "filetype" },
-		lualine_y = { "location" },
-		lualine_z = { progress },
+		lualine_a = { mode },
+		lualine_b = { branch, diff },
+		lualine_c = { { "filename", path = 1 } },
+		lualine_x = { diagnostics, "encoding", "fileformat", "filetype" },
+		lualine_y = { progress },
+		lualine_z = { "location" },
 	},
-	extensions = { "nvim-tree" },
+	inactive_sections = {
+		lualine_a = {},
+		lualine_b = {},
+		lualine_c = { { "filename", path = 1 } },
+		lualine_x = { "location" },
+		lualine_y = {},
+		lualine_z = {},
+	},
+	tabline = {},
+	winbar = {},
+	inactive_winbar = {},
+	extensions = {},
 })
-
--- transparency override if using old pywal, shouldn't be needed with 16
--- vim.api.nvim_set_hl(0, "lualine_c_normal", { bg = "none" })
--- vim.api.nvim_set_hl(0, "lualine_c_inactive", { bg = "none" })
--- vim.api.nvim_set_hl(0, "lualine_x_normal", { bg = "none" })
--- vim.api.nvim_set_hl(0, "lualine_x_inactive", { bg = "none" })

@@ -1,3 +1,4 @@
+-- Conform (Code Formatter) Configuration
 local is_termux = vim.env.PREFIX and vim.env.PREFIX:match("termux")
 
 require("conform").setup({
