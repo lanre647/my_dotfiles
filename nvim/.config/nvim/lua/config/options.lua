@@ -1,46 +1,73 @@
+local default_plugins = {
+	"2html_plugin",
+	"getscript",
+	"getscriptPlugin",
+	"gzip",
+	"logipat",
+	"netrw",
+	"netrwPlugin",
+	"netrwSettings",
+	"netrwFileHandlers",
+	"matchit",
+	"tar",
+	"tarPlugin",
+	"rrhelper",
+	"spellfile_plugin",
+	"vimball",
+	"vimballPlugin",
+	"zip",
+	"zipPlugin",
+	"tutor",
+	"rplugin",
+	"synmenu",
+	"optwin",
+	"compiler",
+	"bugreport",
+}
+
+for _, plugin in ipairs(default_plugins) do
+	vim.g["loaded_" .. plugin] = 1
+end
+
 local options = {
 	laststatus = 3,
-	ruler = false, --disable extra numbering
-	showmode = false, --not needed due to lualine
+	ruler = false,
+	showmode = false,
 	showcmd = false,
-	wrap = true, --toggle bound to leader W
-	mouse = "a", --enable mouse
-	clipboard = "unnamedplus", --system clipboard integration
-	history = 100, --command line history
-	swapfile = false, --swap just gets in the way, usually
+	wrap = true,
+	mouse = "a",
+	clipboard = "unnamedplus",
+	history = 100,
+	swapfile = false,
 	backup = false,
-	undofile = true, --undos are saved to file
-	cursorline = true, --highlight line
-	ttyfast = true, --faster scrolling
+	undofile = true,
+	cursorline = true,
+	ttyfast = true,
 	smoothscroll = true,
-	title = true, --automatic window titlebar
+	title = true,
 
 	breakindent = true,
-	number = true, --numbering lines
-	relativenumber = true, --toggle bound to leader nn
+	number = true,
+	relativenumber = true,
 	numberwidth = 4,
 
-	smarttab = true, --indentation stuff
+	smarttab = true,
 	cindent = true,
 	autoindent = false,
-	tabstop = 4, --visual width of tab
+	tabstop = 4,
 
-	foldmethod = "expr",
-	foldlevel = 99, --disable folding, lower #s enable
-	foldexpr = "nvim_treesitter#foldexpr()",
+	foldmethod = "manual", -- Default to manual at startup; Treesitter sets foldexpr per-buffer
+	foldlevel = 99,
 
 	termguicolors = true,
 
-	ignorecase = true, --ignore case while searching
-	smartcase = true, --but do not ignore if caps are used
+	ignorecase = true,
+	smartcase = true,
 
-	conceallevel = 2, --markdown conceal
+	conceallevel = 2,
 	concealcursor = "nc",
 
-	splitkeep = "screen", --stablizie window open/close
-
-	-- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
-	-- instead raise a dialog asking if you wish to save the current file(s)
+	splitkeep = "screen",
 	confirm = true,
 }
 

@@ -10,7 +10,6 @@ return {
 			{ "<leader>ff", ":lua require('fzf-lua').files()<CR>", desc = "Find files" },
 			{ "<C-p>", ":lua require('fzf-lua').files()<CR>", desc = "Find files" },
 			{ "<leader>fg", ":lua require('fzf-lua').grep()<CR>", desc = "Grep" },
-			{ "<C-F>", ":lua require('fzf-lua').grep()<CR>", desc = "Grep" },
 		},
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
@@ -21,10 +20,9 @@ return {
 	-- NvimTree (file explorer)
 	{
 		"nvim-tree/nvim-tree.lua",
-		lazy = false,
-		cmd = "NvimTreeToggle",
+		cmd = { "NvimTreeToggle", "NvimTreeFocus" },
 		keys = {
-			{ "<leader>e", ":NvimTreeToggle<CR>", desc = "Toggle file explorer" },
+			{ "<leader>e", "<cmd>NvimTreeToggle<CR>", desc = "Toggle file explorer" },
 		},
 		config = function()
 			require("plugins.config.nvim-tree")

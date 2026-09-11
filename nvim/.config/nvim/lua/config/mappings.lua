@@ -285,7 +285,7 @@ map("n", "]c", ":lua require('decisive').align_csv_next_col()<cr>", { desc = "CS
 -- ─────────────────────────────────────────────
 -- Which-key: register Ctrl groups for discoverability
 -- ─────────────────────────────────────────────
-local ok, wk = pcall(require, "which-key")
+--[[ local ok, wk = pcall(require, "which-key")
 if ok then
 	wk.add({
 		-- Groups
@@ -315,4 +315,4 @@ if ok then
 		{ "<C-x>", mode = "v", desc = "Cut to system clipboard" },
 		{ "<C-v>", desc = "Paste from system clipboard" },
 	})
-end
+end ]]

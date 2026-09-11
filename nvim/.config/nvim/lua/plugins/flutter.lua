@@ -6,6 +6,12 @@ return {
 		"nvim-flutter/flutter-tools.nvim",
 		lazy = true,
 		ft = "dart",
+		cmd = {
+			"FlutterDevices",
+			"FlutterRun",
+			"FlutterDebug",
+			"FlutterPubGet",
+		},
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"stevearc/dressing.nvim",

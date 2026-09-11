@@ -1,10 +1,49 @@
--- UI Plugins: Lualine, Barbar, Alpha, Which-Key, Twilight
-
+-- lua/plugins/ui.lua
 return {
+	-- Active Colorscheme (Must load early)
+	{
+		"catppuccin/nvim",
+		name = "catppuccin",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("plugins.config.colorscheme")
+			vim.cmd.colorscheme("catppuccin")
+		end,
+	},
+
+	-- Inactive Colorschemes (Lazy load)
+	{
+		"folke/tokyonight.nvim",
+		lazy = true,
+		opts = { style = "storm" },
+	},
+	{
+		"ellisonleao/gruvbox.nvim",
+		lazy = true,
+		opts = {
+			terminal_colors = true,
+			undercurl = true,
+			underline = true,
+			bold = true,
+			italic = {
+				strings = true,
+				emphasis = true,
+				comments = true,
+				operators = false,
+				folds = true,
+			},
+		},
+	},
+	{
+		"NLKNguyen/papercolor-theme",
+		lazy = true,
+	},
+
 	-- Statusline
 	{
 		"nvim-lualine/lualine.nvim",
-		lazy = false,
+		event = "VeryLazy",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			require("plugins.config.lualine")
@@ -14,8 +53,11 @@ return {
 	-- Bufferline
 	{
 		"romgrk/barbar.nvim",
-		lazy = false,
+		event = "BufReadPre",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
+		init = function()
+			vim.g.barbar_auto_setup = false
+		end,
 		config = function()
 			require("plugins.config.barbar")
 		end,
@@ -24,16 +66,16 @@ return {
 	-- Startup dashboard
 	{
 		"goolord/alpha-nvim",
-		lazy = false,
+		event = "VimEnter",
 		config = function()
 			require("plugins.config.alpha")
 		end,
 	},
 
-	-- Which-key (keybinding hints)
+	-- Which-key
 	{
 		"folke/which-key.nvim",
-		lazy = false,
+		event = "VeryLazy",
 		config = function()
 			require("plugins.config.which-key")
 		end,
@@ -42,7 +84,10 @@ return {
 	-- Focus dimming
 	{
 		"folke/twilight.nvim",
-		event = { "VimEnter" },
+		cmd = "Twilight",
+		keys = {
+			{ "<leader>tw", "<cmd>Twilight<CR>", desc = "Toggle Twilight" },
+		},
 		config = function()
 			require("plugins.config.twilight")
 		end,
@@ -51,45 +96,24 @@ return {
 	-- Icons
 	{
 		"nvim-tree/nvim-web-devicons",
-		lazy = false,
+		lazy = true,
 	},
 
 	{
 		"echasnovski/mini.icons",
-		lazy = false,
-		config = function()
-			require("mini.icons").setup()
+		lazy = true,
+		opts = {},
+		init = function()
+			package.preload["nvim-web-devicons"] = function()
+				require("mini.icons").mock_nvim_web_devicons()
+				return package.loaded["nvim-web-devicons"]
+			end
 		end,
 	},
 
-	-- Colorschemes
-	{
-		"folke/tokyonight.nvim",
-		lazy = false,
-	},
-
-	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		lazy = false,
-		config = function()
-			require("plugins.config.colorscheme")
-		end,
-	},
-
-	{
-		"ellisonleao/gruvbox.nvim",
-		lazy = false,
-	},
-
-	{
-		"NLKNguyen/papercolor-theme",
-		lazy = false,
-	},
-
-	-- Cellular automaton (fun!)
+	-- Fun
 	{
 		"eandrju/cellular-automaton.nvim",
-		lazy = true,
+		cmd = "CellularAutomaton",
 	},
 }
