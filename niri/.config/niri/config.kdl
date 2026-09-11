@@ -306,7 +306,7 @@ window-rule {
 window-rule {
     match app-id=r#"^kitty$"#
     open-on-workspace " "
-    opacity 0.92
+    opacity 0.88
     background-effect {
         xray true
         blur true
