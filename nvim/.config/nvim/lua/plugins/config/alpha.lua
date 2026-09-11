@@ -2,51 +2,51 @@
 local alpha = require("alpha")
 local dashboard = require("alpha.themes.dashboard")
 
-local lines = {
-	[[  ^  ^  ^   ^☆ ★ ☆ ___I_☆ ★ ☆ ^  ^   ^  ^  ^   ^  ^ ]],
-	[[ /|\/|\/|\ /|\ ★☆ /\-_--\ ☆ ★/|\/|\ /|\/|\/|\ /|\/|\ ]],
-	[[ /|\/|\/|\ /|\ ★ /  \_-__\☆ ★/|\/|\ /|\/|\/|\ /|\/|\ ]],
-	[[ /|\/|\/|\ /|\ 󰻀 |[]| [] | 󰻀 /|\/|\ /|\/|\/|\ /|\/|\ ]],
-}
-
-dashboard.section.header.val = lines
+-- dashboard.section.header.val = {
+-- 	[[      /\             ]],
+-- 	[[     /  \   /\       ]],
+-- 	[[    / /\ \ /  \      ]],
+-- 	[[   / /  \ \/\  \     ]],
+-- 	[[  /_/    \__/\__\    ]],
+-- }
 dashboard.section.header.opts.hl = {}
-
-for i = 1, #lines do
-	local hl_group
-	if i <= 2 then
-		hl_group = "DiagnosticOk"
-	elseif i <= 4 then
-		hl_group = "String"
-	elseif i <= 6 then
-		hl_group = "Character"
-	elseif i == 7 then
-		hl_group = "NonText"
-	else
-		hl_group = "Comment"
-	end
-	table.insert(dashboard.section.header.opts.hl, { { hl_group, 0, #lines[i] } })
+for index, line in ipairs(dashboard.section.header.val) do
+	table.insert(dashboard.section.header.opts.hl, {
+		{ index == 1 and "WarningMsg" or index == 4 and "ErrorMsg" or "Comment", 0, #line },
+	})
 end
 
 dashboard.section.buttons.val = {
-	dashboard.button("c", "󰘳 Show All Commands", "<cmd>FzfLua commands<CR>"),
-	dashboard.button("f", "󱏒 Open Folder", "<cmd>FzfLua files<CR>"),
-	dashboard.button("r", "󱋡 Open Recent", "<cmd>FzfLua oldfiles<CR>"),
-	dashboard.button("s", "󰋚 Find Recent Sessions", "<cmd>AutoSession search<CR>"),
-	dashboard.button("h", "󰋖 Help Documents", "<cmd>FzfLua help_tags<CR>"),
-	dashboard.button("R", "󰑓 Reload Neovim", "<cmd>restart<CR>"),
-	dashboard.button("q", "󰅙 Quit Neovim", "<cmd>qa!<CR>"),
+	dashboard.button("f", "find files", "<cmd>FzfLua files<CR>"),
+	dashboard.button("r", "recent files", "<cmd>FzfLua oldfiles<CR>"),
+	dashboard.button("s", "saved sessions", "<cmd>AutoSession search<CR>"),
+	dashboard.button("p", "projects", "<cmd>FzfLua files<CR>"),
+	dashboard.button("t", "TODO comments", "<cmd>TodoQuickFix<CR>"),
+	dashboard.button("a", "AI companion", "<cmd>CodeCompanionChat Toggle<CR>"),
+	dashboard.button("F", "Flutter tools", "<cmd>FlutterDevices<CR>"),
+	dashboard.button("h", "help tags", "<cmd>FzfLua help_tags<CR>"),
+	dashboard.button("R", "reload Neovim", "<cmd>restart<CR>"),
+	dashboard.button("q", "quit Neovim", "<cmd>qa!<CR>"),
 }
 
 dashboard.section.footer.val = function()
 	local version = vim.version()
 	local ver = string.format("v%d.%d.%d", version.major, version.minor, version.patch)
 	local scheme = vim.g.colors_name or "default"
-	return ver .. "  ·  " .. scheme
+	local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+	local branch = vim.fn.systemlist("git branch --show-current 2>/dev/null")[1]
+	branch = branch and branch ~= "" and branch or "no git branch"
+	return {
+		"",
+		"────────────────────────────────────────",
+		"  " .. cwd .. "  ·  " .. branch,
+		"  " .. ver .. "  ·  " .. scheme .. "  ·  startup " .. (vim.g.startup_time_ms or "measuring..."),
+		"  make something worth keeping",
+	}
 end
 
 dashboard.opts.layout = {
-	{ type = "padding", val = 2 },
+	{ type = "padding", val = 4 },
 	dashboard.section.header,
 	{ type = "padding", val = 1 },
 	dashboard.section.buttons,
@@ -54,7 +54,8 @@ dashboard.opts.layout = {
 	dashboard.section.footer,
 }
 
-dashboard.section.buttons.opts.hl = "NonText"
+dashboard.section.buttons.opts.hl = "String"
+dashboard.section.buttons.opts.spacing = 0
 dashboard.section.footer.opts.hl = "Comment"
 dashboard.opts.opts.noautocmd = true
 

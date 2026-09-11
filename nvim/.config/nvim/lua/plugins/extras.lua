@@ -4,7 +4,8 @@ return {
 	-- Notifications
 	{
 		"rcarriga/nvim-notify",
-		lazy = false,
+		lazy = true,
+		event = "VeryLazy",
 		config = function()
 			require("plugins.config.notify")
 		end,
@@ -13,7 +14,8 @@ return {
 	-- Auto-session
 	{
 		"rmagatti/auto-session",
-		lazy = false,
+		lazy = true,
+		event = "VimEnter",
 		config = function()
 			require("plugins.config.session")
 		end,

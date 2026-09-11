@@ -38,8 +38,7 @@ udiskie &
 
 # Start the wallpaper
 # feh --bg-fill /home/lanre/Pictures/wallpapers/monster-energy-anime_1.webp
-feh --bg-fill /home/lanre/Pictures/wallpapers/linus-torvalds.png
-# Set the wallpaper 
+feh --bg-fill /home/lanre/Pictures/wallpapers/ilya_kuvshinov_07.png # Set the wallpaper 
 #while true; do
 #feh --bg-fill "$(find ~/Pictures/wallpapers -type f | shuf -n 1)"
 #    sleep 3m

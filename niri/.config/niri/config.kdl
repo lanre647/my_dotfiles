@@ -182,7 +182,7 @@ layer-rule {
 }
 
 layer-rule {
-    match namespace="^awww-daemonwallpaper$"
+    match namespace="^awww-daemonoverview-wall$"
     place-within-backdrop true
 }
 
@@ -306,12 +306,25 @@ window-rule {
 window-rule {
     match app-id=r#"^kitty$"#
     open-on-workspace " "
-    opacity 0.72
+    opacity 0.92
     background-effect {
         xray true
         blur true
     }
     default-column-width { proportion 0.5; }
+}
+
+window-rule {
+    match app-id="wallpaper-picker"
+
+    open-floating true
+
+    // Dimensions for the floating window
+    default-column-width { fixed 1000; }
+    default-window-height { fixed 650; }
+
+    // Centered positioning with optional offsets (default centers automatically)
+    // default-floating-position x=0 y=0
 }
 
 // Workspace 2 — Browsers
@@ -578,7 +591,7 @@ spawn-at-startup "udiskie" "--smart-tray"
 spawn-at-startup "niri-screen-time" "-daemon"
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 spawn-at-startup "awww-daemon"
-spawn-at-startup "awww-daemon" "-n" "wallpaper"
+spawn-at-startup "awww-daemon" "-n" "overview-wall"
 spawn-at-startup "wl-paste" "--type" "text"  "--watch" "cliphist" "store"
 spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
 spawn-at-startup "wname" "LG4D"

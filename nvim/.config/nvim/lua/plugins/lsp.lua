@@ -1,20 +1,18 @@
--- LSP Plugin Specs (loads configs from config files)
-
 return {
 	-- LSP Configuration
 	{
 		"neovim/nvim-lspconfig",
-		lazy = false,
+		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim" },
 		config = function()
 			require("plugins.config.lsp")
 		end,
 	},
 
-	-- Mason (language server installer)
+	-- Mason
 	{
 		"williamboman/mason.nvim",
-		lazy = false,
+		cmd = "Mason",
 		config = function()
 			require("mason").setup()
 		end,
@@ -23,7 +21,6 @@ return {
 	-- Mason LSP Config
 	{
 		"williamboman/mason-lspconfig.nvim",
-		lazy = false,
-		dependencies = { "williamboman/mason.nvim" },
+		lazy = true,
 	},
 }

@@ -4,14 +4,17 @@ return {
 	-- nvim-cmp
 	{
 		"hrsh7th/nvim-cmp",
-		lazy = false,
+		event = { "InsertEnter", "CmdlineEnter" },
 		dependencies = {
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-path",
+			-- Sources
 			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-cmdline",
-			"L3MON4D3/LuaSnip",
 			"saadparwaiz1/cmp_luasnip",
+			{
+				"hrsh7th/cmp-nvim-lsp",
+				lazy = true, -- Force lazy loading so after/plugin/ isn't sourced eagerly
+			},
 		},
 		config = function()
 			require("plugins.config.cmp")
@@ -22,7 +25,14 @@ return {
 	{
 		"L3MON4D3/LuaSnip",
 		lazy = true,
-		event = "InsertEnter",
+		dependencies = {
+			-- If you use VSCode-style snippet collections like friendly-snippets
+			"rafamadriz/friendly-snippets",
+		},
+		config = function()
+			-- Lazy load VS Code snippets only when LuaSnip actually activates
+			require("luasnip.loaders.from_vscode").lazy_load()
+		end,
 	},
 
 	-- cmp sources
