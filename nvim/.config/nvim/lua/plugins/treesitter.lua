@@ -4,12 +4,14 @@ return {
 	cmd = { "TSUpdate", "TSInstall", "TSBufEnable", "TSBufDisable" },
 	build = ":TSUpdate",
 	config = function()
-		require("nvim-treesitter.configs").setup({
+		-- Enable standard treesitter features
+		require("nvim-treesitter").setup({
 			auto_install = true,
 			highlight = { enable = true },
 			indent = { enable = true },
 		})
 
+		-- Set up per-buffer tree-sitter highlighting and folding
 		vim.api.nvim_create_autocmd("FileType", {
 			pattern = {
 				"bash",
