@@ -1,5 +1,16 @@
-require("nvim-treesitter.configs").setup({
-	ensure_installed = {
+require("nvim-treesitter").setup({
+	auto_install = true,
+	highlight = {
+		enable = true,
+	},
+	indent = {
+		enable = true,
+	},
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("TreesitterHighlight", { clear = true }),
+	pattern = {
 		"bash",
 		"c",
 		"cpp",
@@ -12,28 +23,16 @@ require("nvim-treesitter.configs").setup({
 		"json",
 		"lua",
 		"markdown",
-		"markdown_inline",
 		"python",
 		"rust",
 		"tsx",
 		"typescript",
 	},
-	sync_install = false,
-	auto_install = true,
-	highlight = {
-		enable = true,
-		additional_vim_regex_highlighting = false,
-	},
-	incremental_selection = {
-		enable = true,
-		keymaps = {
-			init_selection = "<C-space>",
-			node_incremental = "<C-space>",
-			scope_incremental = "<C-s>",
-			node_decremental = "<C-backspace>",
-		},
-	},
-	indent = {
-		enable = true,
-	},
+	callback = function()
+		local ok = pcall(vim.treesitter.start)
+		if ok then
+			vim.wo.foldmethod = "expr"
+			vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+		end
+	end,
 })
