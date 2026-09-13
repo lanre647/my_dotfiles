@@ -11,6 +11,16 @@ return {
 		end,
 	},
 
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		event = { "BufReadPost", "BufNewFile" },
+		branch = "main",
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		config = function()
+			require("plugins.config.treesitter-textobjects")
+		end,
+	},
+
 	-- Auto-pairs
 	{
 		"windwp/nvim-autopairs",

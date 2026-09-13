@@ -10,6 +10,8 @@ wk.add({
 	{ "<leader>g", group = "Git" },
 	{ "<leader>l", group = "LSP" },
 	{ "<leader>m", group = "Move lines" },
+	{ "<leader>mA", desc = "Swap parameter backward" },
+	{ "<leader>ma", desc = "Swap parameter forward" },
 	{ "<leader>p", group = "Project / theme" },
 	{ "<leader>s", group = "Search / TODO" },
 	{ "<leader>st", desc = "Search TODO comments" },
