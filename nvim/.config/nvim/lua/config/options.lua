@@ -85,6 +85,14 @@ vim.diagnostic.config({
 		source = "if_many",
 	},
 	underline = true,
-	severity_sort = true,
 	update_in_insert = true,
+	severity_sort = true,
+	float = {
+		focused = false,
+		style = "minimal",
+		border = "rounded",
+		source = "always",
+		header = "",
+		prefix = "",
+	},
 })

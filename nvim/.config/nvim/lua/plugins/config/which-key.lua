@@ -17,4 +17,5 @@ wk.add({
 	{ "<leader>st", desc = "Search TODO comments" },
 	{ "<leader>sq", desc = "TODO location list" },
 	{ "<leader>sr", desc = "Search and replace" },
+	{ "<leader>M", desc = "Quickfix navigation" },
 })
