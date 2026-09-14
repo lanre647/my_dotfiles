@@ -14,11 +14,6 @@ return {
 
 	-- Inactive Colorschemes (Lazy load)
 	{
-		"folke/tokyonight.nvim",
-		lazy = true,
-		opts = { style = "storm" },
-	},
-	{
 		"ellisonleao/gruvbox.nvim",
 		lazy = true,
 		opts = {
@@ -35,11 +30,6 @@ return {
 			},
 		},
 	},
-	{
-		"NLKNguyen/papercolor-theme",
-		lazy = true,
-	},
-
 	-- Statusline
 	{
 		"nvim-lualine/lualine.nvim",

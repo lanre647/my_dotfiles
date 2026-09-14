@@ -103,8 +103,8 @@ return {
 	},
 
 	-- Ron syntax highlighting
-	{
-		"ron-rs/ron.vim",
-		ft = "ron",
-	},
+	-- {
+	-- 	"ron-rs/ron.vim",
+	-- 	ft = "ron",
+	-- },
 }
