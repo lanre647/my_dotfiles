@@ -9,10 +9,8 @@ local function map(m, k, v, opts)
 	vim.keymap.set(m, k, v, options)
 end
 
--- ─────────────────────────────────────────────
--- Leader
--- ─────────────────────────────────────────────
 map("", "<Space>", "<Nop>", { desc = "Leader (no-op)" })
+map("t", "<Esc>", "<C-\\><C-n>", { desc = "Leave terminal mode" })
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -147,7 +145,6 @@ map("i", "<C-v>", "<C-r>+", { desc = "Paste from system clipboard (insert)" }) ]
 -- File / Editor Utilities
 -- ─────────────────────────────────────────────
 map({ "n", "i", "v" }, "<C-s>", "<Esc>:w<CR>", { desc = "Save file" })
-map("t", "<Esc>", '<C-\\><C-n><CMD>lua require("FTerm").close()<CR>', { desc = "Close terminal" })
 map("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
 map("n", "<leader>sr", ":%s//g<Left><Left>", { desc = "Replace all (in file)" })
 map("n", "<leader>pt", switch_theme, { desc = "Cycle themes" })
@@ -158,7 +155,7 @@ map("n", "<leader>R", "<cmd>restart<cr>", { desc = "Hot reload Neovim config" })
 map("n", "<leader>u", "<cmd>Undotree<cr>", { desc = "Toggle undo tree" })
 map("n", "<leader>W", ":set wrap!<CR>", { desc = "Toggle line wrap" })
 map("n", "<leader>lt", ":Twilight<CR>", { desc = "Toggle Twilight (focus dim)" })
-map("n", "<leader>e", vim.diagnostic.open_float, { desc = "Line diagnostics" })
+map("n", "<leader>lc", vim.diagnostic.open_float, { desc = "Line diagnostics" })
 map("v", "<leader>i", "=gv", { desc = "Auto-indent selection" })
 
 -- ─────────────────────────────────────────────
@@ -323,21 +320,22 @@ local function run_current_file_with_args()
 		local file_dir = vim.fn.expand("%:p:h")
 		local cd_and_run = "cd " .. vim.fn.shellescape(file_dir) .. " && " .. final_cmd
 
-		local fterm_loaded = package.loaded["FTerm"]
-		if type(fterm_loaded) == "table" then
-			fterm_loaded.run(cd_and_run)
-		else
-			local status_ok, FTerm = pcall(require, "FTerm")
-			if status_ok then
-				FTerm.run(cd_and_run)
-			else
-				print("Could not load FTerm plugin.")
-			end
+		if vim.api.nvim_win_is_valid(state.floating.win) then
+			vim.api.nvim_win_close(state.floating.win, true)
 		end
+		state.floating = create_floating_window()
+		vim.fn.termopen(cd_and_run, {
+			on_exit = function()
+				if vim.api.nvim_win_is_valid(state.floating.win) then
+					vim.api.nvim_win_hide(state.floating.win)
+				end
+			end,
+		})
+		vim.cmd("startinsert")
 	end)
 end
 
-vim.keymap.set("n", "<F2>", run_current_file_with_args, { desc = "Run file with args in FTerm" })
+vim.keymap.set("n", "<F2>", run_current_file_with_args, { desc = "Run file with args" })
 
 -- ─────────────────────────────────────────────
 -- CSV (decisive)
@@ -381,3 +379,28 @@ if ok then
 		{ "<C-v>", desc = "Paste from system clipboard" },
 	})
 end ]]
+local ns_id = vim.api.nvim_create_namespace("custom_virtual_hints")
+
+local function add_inline_annotation(text)
+	local line = vim.api.nvim_win_get_cursor(0)[1] - 1 -- 0-indexed line number
+
+	-- Extmarks allow attaching metadata directly to byte positions
+	vim.api.nvim_buf_set_extmark(0, ns_id, line, 0, {
+		virt_text = { { "  //" .. text, "Comment" } },
+		virt_text_pos = "eol", -- Render at end of line
+	})
+end
+
+local function clear_inline_annotations()
+	vim.api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
+end
+
+vim.keymap.set("n", "<leader>va", function()
+	vim.ui.input({ prompt = "Virtual Note: " }, function(input)
+		if input then
+			add_inline_annotation(input)
+		end
+	end)
+end, { desc = "Add EOL Virtual Text Note" })
+
+vim.keymap.set("n", "<leader>vc", clear_inline_annotations, { desc = "Clear Virtual Text Notes" })

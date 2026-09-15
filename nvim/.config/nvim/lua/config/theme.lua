@@ -13,6 +13,11 @@ local function apply_theme(colorscheme, lualine)
 		vim.o.background = "dark"
 	end
 
+	vim.api.nvim_set_hl(0, "CmpBorder", {
+		fg = vim.o.background == "light" and "#8c8fa1" or "#585b70",
+		bg = "NONE",
+	})
+
 	require("lualine").setup({
 		options = { theme = lualine or "auto" },
 	})

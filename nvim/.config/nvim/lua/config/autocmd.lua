@@ -112,40 +112,6 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
 	end,
 })
 
--- Custom Macro Recording Visual Indicator
-vim.api.nvim_create_autocmd("RecordingEnter", {
-  callback = function()
-    local reg = vim.fn.reg_recording()
-    vim.opt.statusline = "%#ErrorMsg#  RECORDING MACRO [" .. reg .. "]  %* " .. "%f"
-  end,
-})
-
-vim.api.nvim_create_autocmd("RecordingLeave", {
-  callback = function()
-    -- Reset to default statusline
-    vim.opt.statusline = "%f %m %= %l:%c"
-  end,
-})
-
--- Auto-Save with Visual Pulse Confirmation
-local save_group = vim.api.nvim_create_augroup("AutoSavePulse", { clear = true })
-
-vim.api.nvim_create_autocmd({ "FocusLost", "BufLeave", "InsertLeave" }, {
-	group = save_group,
-	callback = function()
-		if vim.bo.modified and vim.bo.buftype == "" and vim.fn.expand("%") ~= "" then
-			vim.cmd("silent! write")
-
-			-- Quick subtle statusline feedback
-			local orig_status = vim.opt.statusline:get()
-			vim.opt.statusline = "%#DiffAdd#  [SAVED]  %* " .. orig_status
-			vim.defer_fn(function()
-				vim.opt.statusline = orig_status
-			end, 750)
-		end
-	end,
-})
-
 -- Restore cursor position
 vim.api.nvim_create_autocmd("BufReadPost", {
 	group = groups.general,
@@ -268,7 +234,6 @@ end, {})
 --       timeout_ms = 500,
 --     })
 
-
 -- =========================
 -- Commands
 -- =========================
@@ -295,4 +260,3 @@ vim.api.nvim_create_user_command("Format", function()
 		timeout_ms = 1000,
 	})
 end, {})
-
