@@ -10,6 +10,17 @@ require("nvim-tree").setup({
 		auto_open = false,
 	},
 	renderer = {
+		indent_markers = {
+			enable = true,
+			inline_arrows = true,
+			icons = {
+				corner = "└",
+				edge = "│",
+				item = "├",
+				bottom = "─",
+				none = " ",
+			},
+		},
 		icons = {
 			show = {
 				file = true,

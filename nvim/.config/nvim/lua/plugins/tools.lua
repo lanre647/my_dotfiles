@@ -29,19 +29,6 @@ return {
 		end,
 	},
 
-	-- Floating Terminal
-	{
-		"numToStr/FTerm.nvim",
-		lazy = true,
-		cmd = "FTerm",
-		keys = {
-			{ "<leader>t", "<cmd>lua require('FTerm').open()<CR>", desc = "Open terminal" },
-		},
-		config = function()
-			require("FTerm").setup()
-		end,
-	},
-
 	-- Plenary (dependency for many plugins)
 	{
 		"nvim-lua/plenary.nvim",
