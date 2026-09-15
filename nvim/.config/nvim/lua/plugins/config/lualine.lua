@@ -1,11 +1,11 @@
--- Lualine Configurationnn
+-- Lualine Configuration (Catppuccin Mocha Bubble Style)
 local lualine = require("lualine")
 
 local diagnostics = {
 	"diagnostics",
 	sources = { "nvim_diagnostic" },
 	sections = { "error", "warn" },
-	symbols = { error = "E ", warn = "W " },
+	symbols = { error = "󰅚 ", warn = "󰀦 " },
 	colored = true,
 	update_in_insert = true,
 	always_visible = false,
@@ -14,25 +14,48 @@ local diagnostics = {
 	end,
 }
 
+local lsp_client = function()
+	local bufnr = vim.api.nvim_get_current_buf()
+	local clients = vim.lsp.get_clients({ bufnr = bufnr })
+
+	if #clients == 0 then
+		return ""
+	end
+
+	local client_names = {}
+	for _, client in ipairs(clients) do
+		table.insert(client_names, client.name)
+	end
+
+	return "󰒋 " .. table.concat(client_names, ", ")
+end
+
 local diff = {
 	"diff",
 	colored = true,
-	symbols = { added = "+", modified = "~", removed = "-" },
+	symbols = { added = " ", modified = "󰝤 ", removed = " " },
 }
 
 local mode = {
 	"mode",
 	fmt = function(str)
-		return " " .. str .. " "
+		return " " .. str
 	end,
+	separator = { left = "", right = "" },
 }
 
 local branch = {
 	"branch",
-	icon = " ",
+	icon = "󰘬",
+	fmt = function(str)
+		if #str > 15 then
+			return string.sub(str, 1, 12) .. "..."
+		end
+		return str
+	end,
 }
 
--- File Size Indicator Function
+-- File Size Indicator
 local file_size = function()
 	local file = vim.fn.expand("%:p")
 	if file == "" or file == nil then
@@ -60,12 +83,11 @@ local macro_recording = function()
 	if reg == "" then
 		return ""
 	end
-	return "REC @" .. reg
+	return "󰑋 REC @" .. reg
 end
 
 -- Temporary Auto-Save Feedback Loop
 _G.autosave_status = ""
-
 local save_group = vim.api.nvim_create_augroup("LualineAutoSave", { clear = true })
 
 vim.api.nvim_create_autocmd({ "FocusLost", "BufLeave", "InsertLeave" }, {
@@ -73,9 +95,7 @@ vim.api.nvim_create_autocmd({ "FocusLost", "BufLeave", "InsertLeave" }, {
 	callback = function()
 		if vim.bo.modified and vim.bo.buftype == "" and vim.fn.expand("%") ~= "" then
 			vim.api.nvim_command("silent! update")
-
-			_G.autosave_status = "SAVED"
-
+			_G.autosave_status = "󰄬 SAVED"
 			vim.defer_fn(function()
 				_G.autosave_status = ""
 			end, 800)
@@ -87,7 +107,7 @@ local save_indicator = function()
 	return _G.autosave_status or ""
 end
 
--- Custom Visual Progress
+-- Custom Visual Progress Bar
 local progress = function()
 	local current_line = vim.fn.line(".")
 	local total_lines = vim.fn.line("$")
@@ -112,39 +132,55 @@ end
 lualine.setup({
 	options = {
 		icons_enabled = true,
-		theme = nil, -- let theme.lua handle mode colors
+		theme = "catppuccin",
 		component_separators = { left = "", right = "" },
-		section_separators = { left = "", right = "" },
-		disabled_filetypes = { "alpha", "dashboard" },
+		section_separators = { left = "", right = "" },
+		disabled_filetypes = {
+			statusline = { "alpha", "dashboard", "NvimTree", "toggleterm", "qf", "help", "lazy", "mason" },
+		},
 		always_divide_middle = true,
+		globalstatus = true,
 	},
 	sections = {
-		lualine_a = { mode },
-		lualine_b = { branch, diff },
+		lualine_a = {
+			mode,
+		},
+		lualine_b = {
+			branch,
+			diff,
+		},
 		lualine_c = {
 			{
 				"filename",
 				path = 1,
 				file_status = true,
-				symbols = { modified = " ●", readonly = " 🔒" },
+				symbols = { modified = " 󰏫", readonly = " 🔒" },
 			},
 			{
 				macro_recording,
-				color = { fg = "#ff5555", gui = "bold" },
+				color = { gui = "bold" },
 			},
 		},
 		lualine_x = {
 			{
 				save_indicator,
-				color = { fg = "#50fa7b", gui = "bold" },
+				color = { gui = "bold" },
 			},
+			lsp_client,
 			diagnostics,
 			file_size,
-			"encoding",
 			"filetype",
 		},
-		lualine_y = { progress },
-		lualine_z = { "location" },
+		lualine_y = {
+			progress,
+		},
+		lualine_z = {
+			{
+				"location",
+				icon = "󰍎",
+				separator = { left = "", right = "" },
+			},
+		},
 	},
 	inactive_sections = {
 		lualine_a = {},
