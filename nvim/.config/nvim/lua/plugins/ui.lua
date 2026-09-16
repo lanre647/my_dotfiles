@@ -1,0 +1,109 @@
+-- lua/plugins/ui.lua
+return {
+	-- Active Colorscheme (Must load early)
+	{
+		"catppuccin/nvim",
+		name = "catppuccin",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("plugins.config.colorscheme")
+			vim.cmd.colorscheme("catppuccin")
+		end,
+	},
+
+	-- Inactive Colorschemes (Lazy load)
+	{
+		"ellisonleao/gruvbox.nvim",
+		lazy = true,
+		opts = {
+			terminal_colors = true,
+			undercurl = true,
+			underline = true,
+			bold = true,
+			italic = {
+				strings = true,
+				emphasis = true,
+				comments = true,
+				operators = false,
+				folds = true,
+			},
+		},
+	},
+	-- Statusline
+	{
+		"nvim-lualine/lualine.nvim",
+		event = "VeryLazy",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("plugins.config.lualine")
+		end,
+	},
+
+	-- Bufferline
+	{
+		"romgrk/barbar.nvim",
+		event = "BufReadPre",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		init = function()
+			vim.g.barbar_auto_setup = false
+		end,
+		config = function()
+			require("plugins.config.barbar")
+		end,
+	},
+
+	-- Startup dashboard
+	{
+		"goolord/alpha-nvim",
+		event = "VimEnter",
+		config = function()
+			require("plugins.config.alpha")
+		end,
+	},
+
+	-- Which-key
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("plugins.config.which-key")
+		end,
+	},
+
+	-- Focus dimming
+	{
+		"folke/twilight.nvim",
+		cmd = "Twilight",
+		keys = {
+			{ "<leader>lt", "<cmd>Twilight<CR>", desc = "Toggle Twilight" },
+		},
+		config = function()
+			require("plugins.config.twilight")
+		end,
+	},
+
+	-- Icons
+	{
+		"nvim-tree/nvim-web-devicons",
+		lazy = true,
+	},
+
+	{
+		"echasnovski/mini.icons",
+		lazy = true,
+		opts = {},
+		init = function()
+			package.preload["nvim-web-devicons"] = function()
+				require("mini.icons").mock_nvim_web_devicons()
+				return package.loaded["nvim-web-devicons"]
+			end
+		end,
+	},
+
+	-- Fun
+	{
+		"eandrju/cellular-automaton.nvim",
+		cmd = "CellularAutomaton",
+	},
+}

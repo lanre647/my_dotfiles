@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Directories containing .desktop files
+dirs=(
+    "$HOME/.local/share/applications"
+    "/usr/local/share/applications"
+    "/usr/share/applications"
+)
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+apps="$tmp/apps.tsv"
+
+# Build app database: Category<TAB>Name<TAB>Desktop file
+for dir in "${dirs[@]}"; do
+    [[ -d "$dir" ]] || continue
+
+    while IFS= read -r -d '' file; do
+        # Skip hidden entries
+        grep -q '^NoDisplay=true' "$file" && continue
+        grep -q '^Hidden=true' "$file" && continue
+
+        name=$(grep -m1 '^Name=' "$file" | cut -d= -f2-)
+        cats=$(grep -m1 '^Categories=' "$file" | cut -d= -f2-)
+
+        [[ -n "$name" && -n "$cats" ]] || continue
+
+        IFS=';' read -ra arr <<< "$cats"
+
+        for cat in "${arr[@]}"; do
+            [[ -n "$cat" ]] || continue
+            printf "%s\t%s\t%s\n" "$cat" "$name" "$file"
+        done
+    done < <(find "$dir" -name '*.desktop' -print0)
+done > "$apps"
+
+# Choose category
+category=$(
+    cut -f1 "$apps" |
+        sort -u |
+        fuzzel --dmenu --prompt="Category > "
+)
+
+[[ -z "$category" ]] && exit 0
+
+# Choose application
+choice=$(
+    awk -F'\t' -v c="$category" '$1==c {print $2}' "$apps" |
+        sort |
+        fuzzel --dmenu --prompt="$category > "
+)
+
+[[ -z "$choice" ]] && exit 0
+
+desktop=$(
+    awk -F'\t' -v c="$category" -v n="$choice" \
+        '$1==c && $2==n {print $3; exit}' "$apps"
+)
+
+gio launch "$desktop"
