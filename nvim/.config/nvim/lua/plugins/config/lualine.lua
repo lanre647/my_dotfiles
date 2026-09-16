@@ -41,7 +41,7 @@ local mode = {
 	fmt = function(str)
 		return " " .. str
 	end,
-	separator = { left = "", right = "" },
+	separator = { left = "", right = "" },
 }
 
 local branch = {
@@ -134,7 +134,7 @@ lualine.setup({
 		icons_enabled = true,
 		theme = "catppuccin",
 		component_separators = { left = "", right = "" },
-		section_separators = { left = "", right = "" },
+		section_separators = { left = "", right = "" },
 		disabled_filetypes = {
 			statusline = { "alpha", "dashboard", "NvimTree", "toggleterm", "qf", "help", "lazy", "mason" },
 		},
@@ -178,7 +178,7 @@ lualine.setup({
 			{
 				"location",
 				icon = "󰍎",
-				separator = { left = "", right = "" },
+				separator = { left = "", right = "" },
 			},
 		},
 	},
@@ -195,3 +195,4 @@ lualine.setup({
 	inactive_winbar = {},
 	extensions = {},
 })
+-- 
