@@ -220,22 +220,20 @@ vim.api.nvim_create_user_command("DiagToggle", function()
 end, {})
 
 -- Autoformat on save (respects toggle)
---[[ vim.api.nvim_create_autocmd("BufWritePre", {
-  group = groups.general,
-  callback = function()
-    if vim.g.disable_autoformat then return end
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   group = groups.general,
+--   callback = function()
+--     if vim.g.disable_autoformat then return end
+--
+--     local conform = safe_require("conform")
+--     if not conform then return end
+--
+--     conform.format({
+--       bufnr = 0,
+--       lsp_fallback = true,
+--       timeout_ms = 500,
+--     })
 
-    local conform = safe_require("conform")
-    if not conform then return end
-
-    conform.format({
-      bufnr = 0,
-      lsp_fallback = true,
-      timeout_ms = 500,
-    })
-  end,
-})
-]]
 -- =========================
 -- Commands
 -- =========================

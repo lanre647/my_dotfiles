@@ -1,0 +1,28 @@
+#!/bin/sh
+
+choice=$(printf "kill\n  Lock\n  Suspend\n  Logout\n  Reboot\n  Shutdown\n  Cancel" \
+    | dmenu -i -p "Power")
+
+case "$choice" in
+
+    "kill")
+         ps -u "$USER" -o pid,comm,%cpu,%mem | dmenu -i -c -l 10 -p Kill: | awk '{print $1}' | xargs -r kill ;;
+    "  Lock")
+        betterlockscreen -l
+        ;;
+    "  Suspend")
+        betterlockscreen -s
+        ;;
+    "  Logout")
+        pkill dwm
+        ;;
+    "  Reboot")
+        systemctl reboot
+        ;;
+    "  Shutdown")
+        systemctl poweroff
+        ;;
+    *)
+        exit 0
+        ;;
+esac
