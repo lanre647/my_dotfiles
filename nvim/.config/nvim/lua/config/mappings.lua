@@ -230,6 +230,8 @@ end, { desc = "Toggle relative/absolute line numbers" })
 -- ─────────────────────────────────────────────
 -- Custom floating terminal (generic, reusable)
 -- ─────────────────────────────────────────────
+local all_floats = {} -- track every instance for VimResized
+
 local function create_floating_window(opts)
 	opts = opts or {}
 	local width = opts.width or math.floor(vim.o.columns * 0.8)
@@ -258,37 +260,68 @@ local function create_floating_window(opts)
 	return { buf = buf, win = win }
 end
 
--- Factory: returns a toggle function bound to its own state + shell command
+-- Factory: returns { toggle = fn, state = table } bound to its own state + shell command
 local function make_terminal_toggler(cmd)
 	local state = { buf = -1, win = -1 }
+	table.insert(all_floats, state)
 
-	return function()
+	local function toggle()
 		if not vim.api.nvim_win_is_valid(state.win) then
-			state = create_floating_window({ buf = state.buf })
-			if vim.bo[state.buf].buftype ~= "terminal" then
-				vim.fn.termopen(cmd)
+			local reused = state.buf ~= -1 and vim.api.nvim_buf_is_valid(state.buf)
+			local win_state = create_floating_window({ buf = state.buf })
+			state.buf, state.win = win_state.buf, win_state.win
+
+			if not reused then
+				vim.fn.termopen(cmd, {
+					on_exit = function()
+						if vim.api.nvim_win_is_valid(state.win) then
+							vim.api.nvim_win_hide(state.win)
+						end
+						state.buf = -1
+					end,
+				})
 			end
 			vim.cmd("startinsert")
 		else
 			vim.api.nvim_win_hide(state.win)
 		end
 	end
+
+	return { toggle = toggle, state = state }
 end
 
-local toggle_terminal = make_terminal_toggler(vim.o.shell)
-local toggle_lazygit = make_terminal_toggler("lazygit")
-local toggle_htop = make_terminal_toggler("htop")
+local term_instance = make_terminal_toggler(vim.o.shell)
+local lazygit_instance = make_terminal_toggler("lazygit")
+local htop_instance = make_terminal_toggler("htop")
 
-map({ "n", "t" }, "<C-\\>", toggle_terminal, { desc = "Toggle Float Terminal" })
-vim.keymap.set("n", "<leader>gg", toggle_lazygit, { desc = "Toggle LazyGit" })
-vim.keymap.set("n", "<leader>ht", toggle_htop, { desc = "Toggle Htop" })
+map({ "n", "t" }, "<C-\\>", term_instance.toggle, { desc = "Toggle Float Terminal" })
+vim.keymap.set("n", "<leader>gg", lazygit_instance.toggle, { desc = "Toggle LazyGit" })
+vim.keymap.set("n", "<leader>ht", htop_instance.toggle, { desc = "Toggle Htop" })
+
+-- Resize all floats together when the editor window resizes
+vim.api.nvim_create_autocmd("VimResized", {
+	callback = function()
+		for _, state in ipairs(all_floats) do
+			if vim.api.nvim_win_is_valid(state.win) then
+				local width = math.floor(vim.o.columns * 0.8)
+				local height = math.floor(vim.o.lines * 0.8)
+				vim.api.nvim_win_set_config(state.win, {
+					relative = "editor",
+					width = width,
+					height = height,
+					row = math.floor((vim.o.lines - height) / 2),
+					col = math.floor((vim.o.columns - width) / 2),
+				})
+			end
+		end
+	end,
+})
 
 -- ─────────────────────────────────────────────
 -- Run Button
 -- ─────────────────────────────────────────────
 local function run_current_file_with_args()
 	local filetype = vim.bo.filetype
-	-- 'expand("%:t")' gets just the filename (e.g., TestMath.java)
 	local filename = vim.fn.expand("%:t")
 	local base_cmd = ""
 
@@ -315,20 +348,22 @@ local function run_current_file_with_args()
 			final_cmd = base_cmd .. " " .. input
 		end
 
-		-- Automatically change directory to the file's folder before running the command
-		-- 'expand("%:p:h")' gets the full absolute path of the file's directory
 		local file_dir = vim.fn.expand("%:p:h")
 		local cd_and_run = "cd " .. vim.fn.shellescape(file_dir) .. " && " .. final_cmd
 
-		if vim.api.nvim_win_is_valid(state.floating.win) then
-			vim.api.nvim_win_close(state.floating.win, true)
+		local state = term_instance.state
+		if vim.api.nvim_win_is_valid(state.win) then
+			vim.api.nvim_win_close(state.win, true)
 		end
-		state.floating = create_floating_window()
+		local win_state = create_floating_window({})
+		state.buf, state.win = win_state.buf, win_state.win
+
 		vim.fn.termopen(cd_and_run, {
 			on_exit = function()
-				if vim.api.nvim_win_is_valid(state.floating.win) then
-					vim.api.nvim_win_hide(state.floating.win)
+				if vim.api.nvim_win_is_valid(state.win) then
+					vim.api.nvim_win_hide(state.win)
 				end
+				state.buf = -1
 			end,
 		})
 		vim.cmd("startinsert")
