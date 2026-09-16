@@ -228,19 +228,8 @@ map("n", "<leader>n", function()
 end, { desc = "Toggle relative/absolute line numbers" })
 
 -- ─────────────────────────────────────────────
--- LazyGit / Htop
+-- Custom floating terminal (generic, reusable)
 -- ─────────────────────────────────────────────
-vim.keymap.set("n", "<leader>gg", "<CMD>lua _G.lazygit:toggle()<CR>", { desc = "Toggle LazyGit" })
-vim.keymap.set("n", "<leader>ht", "<CMD>lua _G.htop:toggle()<CR>", { desc = "Toggle Htop" })
-
--- Custom floating terminal
-local state = {
-	floating = {
-		buf = -1,
-		win = -1,
-	},
-}
-
 local function create_floating_window(opts)
 	opts = opts or {}
 	local width = opts.width or math.floor(vim.o.columns * 0.8)
@@ -249,7 +238,7 @@ local function create_floating_window(opts)
 	local row = math.floor((vim.o.lines - height) / 2)
 
 	local buf = nil
-	if vim.api.nvim_buf_is_valid(opts.buf) then
+	if opts.buf and vim.api.nvim_buf_is_valid(opts.buf) then
 		buf = opts.buf
 	else
 		buf = vim.api.nvim_create_buf(false, true)
@@ -269,19 +258,31 @@ local function create_floating_window(opts)
 	return { buf = buf, win = win }
 end
 
-local toggle_terminal = function()
-	if not vim.api.nvim_win_is_valid(state.floating.win) then
-		state.floating = create_floating_window({ buf = state.floating.buf })
-		if vim.bo[state.floating.buf].buftype ~= "terminal" then
-			vim.cmd.terminal()
+-- Factory: returns a toggle function bound to its own state + shell command
+local function make_terminal_toggler(cmd)
+	local state = { buf = -1, win = -1 }
+
+	return function()
+		if not vim.api.nvim_win_is_valid(state.win) then
+			state = create_floating_window({ buf = state.buf })
+			if vim.bo[state.buf].buftype ~= "terminal" then
+				vim.fn.termopen(cmd)
+			end
+			vim.cmd("startinsert")
+		else
+			vim.api.nvim_win_hide(state.win)
 		end
-		vim.cmd("startinsert")
-	else
-		vim.api.nvim_win_hide(state.floating.win)
 	end
 end
 
+local toggle_terminal = make_terminal_toggler(vim.o.shell)
+local toggle_lazygit = make_terminal_toggler("lazygit")
+local toggle_htop = make_terminal_toggler("htop")
+
 map({ "n", "t" }, "<C-\\>", toggle_terminal, { desc = "Toggle Float Terminal" })
+vim.keymap.set("n", "<leader>gg", toggle_lazygit, { desc = "Toggle LazyGit" })
+vim.keymap.set("n", "<leader>ht", toggle_htop, { desc = "Toggle Htop" })
+
 -- ─────────────────────────────────────────────
 -- Run Button
 -- ─────────────────────────────────────────────
