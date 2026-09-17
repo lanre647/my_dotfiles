@@ -53,6 +53,39 @@ return {
 		end,
 	},
 
+	-- 	Interactive breadcrumb/navigation bar
+	{
+		"Bekaboo/dropbar.nvim",
+		event = { "BufReadPost", "BufNewFile" },
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+		},
+		opts = {},
+		keys = {
+			{
+				"<leader>;",
+				function()
+					require("dropbar.api").pick()
+				end,
+				desc = "Dropbar: Pick symbol",
+			},
+			{
+				"[;",
+				function()
+					require("dropbar.api").goto_context_start()
+				end,
+				desc = "Dropbar: Previous context",
+			},
+			{
+				"];",
+				function()
+					require("dropbar.api").select_next_context()
+				end,
+				desc = "Dropbar: Next context",
+			},
+		},
+	},
+
 	-- Startup dashboard
 	{
 		"goolord/alpha-nvim",
