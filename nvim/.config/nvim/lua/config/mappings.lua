@@ -180,56 +180,67 @@ map("v", "<leader>i", "=gv", { desc = "Auto-indent selection" })
 -- ─────────────────────────────────────────────
 -- UI Toggle (zen mode)
 -- ─────────────────────────────────────────────
-_G.zen_mode_active = false
+local zen_mode_active = false
 local original_settings = {}
 
 local function toggle_zen_mode()
-	-- Check if we are actually inside a tmux session
 	local in_tmux = os.getenv("TMUX") ~= nil
 
-	if not _G.zen_mode_active then
-		-- 1. Save original Neovim settings
+	if not zen_mode_active then
+		-- 1. Save original options (using vim.opt_local for window options)
 		original_settings = {
-			number = vim.wo.number,
-			relativenumber = vim.wo.relativenumber,
-			statusline = vim.o.statusline,
-			laststatus = vim.o.laststatus,
-			showtabline = vim.o.showtabline,
-			signcolumn = vim.wo.signcolumn,
-			foldcolumn = vim.wo.foldcolumn,
+			number = vim.opt_local.number,
+			relativenumber = vim.opt_local.relativenumber,
+			signcolumn = vim.opt_local.signcolumn,
+			foldcolumn = vim.opt_local.foldcolumn,
+			laststatus = vim.opt.laststatus,
+			showtabline = vim.opt.showtabline,
 		}
 
 		-- 2. Hide Neovim UI elements
-		vim.wo.number = false
-		vim.wo.relativenumber = false
-		vim.wo.signcolumn = "no"
-		vim.wo.foldcolumn = "0"
-		vim.o.laststatus = 0
-		vim.o.showtabline = 0
+		vim.opt_local.number = false
+		vim.opt_local.relativenumber = false
+		vim.opt_local.signcolumn = "no"
+		vim.opt_local.foldcolumn = "0"
+		vim.opt.laststatus = 0
+		vim.opt.showtabline = 0
 
-		-- 3. Hide Tmux Status Line
+		-- 3. Enable Twilight if loaded
+		if pcall(vim.cmd, "TwilightEnable") then
+		-- Uses TwilightEnable if available, or falls back to :Twilight
+		else
+			pcall(vim.cmd, "Twilight")
+		end
+
+		-- 4. Hide Tmux status line
 		if in_tmux then
 			vim.fn.system("tmux set status off")
 		end
 
-		_G.zen_mode_active = true
-		print("Zen Mode: ON")
+		zen_mode_active = true
+		vim.notify("Zen Mode: ON", vim.log.levels.INFO)
 	else
-		-- 4. Restore original Neovim settings
-		vim.wo.number = original_settings.number
-		vim.wo.relativenumber = original_settings.relativenumber
-		vim.wo.signcolumn = original_settings.signcolumn
-		vim.wo.foldcolumn = original_settings.foldcolumn
-		vim.o.laststatus = original_settings.laststatus
-		vim.o.showtabline = original_settings.showtabline
+		-- 1. Restore window/global options
+		vim.opt_local.number = original_settings.number
+		vim.opt_local.relativenumber = original_settings.relativenumber
+		vim.opt_local.signcolumn = original_settings.signcolumn
+		vim.opt_local.foldcolumn = original_settings.foldcolumn
+		vim.opt.laststatus = original_settings.laststatus
+		vim.opt.showtabline = original_settings.showtabline
 
-		-- 5. Restore Tmux Status Line
+		-- 2. Disable Twilight
+		if pcall(vim.cmd, "TwilightDisable") then
+		else
+			pcall(vim.cmd, "Twilight")
+		end
+
+		-- 3. Restore Tmux status line
 		if in_tmux then
 			vim.fn.system("tmux set status on")
 		end
 
-		_G.zen_mode_active = false
-		print("Zen Mode: OFF")
+		zen_mode_active = false
+		vim.notify("Zen Mode: OFF", vim.log.levels.INFO)
 	end
 end
 
