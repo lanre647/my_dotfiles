@@ -82,8 +82,18 @@ map("n", "N", "Nzzzv", { desc = "Previous search match centered" })
 -- ─────────────────────────────────────────────
 -- Quickfix Navigation
 -- ─────────────────────────────────────────────
-map("n", "<M-j>", "<cmd>cnext<CR>zz", { desc = "Next quickfix item" })
-map("n", "<M-k>", "<cmd>cprev<CR>zz", { desc = "Prev quickfix item" })
+-- Fast jumping through quickfix entries
+map("n", "]q", ":cnext<CR>zz", { silent = true })
+map("n", "[q", ":cprev<CR>zz", { silent = true })
+
+-- Populate Quickfix with LSP Diagnostics
+map("n", "<leader>dq", vim.diagnostic.setqflist, { desc = "Workspace diagnostics to Quickfix" })
+map("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Buffer diagnostics to Location List" })
+
+-- Filter to ERRORS only (ignore warnings/hints)
+map("n", "<leader>de", function()
+	vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR })
+end, { desc = "Workspace errors to Quickfix" })
 
 -- ─────────────────────────────────────────────
 -- Splits

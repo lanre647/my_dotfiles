@@ -34,7 +34,6 @@ local options = {
 	ruler = false,
 	showmode = false,
 	showcmd = false,
-	wrap = true,
 	mouse = "a",
 	clipboard = "unnamedplus",
 	history = 100,
