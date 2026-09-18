@@ -5,7 +5,7 @@ wk.add({
 	{ "<leader>b", group = "Buffers" },
 	{ "<leader>c", group = "Code / comments" },
 	{ "<leader>cs", group = "CSV" },
-	{ "<leader>d", group = "Debug" },
+	{ "<leader>d", group = "Debug / quickfix nav" },
 	{ "<leader>f", group = "Find" },
 	{ "<leader>g", group = "Git" },
 	{ "<leader>l", group = "LSP" },
@@ -17,5 +17,5 @@ wk.add({
 	{ "<leader>st", desc = "Search TODO comments" },
 	{ "<leader>sq", desc = "TODO location list" },
 	{ "<leader>sr", desc = "Search and replace" },
-	{ "<leader>v", desc = "Custom inline visual hints" },
+	{ "<leader>v", desc = "Custom inline visual hints / spilt" },
 })
