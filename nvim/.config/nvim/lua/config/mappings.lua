@@ -166,6 +166,15 @@ map("n", "<leader>R", "<cmd>restart<cr>", { desc = "Hot reload Neovim config" })
 map("n", "<leader>u", "<cmd>Undotree<cr>", { desc = "Toggle undo tree" })
 map("n", "<leader>W", ":set wrap!<CR>", { desc = "Toggle line wrap" })
 map("n", "<leader>lc", vim.diagnostic.open_float, { desc = "Line diagnostics" })
+map("n", "z=", function()
+	require("fzf-lua").spell_suggest({
+		winopts = {
+			height = 0.33,
+			width = 0.40,
+			row = 0.40,
+		},
+	})
+end, { desc = "FzfLua spell suggestions (compact)" })
 map("v", "<leader>i", "=gv", { desc = "Auto-indent selection" })
 
 -- ─────────────────────────────────────────────

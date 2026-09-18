@@ -38,6 +38,7 @@ local options = {
 	clipboard = "unnamedplus",
 	history = 100,
 	swapfile = false,
+	spell = true,
 	backup = false,
 	undofile = true,
 	cursorline = true,
