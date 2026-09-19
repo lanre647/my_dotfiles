@@ -470,3 +470,25 @@ vim.keymap.set("n", "<leader>va", function()
 end, { desc = "Add EOL Virtual Text Note" })
 
 vim.keymap.set("n", "<leader>vc", clear_inline_annotations, { desc = "Clear Virtual Text Notes" })
+
+-- ─────────────────────────────────────────────
+-- Custom Harpoon
+-- ─────────────────────────────────────────────
+-- Slot Mappings (Leader + Number to jump, Leader + Shift + Number to mark)
+local slots = { "A", "B", "C", "D" }
+
+for i, mark in ipairs(slots) do
+	-- Jump to slot N (e.g., <leader>1 jumps to mark A)
+	vim.keymap.set("n", "<leader>" .. i, "'" .. mark .. "zz", { desc = "Harpoon slot " .. i })
+	-- Set slot N (e.g., <leader>! or custom bind sets mark A)
+	vim.keymap.set("n", "<leader>m" .. i, "m" .. mark, { desc = "Set Harpoon slot " .. i })
+end
+
+-- local fzf = require("fzf-lua")
+
+-- Custom launcher that filters for our 4 global slot marks
+vim.keymap.set("n", "<leader>hh", function()
+	require("fzf-lua").marks({
+		marks = "[A-D]", -- Only show our designated Harpoon marks
+	})
+end, { desc = "Harpoon Menu (FZF)" })

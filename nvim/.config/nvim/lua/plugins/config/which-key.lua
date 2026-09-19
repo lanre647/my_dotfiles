@@ -8,6 +8,7 @@ wk.add({
 	{ "<leader>d", group = "Debug / quickfix nav" },
 	{ "<leader>f", group = "Find" },
 	{ "<leader>g", group = "Git" },
+	{ "<leader>h", group = "htop / Custom harpoon" },
 	{ "<leader>l", group = "LSP" },
 	{ "<leader>m", group = "Move lines" },
 	{ "<leader>mA", desc = "Swap parameter backward" },
