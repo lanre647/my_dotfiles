@@ -6,10 +6,14 @@
 [![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macOS-informational)](#)
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)](#)
 
-Personal configuration “babies,” managed with **:contentReference[oaicite:0]{index=0}** for fast, reproducible environments.
+Personal configuration “babies,” managed with **stow** for fast, reproducible environments.
 
 ---
 
+## Screenshot
+![my Screenshot](./Screenshot%20from%202026-09-19%2021-33-06.png)
+
+---
 ## 🚀 Quick Start (Recommended)
 
 One-liner bootstrap:
