@@ -10,10 +10,17 @@ Personal configuration “babies,” managed with **stow** for fast, reproducibl
 
 ---
 
-## Screenshot
-![my Screenshot](./Screenshot%20from%202026-09-19%2021-33-06.png)
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="./screenshots/Screenshot from 2026-09-19 21-57-10.png" alt="screenshot1"/></td>
+    <td><img src="./screenshots/Screenshot from 2026-09-19 21-33-06.png" alt="screenshot2"/></td>
+  </tr>
+</table>
 
 ---
+
 ## 🚀 Quick Start (Recommended)
 
 One-liner bootstrap:
@@ -24,11 +31,11 @@ bash <(curl -fsSL https://raw.githubusercontent.com/lanre647/my_dotfiles/main/bo
 
 This will:
 
-* clone the repo
-* install required packages
-* stow configs
-* bootstrap tmux plugins
-* optionally set zsh as default shell
+- clone the repo
+- install required packages
+- stow configs
+- bootstrap tmux plugins
+- optionally set zsh as default shell
 
 ---
 
@@ -56,11 +63,11 @@ cd dotfiles
 
 ## 🛠 Included Configs
 
-* **Zsh** — prompt, aliases, QoL tweaks
-* **Vim / Neovim** — editing environment
-* **git** — config settings
-* **Tmux** — multiplexer config + plugins
-* **Scripts** — personal tools in `~/bin`
+- **Zsh** — prompt, aliases, QoL tweaks
+- **Vim / Neovim** — editing environment
+- **git** — config settings
+- **Tmux** — multiplexer config + plugins
+- **Scripts** — personal tools in `~/bin`
 
 ---
 
@@ -82,19 +89,19 @@ tmux/    → ~/.tmux.conf and ~/.tmux/
 
 The install script will automatically install:
 
-* **GNU Stow**
-* **Git**
-* **Tmux**
-* **Zsh**
-* **Vim**
+- **GNU Stow**
+- **Git**
+- **Tmux**
+- **Zsh**
+- **Vim**
 
 Supported platforms:
 
-* Ubuntu / Debian
-* Arch Linux
-* Fedora / RHEL
-* macOS (with **Homebrew**)
-* Termux
+- Ubuntu / Debian
+- Arch Linux
+- Fedora / RHEL
+- macOS (with **Homebrew**)
+- Termux
 
 ---
 
@@ -116,15 +123,14 @@ This repo includes GitHub Actions to verify Stow integrity and catch broken syml
 
 ## 🔄 Philosophy
 
-* minimal but powerful
-* reproducible setups
-* safe to re-run
-* automation first
-* zero manual steps on fresh machines
+- minimal but powerful
+- reproducible setups
+- safe to re-run
+- automation first
+- zero manual steps on fresh machines
 
 ---
 
 ## 📜 License
 
 MIT — use it, fork it, improve it.
-
