@@ -6,9 +6,9 @@ return {
 		name = "catppuccin",
 		lazy = false,
 		priority = 1000,
+		build = ":CatppuccinCompile",
 		config = function()
 			require("plugins.config.colorscheme")
-			vim.cmd.colorscheme("catppuccin")
 		end,
 	},
 
@@ -34,24 +34,22 @@ return {
 	{
 		"nvim-lualine/lualine.nvim",
 		event = "VeryLazy",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			require("plugins.config.lualine")
 		end,
 	},
 
 	-- Bufferline
-	{
+	--[[ {
 		"romgrk/barbar.nvim",
 		event = "BufReadPre",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
 		init = function()
 			vim.g.barbar_auto_setup = false
 		end,
 		config = function()
 			require("plugins.config.barbar")
 		end,
-	},
+	}, ]]
 
 	-- 	Interactive breadcrumb/navigation bar
 	{
@@ -87,13 +85,13 @@ return {
 	},
 
 	-- Startup dashboard
-	{
+	--[[ {
 		"goolord/alpha-nvim",
 		event = "VimEnter",
 		config = function()
 			require("plugins.config.alpha")
 		end,
-	},
+	}, ]]
 
 	-- Which-key
 	{
@@ -105,7 +103,7 @@ return {
 	},
 
 	-- Focus dimming
-	{
+	--[[ {
 		"folke/twilight.nvim",
 		cmd = "Twilight",
 		keys = {
@@ -114,14 +112,9 @@ return {
 		config = function()
 			require("plugins.config.twilight")
 		end,
-	},
+	}, ]]
 
 	-- Icons
-	{
-		"nvim-tree/nvim-web-devicons",
-		lazy = true,
-	},
-
 	{
 		"echasnovski/mini.icons",
 		lazy = true,
@@ -135,8 +128,8 @@ return {
 	},
 
 	-- Fun
-	{
+	--[[ {
 		"eandrju/cellular-automaton.nvim",
 		cmd = "CellularAutomaton",
-	},
+	},]]
 }

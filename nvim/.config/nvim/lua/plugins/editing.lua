@@ -90,17 +90,17 @@ return {
 	-- Markdown rendering
 	{
 		"MeanderingProgrammer/render-markdown.nvim",
-		event = "VimEnter",
+		ft = { "markdown" }, -- Lazy load ONLY on markdown files
 		config = function()
 			require("plugins.config.render-markdown")
 		end,
 	},
 
 	-- CSV viewer
-	{
+	--[[ {
 		"emmanueltouzery/decisive.nvim",
 		ft = { "csv", "tsv" },
-	},
+	}, ]]
 
 	-- Ron syntax highlighting
 	-- {

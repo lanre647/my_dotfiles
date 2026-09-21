@@ -117,6 +117,7 @@ map("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Increase window width
 -- FZF / Fuzzy Find / Grep
 -- ─────────────────────────────────────────────
 map("n", "<leader>fh", ":lua require('fzf-lua').files({ cwd = '~/' })<CR>", { desc = "Find files (home)" })
+map("n", "<leader>fb", ":lua require('fzf-lua').buffers()<CR>", { desc = "Find buffers" })
 map("n", "<leader>fc", ":lua require('fzf-lua').files({ cwd = '~/.config' })<CR>", { desc = "Find files (~/.config)" })
 map(
 	"n",

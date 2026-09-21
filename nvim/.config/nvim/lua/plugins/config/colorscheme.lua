@@ -48,6 +48,10 @@
 
 -- lua/plugins/config/colorscheme.lua
 require("catppuccin").setup({
+	compile = {
+		enabled = true,
+		path = vim.fn.stdpath("cache") .. "/catppuccin",
+	},
 	flavour = "mocha",
 	background = {
 		light = "latte",
@@ -79,3 +83,6 @@ require("catppuccin").setup({
 		mini = { enabled = true },
 	},
 })
+
+-- Load the compiled output directly
+require("catppuccin").load()

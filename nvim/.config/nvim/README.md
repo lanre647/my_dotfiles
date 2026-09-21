@@ -1,6 +1,6 @@
 ## Bread 's guide to **Neovim** configuration
 
-#### Build off of mine, or start your own!
+#### Build off of mine, or start your own! hahaha
 
 <br>
 

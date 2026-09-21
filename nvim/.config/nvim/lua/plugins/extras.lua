@@ -12,12 +12,12 @@ return {
 	},
 
 	-- Auto-session
-	{
+	--[[ {
 		"rmagatti/auto-session",
 		lazy = true,
 		event = "VimEnter",
 		config = function()
 			require("plugins.config.session")
 		end,
-	},
+	}, ]]
 }

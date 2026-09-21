@@ -1,6 +1,6 @@
 -- Debugging Setup
 
-return {
+--[[ return {
 	-- DAP UI
 	{
 		"rcarriga/nvim-dap-ui",
@@ -45,4 +45,4 @@ return {
 		"nvim-neotest/nvim-nio",
 		lazy = true,
 	},
-}
+} ]]
