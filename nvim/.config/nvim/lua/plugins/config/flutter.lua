@@ -1,6 +1,7 @@
 -- Flutter Tools Configuration
 
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local has_blink, blink = pcall(require, "blink.cmp")
+local capabilities = has_blink and blink.get_lsp_capabilities() or vim.lsp.protocol.make_client_capabilities()
 
 require("flutter-tools").setup({
 	-- Force Linux as the default target device

@@ -4,11 +4,11 @@ require("lspconfig")
 local mason = require("mason")
 local mason_lspconfig = require("mason-lspconfig")
 
--- Safe capabilities fallback (won't force-load cmp_nvim_lsp if missing or deferred)
+-- Safe capabilities fallback for blink.cmp
 local base_capabilities = vim.lsp.protocol.make_client_capabilities()
-local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-if has_cmp then
-	base_capabilities = cmp_nvim_lsp.default_capabilities(base_capabilities)
+local has_blink, blink = pcall(require, "blink.cmp")
+if has_blink then
+    base_capabilities = blink.get_lsp_capabilities(base_capabilities)
 end
 
 -- Detect if we are running inside Termux
