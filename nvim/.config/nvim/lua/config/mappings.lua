@@ -94,11 +94,11 @@ map("n", "]q", ":cnext<CR>zz", { silent = true })
 map("n", "[q", ":cprev<CR>zz", { silent = true })
 
 -- Populate Quickfix with LSP Diagnostics
-map("n", "<leader>dq", vim.diagnostic.setqflist, { desc = "Workspace diagnostics to Quickfix" })
-map("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Buffer diagnostics to Location List" })
+map("n", "<leader>xq", vim.diagnostic.setqflist, { desc = "Workspace diagnostics to Quickfix" })
+map("n", "<leader>xl", vim.diagnostic.setloclist, { desc = "Buffer diagnostics to Location List" })
 
 -- Filter to ERRORS only (ignore warnings/hints)
-map("n", "<leader>de", function()
+map("n", "<leader>xe", function()
 	vim.diagnostic.setqflist({ severity = vim.diagnostic.severity.ERROR })
 end, { desc = "Workspace errors to Quickfix" })
 
@@ -139,8 +139,7 @@ map("n", "<leader>pt", select_theme, { desc = "Select theme" })
 map("n", "<leader>x", "<cmd>!chmod +x %<CR>", { desc = "Make file executable" })
 map("n", "<leader>mv", ":!mv % ", { desc = "Move file" })
 map("n", "<leader>q", ":q<CR>", { desc = "Quit neovim" })
-map("n", "<leader>R", "<cmd>restart<cr>", { desc = "Hot reload Neovim config" })
-map("n", "<leader>u", "<cmd>Undotree<cr>", { desc = "Toggle undo tree" })
+map("n", "<leader>R", "<cmd>restart<cr>", { desc = "reload Neovim" })
 map("n", "<leader>W", ":set wrap!<CR>", { desc = "Toggle line wrap" })
 map("n", "<leader>lc", vim.diagnostic.open_float, { desc = "Line diagnostics" })
 map("n", "z=", function()
@@ -153,6 +152,19 @@ map("n", "z=", function()
 	})
 end, { desc = "FzfLua spell suggestions (compact)" })
 map("v", "<leader>i", "=gv", { desc = "Auto-indent selection" })
+
+-- ─────────────────────────────────────────────
+-- Lazy.nvim management keymaps
+-- ─────────────────────────────────────────────
+map("n", "<leader>Ll", "<cmd>Lazy<cr>", { desc = "Lazy: Open Menu" })
+map("n", "<leader>Ls", "<cmd>Lazy sync<cr>", { desc = "Lazy: Sync" })
+map("n", "<leader>Lu", "<cmd>Lazy update<cr>", { desc = "Lazy: Update" })
+map("n", "<leader>Li", "<cmd>Lazy install<cr>", { desc = "Lazy: Install" })
+map("n", "<leader>Lp", "<cmd>Lazy profile<cr>", { desc = "Lazy: Profile" })
+map("n", "<leader>Lc", "<cmd>Lazy check<cr>", { desc = "Lazy: Check" })
+map("n", "<leader>Lx", "<cmd>Lazy clean<cr>", { desc = "Lazy: Clean" })
+map("n", "<leader>Ld", "<cmd>Lazy debug<cr>", { desc = "Lazy: Debug" })
+map("n", "<leader>Lh", "<cmd>Lazy health<cr>", { desc = "Lazy: Health" })
 
 -- ─────────────────────────────────────────────
 -- UI Toggle (zen mode)
@@ -233,7 +245,7 @@ map("n", "<leader>n", function()
 	else
 		vim.wo.relativenumber = true
 	end
-end, { desc = "Toggle relative/absolute line numbers" })
+end, { desc = "Toggle line numbers" })
 
 -- ─────────────────────────────────────────────
 -- Custom floating terminal (generic, reusable)
@@ -304,7 +316,7 @@ local htop_instance = make_terminal_toggler("htop")
 
 map({ "n", "t" }, "<C-\\>", term_instance.toggle, { desc = "Toggle Float Terminal" })
 vim.keymap.set("n", "<leader>gg", lazygit_instance.toggle, { desc = "Toggle LazyGit" })
-vim.keymap.set("n", "<leader>ht", htop_instance.toggle, { desc = "Toggle Htop" })
+vim.keymap.set("n", "<leader>h", htop_instance.toggle, { desc = "Toggle Htop" })
 
 -- Resize all floats together when the editor window resizes
 vim.api.nvim_create_autocmd("VimResized", {
@@ -380,48 +392,6 @@ end
 
 vim.keymap.set("n", "<F2>", run_current_file_with_args, { desc = "Run file with args" })
 
--- ─────────────────────────────────────────────
--- CSV (decisive)
--- ─────────────────────────────────────────────
-map("n", "<leader>csa", ":lua require('decisive').align_csv({})<cr>", { desc = "Align CSV columns" })
-map("n", "<leader>csA", ":lua require('decisive').align_csv_clear({})<cr>", { desc = "Clear CSV alignment" })
-map("n", "[c", ":lua require('decisive').align_csv_prev_col()<cr>", { desc = "CSV: previous column" })
-map("n", "]c", ":lua require('decisive').align_csv_next_col()<cr>", { desc = "CSV: next column" })
-
--- ─────────────────────────────────────────────
--- Which-key: register Ctrl groups for discoverability
--- ─────────────────────────────────────────────
---[[ local ok, wk = pcall(require, "which-key")
-if ok then
-	wk.add({
-		-- Groups
-		{ "<C-w>", group = "Window / splits" },
-		{ "<C-f>", group = "Grep / find" },
-
-		-- Ctrl binds with descriptions (shown in which-key popup)
-		{ "<C-p>", desc = "Find files (cwd)" },
-		{ "<C-P>", desc = "Command palette" },
-		{ "<C-F>", desc = "Grep" },
-		{ "<C-s>", desc = "Save file" },
-		{ "<C-\\>", desc = "Split vertically" },
-		-- { "<C-S-\\>", desc = "Split horizontally" },
-		{ "<C-h>", desc = "Move to left split" },
-		{ "<C-j>", desc = "Move to split below" },
-		{ "<C-k>", desc = "Move to split above" },
-		{ "<C-l>", desc = "Move to right split" },
-		{ "<C-Up>", desc = "Increase window height" },
-		{ "<C-Down>", desc = "Decrease window height" },
-		{ "<C-Left>", desc = "Decrease window width" },
-		{ "<C-Right>", desc = "Increase window width" },
-		{ "<C-d>", desc = "Scroll down (centered)" },
-		{ "<C-u>", desc = "Scroll up (centered)" },
-		{ "<C-PageUp>", desc = "Previous open file" },
-		{ "<C-PageDown>", desc = "Next open file" },
-		{ "<C-c>", mode = "v", desc = "Copy to system clipboard" },
-		{ "<C-x>", mode = "v", desc = "Cut to system clipboard" },
-		{ "<C-v>", desc = "Paste from system clipboard" },
-	})
-end ]]
 local ns_id = vim.api.nvim_create_namespace("custom_virtual_hints")
 
 local function add_inline_annotation(text)
@@ -448,7 +418,7 @@ end, { desc = "Add EOL Virtual Text Note" })
 
 vim.keymap.set("n", "<leader>vc", clear_inline_annotations, { desc = "Clear Virtual Text Notes" })
 
--- ─────────────────────────────────────────────
+--[[ -- ─────────────────────────────────────────────
 -- Custom Harpoon
 -- ─────────────────────────────────────────────
 -- Slot Mappings (Leader + Number to jump, Leader + Shift + Number to mark)
@@ -468,4 +438,4 @@ vim.keymap.set("n", "<leader>hh", function()
 	require("fzf-lua").marks({
 		marks = "[A-D]", -- Only show our designated Harpoon marks
 	})
-end, { desc = "Harpoon Menu (FZF)" })
+end, { desc = "Harpoon Menu (FZF)" }) ]]
