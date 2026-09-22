@@ -31,7 +31,7 @@ end
 
 local options = {
 	laststatus = 3,
-	cmdheight = 0,
+	-- cmdheight = 0,
 	ruler = false,
 	showmode = false,
 	showcmd = false,

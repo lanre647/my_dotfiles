@@ -65,7 +65,14 @@ return {
 		enabled = true,
 		completion = {
 			menu = {
-				auto_show = true, -- Pops up the menu automatically without pressing Tab
+				auto_show = true,
+			},
+			list = {
+				selection = {
+					-- Don't preselect item 1 automatically so Tab targets item 1 on first press
+					preselect = false,
+					auto_insert = true,
+				},
 			},
 		},
 		sources = function()
