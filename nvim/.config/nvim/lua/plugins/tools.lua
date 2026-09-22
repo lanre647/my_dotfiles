@@ -1,20 +1,34 @@
 -- Navigation & Tools: FZF, NvimTree, Terminal
 
 return {
-	-- FZF-Lua (fuzzy finder)
-	{
-		"ibhagwan/fzf-lua",
-		lazy = true,
-		cmd = "FzfLua",
-		keys = {
-			{ "<leader>ff", ":lua require('fzf-lua').files()<CR>", desc = "Find files" },
-			{ "<C-p>", ":lua require('fzf-lua').files()<CR>", desc = "Find files" },
-			{ "<leader>fg", ":lua require('fzf-lua').grep()<CR>", desc = "Grep" },
-		},
-		config = function()
-			require("plugins.config.fzf-lua")
-		end,
-	},
+-- FZF-Lua (fuzzy finder)
+{
+    "ibhagwan/fzf-lua",
+    lazy = true,
+    cmd = "FzfLua",
+    keys = {
+        -- File finding shortcuts
+        { "<leader>ff", "<cmd>FzfLua files<cr>", desc = "Find files" },
+        { "<leader>fh", "<cmd>FzfLua files cwd=~/<cr>", desc = "Find files (home)" },
+        { "<leader>fc", "<cmd>FzfLua files cwd=~/.config<cr>", desc = "Find files (~/.config)" },
+        { "<leader>fl", "<cmd>FzfLua files cwd=~/.local/src<cr>", desc = "Find files (~/.local/src)" },
+        { "<leader>fa", "<cmd>FzfLua files cwd=..<cr>", desc = "Find files (parent dir)" },
+        { "<leader>fb", "<cmd>FzfLua buffers<cr>", desc = "Find buffers" },
+
+        -- Search & Grep
+        { "<leader>fg", "<cmd>FzfLua live_grep<cr>", desc = "Live Grep" },
+        { "<leader>G", "<cmd>FzfLua grep_cword<cr>", desc = "Grep word under cursor" },
+        { "<leader>fr", "<cmd>FzfLua resume<cr>", desc = "Resume last search" },
+
+        -- LSP & Help
+        { "<leader>fs", "<cmd>FzfLua lsp_workspace_symbols<cr>", desc = "LSP workspace symbols" },
+        { "<leader>fS", "<cmd>FzfLua lsp_document_symbols<cr>", desc = "LSP document symbols" },
+        { "<leader>fH", "<cmd>FzfLua help_tags<cr>", desc = "Help tags" },
+    },
+    config = function()
+        require("plugins.config.fzf-lua")
+    end,
+},
 
 	-- NvimTree (file explorer)
 	--[[ {

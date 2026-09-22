@@ -20,6 +20,13 @@ vim.g.maplocalleader = " "
 map("i", "jj", "<Esc>", { desc = "Better excape" })
 
 -- ─────────────────────────────────────────────
+-- Ergonomic Folding Mappings
+-- ─────────────────────────────────────────────
+map("n", "<Tab>", "za", { desc = "Toggle fold under cursor" })
+map("n", "<leader>zO", "zR", { desc = "Open all folds in buffer" })
+map("n", "<leader>zC", "zM", { desc = "Close all folds in buffer" })
+
+-- ─────────────────────────────────────────────
 -- Buffers
 -- ─────────────────────────────────────────────
 map("n", "<S-l>", ":bnext<CR>", { desc = "Next buffer" })
@@ -112,37 +119,6 @@ map("n", "<C-Up>", ":resize +2<CR>", { desc = "Increase window height" })
 map("n", "<C-Down>", ":resize -2<CR>", { desc = "Decrease window height" })
 map("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Decrease window width" })
 map("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Increase window width" })
-
--- ─────────────────────────────────────────────
--- FZF / Fuzzy Find / Grep
--- ─────────────────────────────────────────────
-map("n", "<leader>fh", ":lua require('fzf-lua').files({ cwd = '~/' })<CR>", { desc = "Find files (home)" })
-map("n", "<leader>fb", ":lua require('fzf-lua').buffers()<CR>", { desc = "Find buffers" })
-map("n", "<leader>fc", ":lua require('fzf-lua').files({ cwd = '~/.config' })<CR>", { desc = "Find files (~/.config)" })
-map(
-	"n",
-	"<leader>fl",
-	":lua require('fzf-lua').files({ cwd = '~/.local/src' })<CR>",
-	{ desc = "Find files (~/.local/src)" }
-)
-map("n", "<leader>fa", ":lua require('fzf-lua').files({ cwd = '..' })<CR>", { desc = "Find files (parent dir)" })
-map("n", "<leader>fr", ":lua require('fzf-lua').resume()<CR>", { desc = "Resume last search" })
-map("n", "<leader>G", ":lua require('fzf-lua').grep_cword()<CR>", { desc = "Grep word under cursor" })
-
-map("n", "<leader>fs", function()
-	require("fzf-lua").lsp_workspace_symbols()
-end, { desc = "LSP workspace symbols" })
-map("n", "<leader>fS", function()
-	require("fzf-lua").lsp_document_symbols()
-end, { desc = "LSP document symbols" })
---[[ map("n", "<C-P>", function()
-	require("fzf-lua").commands()
--- end, { desc = "Command palette" }) ]]
-map("n", "<leader>fH", function()
-	require("fzf-lua").help_tags({
-		actions = { ["default"] = require("fzf-lua").actions.help },
-	})
-end, { desc = "Help tags" })
 
 -- ─────────────────────────────────────────────
 -- Clipboard (system)
@@ -245,7 +221,7 @@ local function toggle_zen_mode()
 	end
 end
 
-vim.keymap.set("n", "<leader>z", toggle_zen_mode, { desc = "Toggle Zen Mode" })
+vim.keymap.set("n", "<leader>zt", toggle_zen_mode, { desc = "Toggle Zen Mode" })
 
 -- ─────────────────────────────────────────────
 -- Line Numbers
