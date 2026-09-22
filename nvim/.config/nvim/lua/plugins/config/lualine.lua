@@ -136,7 +136,7 @@ lualine.setup({
 		component_separators = { left = "", right = "" },
 		section_separators = { left = "", right = "" },
 		disabled_filetypes = {
-			statusline = { "alpha", "dashboard", "NvimTree", "toggleterm", "qf", "help", "lazy", "mason" },
+			statusline = { "alpha", "dashboard", "NvimTree", "toggleterm", "qf", "help", "lazy", "mason", "oil" },
 		},
 		always_divide_middle = true,
 		globalstatus = true,
