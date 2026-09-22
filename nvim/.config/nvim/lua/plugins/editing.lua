@@ -1,15 +1,21 @@
 -- Editing & Code Improvements
 
 return {
-	-- Treesitter (syntax highlighting and text objects)
-	{
-		"nvim-treesitter/nvim-treesitter",
-		lazy = false,
-		build = ":TSUpdate",
-		config = function()
-			require("plugins.config.treesitter")
-		end,
-	},
+-- Treesitter (syntax highlighting and text objects)
+{
+    "nvim-treesitter/nvim-treesitter",
+    lazy = true,
+    event = { "BufReadPost", "BufNewFile" },
+    cmd = { "TSUpdate", "TSInstall", "TSModuleInfo" },
+    build = ":TSUpdate",
+    dependencies = {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+    },
+    config = function()
+        require("plugins.config.treesitter")
+        require("plugins.config.treesitter-textobjects")
+    end,
+},
 
 	{
 		"nvim-treesitter/nvim-treesitter-textobjects",

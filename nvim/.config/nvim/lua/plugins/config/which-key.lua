@@ -19,4 +19,5 @@ wk.add({
 	{ "<leader>sq", desc = "TODO location list" },
 	{ "<leader>sr", desc = "Search and replace" },
 	{ "<leader>v", desc = "Custom inline visual hints / spilt" },
+	{ "<leader>z", desc = "zen / folding" },
 })

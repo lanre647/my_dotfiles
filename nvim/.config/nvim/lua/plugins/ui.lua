@@ -127,6 +127,53 @@ return {
 		end,
 	},
 
+	{
+		"kevinhwang91/nvim-ufo",
+		dependencies = "kevinhwang91/promise-async",
+		event = "BufReadPost",
+		keys = {
+			{
+				"zR",
+				function()
+					require("ufo").openAllFolds()
+				end,
+				desc = "Open all folds",
+			},
+			{
+				"zM",
+				function()
+					require("ufo").closeAllFolds()
+				end,
+				desc = "Close all folds",
+			},
+			{
+				"zK",
+				function()
+					local winid = require("ufo").peekFoldedLinesUnderCursor()
+					if not winid then
+						vim.lsp.buf.hover()
+					end
+				end,
+				desc = "Peek Fold / Hover",
+			},
+		},
+		config = function()
+			vim.o.foldcolumn = "1"
+			vim.o.foldlevel = 99
+			vim.o.foldlevelstart = 99
+			vim.o.foldenable = true
+
+			require("ufo").setup({
+				provider_selector = function(bufnr, filetype, buftype)
+					local disabled_fts = { "neo-tree", "NvimTree", "alpha", "dashboard", "toggleterm" }
+					if vim.tbl_contains(disabled_fts, filetype) or buftype ~= "" then
+						return ""
+					end
+					return { "treesitter", "indent" }
+				end,
+			})
+		end,
+	},
 	-- Fun
 	--[[ {
 		"eandrju/cellular-automaton.nvim",
