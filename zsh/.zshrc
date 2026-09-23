@@ -34,9 +34,20 @@ zstyle ':omz:update' mode disabled
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="mm/dd/yyyy"
 # ZSH_CUSTOM=/path/to/new-custom-folder
+# Enable cursor shape switching
+VI_MODE_SET_CURSOR=true
+# Set desired cursor shapes (Beam/Pipe for Insert, Solid Block for Normal)
+VI_MODE_CURSOR_INSERT=6
+VI_MODE_CURSOR_NORMAL=2
+# Customize mode indicator text (optional)
+MODE_INDICATOR="%F{yellow}[NORMAL]%f"
+INSERT_MODE_INDICATOR="%F{green}[INSERT]%f"
+# Force prompt redraw when changing modes
+VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
 
 plugins=(
   git
+  vi-mode
   sudo
   fancy-ctrl-z
   copypath
