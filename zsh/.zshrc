@@ -109,6 +109,7 @@ source <(fzf --zsh)
 # CORE ALIASES — Navigation & Utilities
 # ------------------------------------------------------------
 alias c='clear'
+alias q='exit'
 alias v='nvim'
 alias vi='nvim'
 alias nvim2="NVIM_APPNAME=nvim2 nvim"
@@ -365,6 +366,24 @@ function todo() {
     fi
 }
 
+# --- Auto-bell for long-running terminal tasks ---
+typeset -g MY_CMD_START_TIME=0
+
+function preexec() {
+    MY_CMD_START_TIME=$SECONDS
+}
+
+function precmd() {
+    local exit_code=$?
+    if (( MY_CMD_START_TIME > 0 )); then
+        local duration=$(( SECONDS - MY_CMD_START_TIME ))
+        # If the command took 10+ seconds, ring the bell on completion
+        if (( duration > 10 )); then
+            echo -e "\a"
+        fi
+        MY_CMD_START_TIME=0
+    fi
+}
 
 # ------------------------------------------------------------
 # STARTUP
