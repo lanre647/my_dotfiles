@@ -134,8 +134,17 @@ map("i", "<C-v>", "<C-r>+", { desc = "Paste from system clipboard (insert)" }) ]
 map({ "n", "i", "v" }, "<C-s>", "<Esc>:w<CR>", { desc = "Save file" })
 map("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
 map("n", "<leader>sr", ":%s//g<Left><Left>", { desc = "Replace all (in file)" })
-map("n", "<leader>pc", switch_theme, { desc = "Cycle themes" })
-map("n", "<leader>pt", select_theme, { desc = "Select theme" })
+map("n", "<leader>pc", function()
+	if _G.switch_theme then
+		_G.switch_theme()
+	end
+end, { desc = "Cycle themes" })
+
+map("n", "<leader>pt", function()
+	if _G.select_theme then
+		_G.select_theme()
+	end
+end, { desc = "Select theme" })
 map("n", "<leader>x", "<cmd>!chmod +x %<CR>", { desc = "Make file executable" })
 map("n", "<leader>mv", ":!mv % ", { desc = "Move file" })
 map("n", "<leader>q", ":q<CR>", { desc = "Quit neovim" })

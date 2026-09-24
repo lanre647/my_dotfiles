@@ -4,9 +4,12 @@ return {
 	{
 		"catppuccin/nvim",
 		name = "catppuccin",
-		lazy = false,
+		lazy = true,
 		priority = 1000,
 		build = ":CatppuccinCompile",
+		opts = {
+			flavour = "mocha",
+		},
 		config = function()
 			require("plugins.config.colorscheme")
 		end,
@@ -34,8 +37,11 @@ return {
 	{
 		"nvim-lualine/lualine.nvim",
 		event = "VeryLazy",
+		opts = { theme = "auto" },
 		config = function()
-			require("plugins.config.lualine")
+			vim.schedule(function()
+				require("plugins.config.lualine")
+			end)
 		end,
 	},
 

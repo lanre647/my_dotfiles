@@ -76,7 +76,7 @@ require("catppuccin").setup({
 			},
 		},
 		telescope = { enabled = true },
-		nvimtree = true,
+		nvimtree = false,
 		gitsigns = true,
 		cmp = true,
 		indent_blankline = { enabled = true },
@@ -84,5 +84,5 @@ require("catppuccin").setup({
 	},
 })
 
--- Load the compiled output directly
-require("catppuccin").load()
+-- Sets the active colorscheme and uses the compiled cache directly
+vim.cmd.colorscheme("catppuccin-mocha")

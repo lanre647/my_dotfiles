@@ -1,4 +1,4 @@
--- Bread's Neovim Config
+-- Lanre's Neovim Config
 -- Initially Bread's but This Neovim configuration has grown on me 😅😅😅😅
 -- Fast, modular, and IDE-level features
 
@@ -24,9 +24,8 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Load core configuration
+-- Load core options and mappings
 require("config.options")
-require("config.theme")
 require("config.autocmd")
 require("config.mappings")
 
@@ -42,7 +41,45 @@ require("lazy").setup("plugins", {
 	},
 	change_detection = {
 		enabled = true,
-		notify = true,
+		notify = false, -- Disabled to avoid eager notify execution on file changes
+	},
+	performance = {
+		rtp = {
+			disabled_plugins = {
+				"2html_plugin",
+				"tohtml",
+				"getscript",
+				"getscriptPlugin",
+				"gzip",
+				"logipat",
+				"netrw",
+				"netrwPlugin",
+				"netrwSettings",
+				"netrwFileHandlers",
+				"matchit",
+				"tar",
+				"tarPlugin",
+				"rrhelper",
+				"spellfile_plugin",
+				"vimball",
+				"vimballPlugin",
+				"zip",
+				"zipPlugin",
+				"tutor",
+				"rplugin",
+				"synmenu",
+				"optwin",
+				"compiler",
+				"bugreport",
+				"editorconfig",
+				"man",
+				"matchparen",
+				"net",
+				"osc52",
+				"shada",
+				"spellfile",
+			},
+		},
 	},
 	ui = {
 		icons = {
@@ -72,18 +109,21 @@ require("lazy").setup("plugins", {
 	},
 })
 
--- Load theme after lazy.nvim setup
-vim.defer_fn(function()
+-- Load theme synchronously AFTER lazy setup
+require("config.theme")
+if type(load_theme) == "function" then
 	load_theme()
-end, 10)
+else
+	vim.cmd.colorscheme("catppuccin")
+end
 
--- Display startup time (optional)
+-- Display startup time using native print (avoids triggering nvim-notify)
 vim.api.nvim_create_autocmd("VimEnter", {
 	once = true,
 	callback = function()
 		local time = vim.fn.reltimestr(vim.fn.reltime(vim.g.start_time))
 		vim.g.startup_time = time
-		-- Uncomment to see startup time:
-		vim.notify("Neovim startup time: " .. time .. "ms", vim.log.levels.INFO)
+		-- Uncomment to print startup time without triggering nvim-notify:
+		print("Neovim startup time: " .. time .. "ms")
 	end,
 })
