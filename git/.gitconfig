@@ -1,5 +1,51 @@
 [user]
-	name = Lanre
-	email = owolabilanre2006@gmail.com
+    email = owolabilanre2006@gmail.com
+    name = williams-olanrewaju
+
+[core]
+    editor = nvim
+    pager = delta
+
 [init]
-	defaultBranch = main
+    defaultBranch = main
+
+[diff]
+    algorithm = histogram
+    context = 3
+    renames = copies
+    interHunkContext = 10
+    wsErrorHighlight = all
+
+[delta]
+    navigate = true
+    side-by-side = true
+    line-numbers = true
+
+[interactive]
+    diffFilter = delta --color-only
+
+[merge]
+    conflictStyle = zdiff3
+
+[pull]
+    rebase = true
+
+[push]
+    autoSetupRemote = true
+    default = current
+
+[fetch]
+    prune = true
+
+[rerere]
+    enabled = true
+
+[rebase]
+    autoStash = true
+    autoSquash = true
+
+[branch]
+    sort = -committerdate
+
+[help]
+    autoCorrect = prompt
