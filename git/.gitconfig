@@ -28,7 +28,7 @@
     conflictStyle = zdiff3
 
 [pull]
-    rebase = true
+	# rebase = true
 
 [push]
     autoSetupRemote = true
@@ -41,8 +41,8 @@
     enabled = true
 
 [rebase]
-    autoStash = true
-    autoSquash = true
+	# autoStash = true
+	# autoSquash = true
 
 [branch]
     sort = -committerdate
