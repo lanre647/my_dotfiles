@@ -385,6 +385,11 @@ function precmd() {
     fi
 }
 
+# Automatically sync Wayland/niri variables inside tmux panes
+if [ -n "$TMUX" ]; then
+    eval $(tmux show-environment -s WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE 2>/dev/null)
+fi
+
 # ------------------------------------------------------------
 # STARTUP
 # ------------------------------------------------------------
