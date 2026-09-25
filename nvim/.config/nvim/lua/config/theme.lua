@@ -31,50 +31,67 @@ local function save_theme(colorscheme, lualine)
 end
 
 local function apply_theme(colorscheme, lualine)
-    -- 1. Set background mode
-    if colorscheme:find("latte") or colorscheme == "gruvbox-light" then
-        vim.o.background = "light"
-    else
-        vim.o.background = "dark"
-    end
+	-- 1. Set background mode
+	if colorscheme:find("latte") or colorscheme == "gruvbox-light" then
+		vim.o.background = "light"
+	else
+		vim.o.background = "dark"
+	end
 
-    -- 2. Apply target colorscheme
-    if colorscheme:sub(1, 10) == "catppuccin" then
-        local flavour = colorscheme:sub(12) -- mocha, macchiato, frappe, latte
-        if flavour == "" then flavour = "mocha" end
+	-- 2. Apply target colorscheme
+	if colorscheme:sub(1, 10) == "catppuccin" then
+		local flavour = colorscheme:sub(12) -- mocha, macchiato, frappe, latte
+		if flavour == "" then
+			flavour = "mocha"
+		end
 
-        -- Fast path: load compiled cache directly from ~/.cache/nvim/catppuccin/<flavour>
-        local cache_path = vim.fn.stdpath("cache") .. "/catppuccin/" .. flavour
-        if vim.loop.fs_stat(cache_path) or vim.uv.fs_stat(cache_path) then
-            vim.g.catppuccin_flavour = flavour
-            dofile(cache_path)
-        else
-            local ok, catppuccin = pcall(require, "catppuccin")
-            if ok then
-                catppuccin.load(flavour)
-            else
-                vim.cmd("colorscheme " .. colorscheme)
-            end
-        end
-    elseif colorscheme == "gruvbox-light" then
-        vim.cmd("colorscheme gruvbox")
-    else
-        vim.cmd("colorscheme " .. colorscheme)
-    end
+		-- Set colors_name explicitly so Lualine knows what theme is running
+		vim.g.colors_name = colorscheme
 
-    -- 3. Highlight overrides
-    vim.api.nvim_set_hl(0, "CmpBorder", {
-        fg = vim.o.background == "light" and "#8c8fa1" or "#585b70",
-        bg = "NONE",
-    })
+		-- Fast path: load compiled cache directly
+		local cache_path = vim.fn.stdpath("cache") .. "/catppuccin/" .. flavour
+		if vim.loop.fs_stat(cache_path) or vim.uv.fs_stat(cache_path) then
+			vim.g.catppuccin_flavour = flavour
+			dofile(cache_path)
+		else
+			local ok, catppuccin = pcall(require, "catppuccin")
+			if ok then
+				catppuccin.load(flavour)
+			else
+				vim.cmd("colorscheme " .. colorscheme)
+			end
+		end
+	elseif colorscheme == "gruvbox-light" then
+		vim.cmd("colorscheme gruvbox")
+	else
+		vim.cmd("colorscheme " .. colorscheme)
+	end
 
-    -- 4. Reload Lualine with auto
-    local ok, lualine_mod = pcall(require, "lualine")
-    if ok then
-        lualine_mod.setup({
-            options = { theme = "auto" },
-        })
-    end
+	-- 3. Highlight overrides
+	vim.api.nvim_set_hl(0, "CmpBorder", {
+		fg = vim.o.background == "light" and "#8c8fa1" or "#585b70",
+		bg = "NONE",
+	})
+
+	-- 4. Reload Lualine safely
+	local ok, lualine_mod = pcall(require, "lualine")
+	if ok then
+		local lualine_theme = lualine or "auto"
+
+		-- Catppuccin custom handler: fetch palette directly from catppuccin runtime
+		if colorscheme:sub(1, 10) == "catppuccin" then
+			local cat_ok, cat_lualine = pcall(require, "catppuccin.utils.lualine")
+			if cat_ok then
+				lualine_theme = cat_lualine()
+			else
+				lualine_theme = "auto"
+			end
+		end
+
+		lualine_mod.setup({
+			options = { theme = lualine_theme },
+		})
+	end
 end
 
 _G.load_theme = function()

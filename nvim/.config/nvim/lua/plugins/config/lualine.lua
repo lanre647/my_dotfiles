@@ -27,7 +27,7 @@ api.nvim_create_autocmd({ "FocusLost", "BufLeave", "InsertLeave" }, {
 require("lualine").setup({
 	options = {
 		icons_enabled = true,
-		theme = "auto", -- Uses compiled highlights if Catppuccin compile is enabled
+		-- theme = "auto", -- Uses compiled highlights if Catppuccin compile is enabled
 		component_separators = { left = "", right = "" },
 		section_separators = { left = "", right = "" },
 		disabled_filetypes = {

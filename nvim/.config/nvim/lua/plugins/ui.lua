@@ -37,7 +37,6 @@ return {
 	{
 		"nvim-lualine/lualine.nvim",
 		event = "VeryLazy",
-		opts = { theme = "auto" },
 		config = function()
 			vim.schedule(function()
 				require("plugins.config.lualine")
