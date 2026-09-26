@@ -1,0 +1,14 @@
+gui:
+  # Use a smaller width for side panels to give code more room
+  sidePanelWidth: 0.25
+  # Set to 'top' if you want panels above the code (better for portrait mode)
+  # Set to 'left' if you usually code in landscape
+  enlargedSideViewLocation: 'left'
+  # Wrap lines in the diff view so you don't have to scroll horizontally
+  wrapLinesInMainPanel: true
+  # Show icons (requires a Nerd Font installed in Termux)
+  showIcons: true
+git:
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
