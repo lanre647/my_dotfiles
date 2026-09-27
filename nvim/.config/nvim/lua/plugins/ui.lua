@@ -138,21 +138,21 @@ return {
 		event = "BufReadPost",
 		keys = {
 			{
-				"zR",
+				"zO",
 				function()
 					require("ufo").openAllFolds()
 				end,
 				desc = "Open all folds",
 			},
 			{
-				"zM",
+				"zC",
 				function()
 					require("ufo").closeAllFolds()
 				end,
 				desc = "Close all folds",
 			},
 			{
-				"zK",
+				"zP",
 				function()
 					local winid = require("ufo").peekFoldedLinesUnderCursor()
 					if not winid then
