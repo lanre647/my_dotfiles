@@ -52,11 +52,13 @@ map("n", "<A-7>", "<Cmd>BufferGoto 7<CR>", { desc = "Go to buffer 7" })
 map("n", "<A-8>", "<Cmd>BufferGoto 8<CR>", { desc = "Go to buffer 8" })
 map("n", "<A-9>", "<Cmd>BufferGoto 9<CR>", { desc = "Go to buffer 9" })
 map("n", "<A-0>", "<Cmd>BufferLast<CR>", { desc = "Go to last buffer" })
-map("n", "<AS-p>", "<Cmd>BufferPin<CR>", { desc = "Pin buffer" })
 
--- Buffer reorder
-map("n", "<AS-h>", "<Cmd>BufferMovePrevious<CR>", { desc = "Move buffer left" })
-map("n", "<AS-l>", "<Cmd>BufferMoveNext<CR>", { desc = "Move buffer right" })
+-- Pin buffer (Alt + Shift + p -> <A-P>)
+map("n", "<A-P>", "<Cmd>BufferPin<CR>", { desc = "Pin buffer" })
+
+-- Buffer reorder (Alt + Shift + h/l -> <A-H> / <A-L>)
+map("n", "<A-H>", "<Cmd>BufferMovePrevious<CR>", { desc = "Move buffer left" })
+map("n", "<A-L>", "<Cmd>BufferMoveNext<CR>", { desc = "Move buffer right" })
 
 -- ─────────────────────────────────────────────
 -- Moving Lines
@@ -109,10 +111,10 @@ end, { desc = "Workspace errors to Quickfix" })
 -- map("n", "<CS-\\>", ":split<CR>", { desc = "Split editor horizontally" })
 
 -- Navigate splits
-map("n", "<C-h>", "<C-w>h", { desc = "Move to left split" })
+--[[ map("n", "<C-h>", "<C-w>h", { desc = "Move to left split" })
 map("n", "<C-j>", "<C-w>j", { desc = "Move to split below" })
 map("n", "<C-k>", "<C-w>k", { desc = "Move to split above" })
-map("n", "<C-l>", "<C-w>l", { desc = "Move to right split" })
+map("n", "<C-l>", "<C-w>l", { desc = "Move to right split" }) ]]
 
 -- Resize splits
 map("n", "<C-Up>", ":resize +2<CR>", { desc = "Increase window height" })
@@ -323,7 +325,7 @@ local term_instance = make_terminal_toggler(vim.o.shell)
 local lazygit_instance = make_terminal_toggler("lazygit")
 local htop_instance = make_terminal_toggler("htop")
 
-map({ "n", "t" }, "<C-\\>", term_instance.toggle, { desc = "Toggle Float Terminal" })
+map({ "n", "t" }, "<A-\\>", term_instance.toggle, { desc = "Toggle Float Terminal" })
 vim.keymap.set("n", "<leader>gg", lazygit_instance.toggle, { desc = "Toggle LazyGit" })
 vim.keymap.set("n", "<leader>h", htop_instance.toggle, { desc = "Toggle Htop" })
 
