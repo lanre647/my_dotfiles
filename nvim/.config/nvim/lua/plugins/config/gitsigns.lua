@@ -20,12 +20,22 @@ require("gitsigns").setup({
 	signcolumn = true,
 	numhl = false,
 	linehl = false,
-	word_diff = false,
-	watch_gitdir = {
-		follow_files = true,
+
+	-- 1. Enable word-level inline diffing (highlights exact character changes inside a line)
+	word_diff = true,
+
+	-- 2. Modern diff options & better algorithms
+	diff_opts = {
+		internal = true,
+		algorithm = "histogram", -- "patience" or "histogram" produce cleaner diffs than default
+		indent_heuristic = true,
+		linematch = 60, -- Pairs modified lines accurately across shifts/reindentation
 	},
+
+	watch_gitdir = { follow_files = true },
 	auto_attach = true,
 	attach_to_untracked = false,
+
 	current_line_blame = true,
 	current_line_blame_opts = {
 		virt_text = true,
@@ -40,8 +50,10 @@ require("gitsigns").setup({
 	update_debounce = 100,
 	status_formatter = nil,
 	max_file_length = 40000,
+
+	-- 3. Enhanced floating window preview
 	preview_config = {
-		border = "single",
+		border = "rounded", -- Cleaner border for hunk previews
 		style = "minimal",
 		relative = "cursor",
 		row = 0,
