@@ -84,9 +84,9 @@ return {
 	},
 
 	-- Fuzzy dependencies
-	{
+	--[[ {
 		"romgrk/fzy-lua-native",
 		lazy = true,
 		build = "make",
-	},
+	}, ]]
 }
