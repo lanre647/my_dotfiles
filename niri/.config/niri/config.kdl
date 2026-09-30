@@ -212,6 +212,31 @@ window-rule {
     clip-to-geometry true
 }
 
+// Standardized sizing and floating rules for TUI overlays
+window-rule {
+    match app-id=r#"^tui-overlay$"#
+    open-floating true
+    default-column-width { fixed 850; }
+    default-window-height { fixed 550; }
+    opacity 0.95
+    background-effect {
+        blur true
+    }
+}
+
+window-rule {
+    match app-id="wallpaper-picker"
+
+    open-floating true
+
+    // Dimensions for the floating window
+    default-column-width { fixed 1000; }
+    default-window-height { fixed 650; }
+
+    // Centered positioning with optional offsets (default centers automatically)
+    // default-floating-position x=0 y=0
+}
+
 // Blur effects for common apps
 window-rule {
     match app-id=r#"^org.gnome.Nautilus$"#
@@ -312,19 +337,6 @@ window-rule {
         blur true
     }
     default-column-width { proportion 0.5; }
-}
-
-window-rule {
-    match app-id="wallpaper-picker"
-
-    open-floating true
-
-    // Dimensions for the floating window
-    default-column-width { fixed 1000; }
-    default-window-height { fixed 650; }
-
-    // Centered positioning with optional offsets (default centers automatically)
-    // default-floating-position x=0 y=0
 }
 
 // Workspace 2 — Browsers
@@ -456,130 +468,161 @@ window-rule {
 
 // ── Keybindings ────────────────────────────────────────────────────────────
 binds {
-    // ── Launchers ──
-    Mod+Shift+Slash                                                                 { show-hotkey-overlay; }
-    Mod+Return                                                                      { spawn "kitty"; }
-    Mod+b                                                                           { spawn "firefox"; }
-    Mod+e                                                                           { spawn "thunar"; }
-    Mod+d                                                                           { spawn "fuzzel"; }
-    Mod+s                                                                           { spawn "kitty" "nvim" "/home/lanre/.config/niri/config.kdl"; }
-    Mod+v                                                                           { spawn "~/.local/bin/cliphist-picker"; }
-    Mod+Comma     hotkey-overlay-title="Show emojis: fuzzel"     repeat=false       { spawn "bash" "-c" "pkill fuzzel || fuzzel-emoji"; }
-    Mod+Shift+b   hotkey-overlay-title="Toggle bar: waybar"      repeat=false       { spawn "toggle-waybar"; }
-    Mod+w         repeat=false                                                      { spawn "kitty" "--app-id" "wallpaper-picker" "-e" "/home/lanre/dotfiles/scripts/wallpaper-picker.sh"; }
-    Mod+Alt+w     hotkey-overlay-title="Random Wallpaper & Animation"               { spawn "random-wallpaper"; }
-    Mod+O         hotkey-overlay-title="Toggle Overview Mode"     repeat=false       { toggle-overview; }
+    // ── launchers ──
+    mod+shift+slash                                                                 { show-hotkey-overlay; }
+    mod+d                                                                           { spawn "bash" "-c" "pkill fuzzel || fuzzel"; }
+    Mod+Return                                                                      { spawn "default-terminal"; }
+    Mod+Alt+Return                                                                  { spawn "default-terminal" "-e" "tmux" "new-session" "-A" "-s" "main"; }
+    mod+b                                                                           { spawn "default-browser"; }
+	Mod+Shift+alt+b hotkey-overlay-title="Open Private Browser"                     { spawn "default-browser-private"; }
+    mod+e                                                                           { spawn "default-fm"; }
+    mod+c                                                                           { spawn "default-editor"; }
+    mod+s                                                                           { spawn "kitty" "nvim" "/home/lanre/.config/niri/config.kdl"; }
+    mod+v                                                                           { spawn "~/.local/bin/cliphist-picker"; }
+    mod+alt+l                                                                       { spawn "swaylock"; }
+    mod+comma     hotkey-overlay-title="show emojis: fuzzel"     repeat=false       { spawn "bash" "-c" "pkill fuzzel || fuzzel-emoji"; }
+    mod+shift+b   hotkey-overlay-title="toggle bar: waybar"      repeat=false       { spawn "toggle-waybar"; }
+    //mod+w         repeat=false                                                      { spawn "kitty" "--app-id" "wallpaper-picker" "-e" "/home/lanre/dotfiles/scripts/wallpaper-picker.sh"; }
+    mod+w         repeat=false                                                      { spawn "kitty" "--class" "tui-overlay" "-e" "/home/lanre/dotfiles/scripts/wallpaper-picker.sh"; }
+    mod+alt+w     hotkey-overlay-title="random wallpaper & animation"               { spawn "random-wallpaper"; }
+    mod+o         hotkey-overlay-title="toggle overview mode"     repeat=false       { toggle-overview; }
 
-    // ── Session ──
-    Mod+q                                                                     { close-window; }
-    //Mod+Shift+q                                                                     { quit; }
-    Mod+Shift+q                                                                     { spawn "way-powermenu"; }
-    Mod+F2                                                                          { spawn "swaylock"; }
+	// Omarchy-style System TUI overlays
+    Mod+Ctrl+a   { spawn "kitty" "--class" "tui-overlay" "-e" "wiremix"; }            // Audio Mixer
+    Mod+Ctrl+b   { spawn "kitty" "--class" "tui-overlay" "-e" "bluetui"; }            // Bluetooth Manager
+    Mod+Ctrl+w   { spawn "kitty" "--class" "tui-overlay" "-e" "nmtui"; }             // Wi-Fi Manager (impala or nmtui)
+    Mod+Ctrl+t   { spawn "kitty" "--class" "tui-overlay" "-e" "btop"; }               // System Monitor
+    Mod+Ctrl+d   { spawn "kitty" "--class" "tui-overlay" "-e" "lazydocker"; }         // Docker TUI
 
-    // ── Focus movement (vim-style) ──
-    Mod+h                                                                           { focus-column-left; }
-    Mod+l                                                                           { focus-column-right; }
-    Mod+j                                                                           { focus-window-down; }
-    Mod+k                                                                           { focus-window-up; }
-    Mod+Left                                                                        { focus-column-left; }
-    Mod+Right                                                                       { focus-column-right; }
-    Mod+Up                                                                          { focus-window-up; }
-    Mod+Down                                                                        { focus-window-down; }
+    // ── session ──
+    mod+q                                                                           { close-window; }
+    //mod+shift+q                                                                     { quit; }
+    mod+shift+q                                                                     { spawn "way-powermenu"; }
+    Mod+Ctrl+Shift+Delete hotkey-overlay-title="Kill all windows (Global)"          { spawn "sh" "-c" "niri msg --json windows | jq -r '.[].id' | xargs -r -I {} niri msg action close-window --id {}"; }
 
-    // ── Move windows ──
-    Mod+Shift+h                                                                     { move-column-left; }
-    Mod+Shift+l                                                                     { move-column-right; }
-    Mod+Shift+j                                                                     { move-window-down-or-to-workspace-down; }
-    Mod+Shift+k                                                                     { move-window-up-or-to-workspace-up; }
+    Mod+Alt+Delete hotkey-overlay-title="Kill all except focused (Global)"          { spawn "sh" "-c" "niri msg --json windows | jq -r '.[] | select(.is_focused == false) | .id' | xargs -r -I {} niri msg action close-window --id {}"; }
 
-    // ── Column / window sizing ──
-    Mod+minus                                                                       { set-column-width "-10%"; }
-    Mod+equal                                                                       { set-column-width "+10%"; }
-    Mod+Shift+minus                                                                 { set-window-height "-10%"; }
-    Mod+Shift+equal                                                                 { set-window-height "+10%"; }
-    Mod+0                                                                           { set-column-width "100%"; }
+    Mod+Ctrl+Delete hotkey-overlay-title="Kill all except focused (Workspace)"      { spawn "sh" "-c" "niri msg --json windows | jq -r '(.[] | select(.is_focused == true) | .workspace_id) as $ws | .[] | select(.workspace_id == $ws and .is_focused == false) | .id' | xargs -r -I {} niri msg action close-window --id {}"; }
 
-    // ── Monitor focus ──
-    Mod+Ctrl+Left                                                                   { focus-monitor-left; }
-    Mod+Ctrl+Down                                                                   { focus-monitor-down; }
-    Mod+Ctrl+Up                                                                     { focus-monitor-up; }
-    Mod+Ctrl+Right                                                                  { focus-monitor-right; }
-    Mod+Ctrl+H                                                                      { focus-monitor-left; }
-    Mod+Ctrl+J                                                                      { focus-monitor-down; }
-    Mod+Ctrl+K                                                                      { focus-monitor-up; }
-    Mod+Ctrl+L                                                                      { focus-monitor-right; }
+    Mod+Shift+Delete hotkey-overlay-title="Kill all on current workspace"           { spawn "sh" "-c" "niri msg --json windows | jq -r '(.[] | select(.is_focused == true) | .workspace_id) as $ws | .[] | select(.workspace_id == $ws) | .id' | xargs -r -I {} niri msg action close-window --id {}"; }
 
-    // ── Move column to monitor ──
-    Mod+Shift+Ctrl+Left                                                             { move-column-to-monitor-left; }
-    Mod+Shift+Ctrl+Down                                                             { move-column-to-monitor-down; }
-    Mod+Shift+Ctrl+Up                                                               { move-column-to-monitor-up; }
-    Mod+Shift+Ctrl+Right                                                            { move-column-to-monitor-right; }
-    Mod+Shift+Ctrl+H                                                                { move-column-to-monitor-left; }
-    Mod+Shift+Ctrl+J                                                                { move-column-to-monitor-down; }
-    Mod+Shift+Ctrl+K                                                                { move-column-to-monitor-up; }
-    Mod+Shift+Ctrl+L                                                                { move-column-to-monitor-right; }
+    // ── focus movement (vim-style) ──
+    mod+h                                                                           { focus-column-left; }
+    mod+l                                                                           { focus-column-right; }
+    mod+j                                                                           { focus-window-down; }
+    mod+k                                                                           { focus-window-up; }
+    mod+left                                                                        { focus-column-left; }
+    mod+right                                                                       { focus-column-right; }
+    mod+up                                                                          { focus-window-up; }
+    mod+down                                                                        { focus-window-down; }
 
-    // ── Preset widths ──
-    Mod+r                                                                           { switch-preset-column-width; }
+    // ── move windows ──
+    mod+shift+h                                                                     { move-column-left; }
+    mod+shift+l                                                                     { move-column-right; }
+	mod+shift+k                                                                     { move-window-up-or-to-workspace-up; }
+    mod+shift+j                                                                     { move-window-down-or-to-workspace-down; }
+    mod+shift+left                                                                  { move-column-left; }
+    mod+shift+right                                                                 { move-column-right; }
+	mod+shift+up                                                                    { move-window-up-or-to-workspace-up; }
+    mod+shift+down                                                                  { move-window-down-or-to-workspace-down; }
 
-    // ── Floating ──
-    Mod+Shift+Space                                                                           { toggle-window-floating; }
-    Mod+Space                                                                       { switch-focus-between-floating-and-tiling; }
-
-    // ── Fullscreen ──
-    //Mod+Shift+f                                                                     { fullscreen-window; }
-    Mod+Shift+f                                                                     { maximize-window-to-edges; }
-    Mod+Ctrl+f                                                                      { maximize-column; }
-
-    // ── Workspaces ──
-    Mod+1                                                                           { focus-workspace 1; }
-    Mod+2                                                                           { focus-workspace 2; }
-    Mod+3                                                                           { focus-workspace 3; }
-    Mod+4                                                                           { focus-workspace 4; }
-    Mod+5                                                                           { focus-workspace 5; }
-    Mod+6                                                                           { focus-workspace 6; }
-    Mod+7                                                                           { focus-workspace 7; }
-    Mod+8                                                                           { focus-workspace 8; }
-    Mod+9                                                                           { focus-workspace 9; }
-
-    Mod+Shift+1                                                                     { move-column-to-workspace 1; }
-    Mod+Shift+2                                                                     { move-column-to-workspace 2; }
-    Mod+Shift+3                                                                     { move-column-to-workspace 3; }
-    Mod+Shift+4                                                                     { move-column-to-workspace 4; }
-    Mod+Shift+5                                                                     { move-column-to-workspace 5; }
-    Mod+Shift+6                                                                     { move-column-to-workspace 6; }
-    Mod+Shift+7                                                                     { move-column-to-workspace 7; }
-    Mod+Shift+8                                                                     { move-column-to-workspace 8; }
-    Mod+Shift+9                                                                     { move-column-to-workspace 9; }
-
-    Mod+Period                                                                      { consume-window-into-column; }
-    Mod+Shift+Period                                                                { expel-window-from-column; }
+    mod+home                                                                        { focus-column-first; }
+    mod+end                                                                         { focus-column-last; }
+    mod+ctrl+home                                                                   { move-column-to-first; }
+    mod+ctrl+end                                                                    { move-column-to-last; }
 
 
-    // There are also commands that consume or expel a single window to the side.
-    Mod+BracketLeft                                                                 { consume-or-expel-window-left; }
-    Mod+BracketRight                                                                { consume-or-expel-window-right; }
+    // ── column / window sizing ──
+    mod+minus                                                                       { set-column-width "-10%"; }
+    mod+equal                                                                       { set-column-width "+10%"; }
+    mod+shift+minus                                                                 { set-window-height "-10%"; }
+    mod+shift+equal                                                                 { set-window-height "+10%"; }
+    mod+0                                                                           { set-column-width "100%"; }
 
-    Mod+Tab                                                                         { focus-workspace-down; }
-    Mod+Shift+Tab                                                                   { focus-workspace-up; }
+    // ── monitor focus ──
+    mod+ctrl+left                                                                   { focus-monitor-left; }
+    mod+ctrl+down                                                                   { focus-monitor-down; }
+    mod+ctrl+up                                                                     { focus-monitor-up; }
+    mod+ctrl+right                                                                  { focus-monitor-right; }
+    mod+ctrl+h                                                                      { focus-monitor-left; }
+    mod+ctrl+j                                                                      { focus-monitor-down; }
+    mod+ctrl+k                                                                      { focus-monitor-up; }
+    mod+ctrl+l                                                                      { focus-monitor-right; }
 
-    // ── Media & brightness ──
-    XF86AudioRaiseVolume                                                            { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%+"; }
-    XF86AudioLowerVolume                                                            { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
-    XF86AudioMute                                                                   { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
-    XF86MonBrightnessUp                                                             { spawn "brightnessctl" "set" "+5%"; }
-    XF86MonBrightnessDown                                                           { spawn "brightnessctl" "set" "5%-"; }
-    XF86AudioPlay                                                                   { spawn "playerctl" "play-pause"; }
-    XF86AudioNext                                                                   { spawn "playerctl" "next"; }
-    XF86AudioPrev                                                                   { spawn "playerctl" "previous"; }
+    // ── move column to monitor ──
+    mod+shift+ctrl+left                                                             { move-column-to-monitor-left; }
+    mod+shift+ctrl+down                                                             { move-column-to-monitor-down; }
+    mod+shift+ctrl+up                                                               { move-column-to-monitor-up; }
+    mod+shift+ctrl+right                                                            { move-column-to-monitor-right; }
+    mod+shift+ctrl+h                                                                { move-column-to-monitor-left; }
+    mod+shift+ctrl+j                                                                { move-column-to-monitor-down; }
+    mod+shift+ctrl+k                                                                { move-column-to-monitor-up; }
+    mod+shift+ctrl+l                                                                { move-column-to-monitor-right; }
 
-    // ── Screenshots ──
-    Print                                                                           { screenshot; }
-    Ctrl+Print                                                                      { screenshot-screen; }
-    Alt+Print                                                                       { screenshot-window; }
+    // ── preset widths ──
+    mod+r                                                                           { switch-preset-column-width; }
 
-	// -- Mirroring
-    Mod+P repeat=false {
+    // ── floating ──
+    mod+shift+space                                                                           { toggle-window-floating; }
+    mod+space                                                                       { switch-focus-between-floating-and-tiling; }
+
+    // ── fullscreen ──
+    mod+f                                                                     { maximize-window-to-edges; }
+	mod+shift+f                                                                     { fullscreen-window; }
+    mod+alt+f                                                                      { maximize-column; }
+
+    // ── workspaces ──
+    mod+1                                                                           { focus-workspace 1; }
+    mod+2                                                                           { focus-workspace 2; }
+    mod+3                                                                           { focus-workspace 3; }
+    mod+4                                                                           { focus-workspace 4; }
+    mod+5                                                                           { focus-workspace 5; }
+    mod+6                                                                           { focus-workspace 6; }
+    mod+7                                                                           { focus-workspace 7; }
+    mod+8                                                                           { focus-workspace 8; }
+    mod+9                                                                           { focus-workspace 9; }
+
+    mod+shift+1                                                                     { move-column-to-workspace 1; }
+    mod+shift+2                                                                     { move-column-to-workspace 2; }
+    mod+shift+3                                                                     { move-column-to-workspace 3; }
+    mod+shift+4                                                                     { move-column-to-workspace 4; }
+    mod+shift+5                                                                     { move-column-to-workspace 5; }
+    mod+shift+6                                                                     { move-column-to-workspace 6; }
+    mod+shift+7                                                                     { move-column-to-workspace 7; }
+    mod+shift+8                                                                     { move-column-to-workspace 8; }
+    mod+shift+9                                                                     { move-column-to-workspace 9; }
+
+    mod+g                                                                      { consume-window-into-column; }
+    mod+alt+g                                                                { expel-window-from-column; }
+
+
+    // there are also commands that consume or expel a single window to the side.
+    mod+bracketleft                                                                 { consume-or-expel-window-left; }
+    mod+bracketright                                                                { consume-or-expel-window-right; }
+
+    mod+tab                                                                         { focus-workspace-down; }
+    mod+shift+tab                                                                   { focus-workspace-up; }
+
+    // ── media & brightness ──
+    xf86audioraisevolume                                                            { spawn "wpctl" "set-volume" "@default_audio_sink@" "5%+"; }
+    xf86audiolowervolume                                                            { spawn "wpctl" "set-volume" "@default_audio_sink@" "5%-"; }
+    xf86audiomute                                                                   { spawn "wpctl" "set-mute" "@default_audio_sink@" "toggle"; }
+    xf86monbrightnessup                                                             { spawn "brightnessctl" "set" "+5%"; }
+    xf86monbrightnessdown                                                           { spawn "brightnessctl" "set" "5%-"; }
+    xf86audioplay                                                                   { spawn "playerctl" "play-pause"; }
+    xf86audionext                                                                   { spawn "playerctl" "next"; }
+    xf86audioprev                                                                   { spawn "playerctl" "previous"; }
+
+    // ── screenshots ──
+    print                                                                           { screenshot; }
+    ctrl+print                                                                      { screenshot-screen; }
+    alt+print                                                                       { screenshot-window; }
+
+    // -- Color Picker --
+	mod+Print     hotkey-overlay-title="Color Picker"                               { spawn "bash" "-c" "hyprpicker -a || colorpicker"; }
+
+	// -- mirroring
+    mod+p repeat=false {
         spawn-sh "wl-mirror $(niri msg --json focused-output | jq -r .name)"
     }
 }

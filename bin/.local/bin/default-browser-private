@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Force load user environment
+[ -f "$HOME/.zshenv" ] && source "$HOME/.zshenv"
+
+BROWSER_CMD=${BROWSER:-firefox}
+
+# Handle private browsing flags per browser
+case "$BROWSER_CMD" in
+    "firefox"|"zen")
+        exec "$BROWSER_CMD" --private-window "$@"
+        ;;
+    "chromium"|"brave"|"vivaldi")
+        exec "$BROWSER_CMD" --incognito "$@"
+        ;;
+    *)
+        exec "$BROWSER_CMD" "$@"
+        ;;
+esac

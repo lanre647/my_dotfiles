@@ -64,10 +64,13 @@ source $ZSH/oh-my-zsh.sh
 # ENVIRONMENT & PATH
 # ------------------------------------------------------------
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
-# export MANPATH="/usr/local/man:$MANPATH"
-# export LANG=en_US.UTF-8
-# export ARCHFLAGS="-arch $(uname -m)"
+export MANPATH="/usr/local/man:$MANPATH"
+export LANG=en_US.UTF-8
+export ARCHFLAGS="-arch $(uname -m)"
+export TERM="kitty"
 export TERMINAL="kitty"
+export BROWSER="firefox"
+export FILEMANAGER="thunar"
 # export TERM="xterm-256color"
 
 # fnm (Fast Node Manager)
