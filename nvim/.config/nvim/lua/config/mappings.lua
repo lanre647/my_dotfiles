@@ -147,7 +147,7 @@ map("n", "<leader>pt", function()
 		_G.select_theme()
 	end
 end, { desc = "Select theme" })
-map("n", "<leader>x", "<cmd>!chmod +x %<CR>", { desc = "Make file executable" })
+map("n", "<leader>X", "<cmd>!chmod +x %<CR>", { desc = "Make file executable" })
 map("n", "<leader>mv", ":!mv % ", { desc = "Move file" })
 map("n", "<leader>q", ":q<CR>", { desc = "Quit neovim" })
 map("n", "<leader>R", "<cmd>restart<cr>", { desc = "reload Neovim" })
