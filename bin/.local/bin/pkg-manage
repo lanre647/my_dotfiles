@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+# Minimal Header
+gum style \
+  --foreground 212 --border-foreground 212 --border rounded \
+  --align center --width 50 --padding "0 2" \
+  "PACKAGE MANAGER"
+
+# Core Actions
+MODE=$(gum choose --cursor="> " \
+  "Install Packages (Instant Fuzzy)" \
+  "Remove Installed" \
+  "Update System" \
+  "Clean Cache & Orphans")
+
+case "$MODE" in
+  "Install Packages (Instant Fuzzy)")
+    # Combine official repos + AUR packages into a single stream straight into fzf
+    # Uses yay's package list cache / RPC lookup fallback
+SELECTED=$(yay -Ssq "$QUERY" | fzf -m \
+      --preview 'yay -Si {} 2>/dev/null || yay -Ai {}' \
+      --preview-window=right:60%:wrap \
+      --header="[TAB: Multi-select | ENTER: Install]" \
+      --prompt="Install > ")
+
+    if [ -n "$SELECTED" ]; then
+      yay -S $SELECTED
+    fi
+    ;;
+
+  "Remove Installed")
+    SELECTED=$(pacman -Qeq | fzf -m \
+      --preview 'pacman -Qi {}' \
+      --preview-window=right:60%:wrap \
+      --header="[TAB: Multi-select | ENTER: Remove]" \
+      --prompt="Remove > ")
+
+    if [ -n "$SELECTED" ]; then
+      sudo pacman -Rns $SELECTED
+    fi
+    ;;
+
+  "Update System")
+    yay -Syu
+    ;;
+
+  "Clean Cache & Orphans")
+    ORPHANS=$(pacman -Qtdq)
+    if [ -n "$ORPHANS" ]; then
+      gum style --foreground 196 "Removing orphans:"
+      echo "$ORPHANS" | sed 's/^/  • /'
+      sudo pacman -Rns $ORPHANS
+    fi
+    yay -Sc
+    ;;
+
+  *)
+    exit 0
+    ;;
+esac

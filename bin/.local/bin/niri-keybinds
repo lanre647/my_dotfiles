@@ -1,0 +1,279 @@
+#!/usr/bin/env bash
+# niri-keybinds — fzf keybind finder for niri (Omarchy-style).
+#
+# Parses the `binds { }` block of your niri config and lists every binding in
+# fzf. Type to filter · Enter runs the action · Ctrl-E edits the config at that
+# line · Esc closes.
+#
+# Usage: niri-keybinds [-n|--no-run] [-l|--list] [CONFIG]
+#   CONFIG   default: $NIRI_CONFIG or ~/.config/niri/config.kdl
+#   -l       print the table instead of launching fzf
+#   -n       browse only (Enter just closes)
+#
+# Descriptions: hotkey-overlay-title="..." > trailing `// comment` > auto.
+# hotkey-overlay-title=null hides a bind. `// ── name ──` headers = category.
+# Requires: bash, fzf, awk (gawk or mawk), niri.
+
+set -euo pipefail
+
+list=0 norun=0 config=""
+while (($#)); do
+    case $1 in
+        -l|--list)   list=1 ;;
+        -n|--no-run) norun=1 ;;
+        -h|--help)   sed -n '2,15p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+        *)           config=$1 ;;
+    esac
+    shift
+done
+config=${config:-${NIRI_CONFIG:-$HOME/.config/niri/config.kdl}}
+config=${config/#\~/$HOME}
+[[ -r $config ]] || { echo "niri-keybinds: cannot read $config" >&2; exit 1; }
+
+cols=$(tput cols 2>/dev/null || echo 100)
+
+read -r -d '' AWK_PROG <<'AWK' || true
+function trim(s) { gsub(/^[ \t\r\n]+|[ \t\r\n]+$/, "", s); return s }
+function flat(s) { gsub(/[\t\r\n]/, " ", s); return s }
+function is_raw(s, i) { return match(substr(s, i), /^r#*"/) }
+
+# Read a KDL string (normal or raw) at s[i]; sets rs_end to the index after it.
+function read_str(s, i,   h, endm, x, st, rest, e, buf, ch, nx, len) {
+    len = length(s)
+    if (match(substr(s, i), /^r#*"/)) {
+        h = RLENGTH - 2; endm = "\""
+        for (x = 0; x < h; x++) endm = endm "#"
+        st = i + RLENGTH; rest = substr(s, st); e = index(rest, endm)
+        if (e == 0) { rs_end = len + 1; return rest }
+        rs_end = st + e - 1 + length(endm)
+        return substr(rest, 1, e - 1)
+    }
+    i++; buf = ""
+    while (i <= len && (ch = substr(s, i, 1)) != "\"") {
+        if (ch == "\\" && i < len) {
+            nx = substr(s, i + 1, 1)
+            if (nx == "n") nx = "\n"; else if (nx == "t") nx = "\t"
+            buf = buf nx; i += 2
+        } else { buf = buf ch; i++ }
+    }
+    rs_end = i + 1
+    return buf
+}
+
+# Tokenize a KDL fragment. kinds: str | bare | prop (prop name in ov_p).
+function tokenize(s, ov, ok, op,   i, n, c, j, k, e, w, v, cnt) {
+    delete ov; delete ok; delete op
+    cnt = 0; i = 1; n = length(s)
+    while (i <= n) {
+        c = substr(s, i, 1)
+        if (c ~ /[ \t;]/) { i++; continue }
+        if (c == "\"" || is_raw(s, i)) {
+            v = read_str(s, i); i = rs_end
+            cnt++; ov[cnt] = v; ok[cnt] = "str"; continue
+        }
+        j = i
+        while (j <= n && substr(s, j, 1) !~ /[ \t;=]/) j++
+        w = substr(s, i, j - i)
+        if (j <= n && substr(s, j, 1) == "=") {
+            k = j + 1
+            if (substr(s, k, 1) == "\"" || is_raw(s, k)) { v = read_str(s, k); i = rs_end }
+            else {
+                e = k
+                while (e <= n && substr(s, e, 1) !~ /[ \t;]/) e++
+                v = substr(s, k, e - k); if (v == "null") v = NULLV
+                i = e
+            }
+            cnt++; ov[cnt] = v; ok[cnt] = "prop"; op[cnt] = w
+        } else {
+            cnt++; ov[cnt] = w; ok[cnt] = "bare"
+            i = (j > i) ? j : i + 1
+        }
+    }
+    return cnt
+}
+
+function pretty(raw,   np, p, i, m, k, lk, S, C, A, G, Sh, other, out) {
+    np = split(raw, p, "+"); k = p[np]
+    for (i = 1; i < np; i++) {
+        m = tolower(p[i])
+        if (m == "mod" || m == "super" || m == "win") S = 1
+        else if (m == "ctrl" || m == "control") C = 1
+        else if (m == "alt") A = 1
+        else if (m == "shift") Sh = 1
+        else if (m == "iso_level3_shift") G = 1
+        else other = other toupper(substr(p[i], 1, 1)) substr(p[i], 2) " + "
+    }
+    out = (S ? "Super + " : "") (C ? "Ctrl + " : "") (A ? "Alt + " : "") \
+          (G ? "AltGr + " : "") other (Sh ? "Shift + " : "")
+    lk = tolower(k)
+    if (lk in KN) k = KN[lk]
+    else if (length(k) == 1) k = toupper(k)
+    else { if (lk ~ /^xf86/) k = substr(k, 5); k = toupper(substr(k, 1, 1)) substr(k, 2) }
+    return out k
+}
+
+function auto_desc(act, a, na,   i, s, k) {
+    if (act == "spawn" && na > 0) {
+        k = 0
+        for (i = 1; i <= na; i++) if (a[i] == "-e") { k = i; break }
+        if (k) for (i = 1; i <= na; i++) if (a[i] == "tui-overlay") {
+            s = "TUI:"
+            for (i = k + 1; i <= na; i++) s = s " " a[i]
+            return s
+        }
+        if ((a[1] == "bash" || a[1] == "sh") && a[2] == "-c" && na >= 3) return "Run: " a[3]
+        s = "Run:"
+        for (i = 1; i <= na; i++) s = s " " a[i]
+        return s
+    }
+    if (act == "spawn-sh" && na > 0) return "Run: " a[1]
+    s = act; gsub(/-/, " ", s); s = toupper(substr(s, 1, 1)) substr(s, 2)
+    for (i = 1; i <= na; i++) s = s " " a[i]
+    return s
+}
+
+function emit(h, b,   nh, nt, i, key, title, hid, act, na, a, enc, prev, first) {
+    last_end = -1
+    nh = tokenize(h, hv, hk, hp)
+    if (nh == 0) return
+    key = hv[1]; title = ""; hid = 0
+    for (i = 2; i <= nh; i++)
+        if (hk[i] == "prop" && hp[i] == "hotkey-overlay-title") {
+            if (hv[i] == NULLV) hid = 1; else title = hv[i]
+        }
+    if (hid) return
+    nt = tokenize(b, bv, bk, bp)
+    act = ""; na = 0; delete a
+    for (i = 1; i <= nt; i++) {
+        if (bk[i] == "prop") continue
+        if (act == "") act = bv[i]; else a[++na] = flat(bv[i])
+    }
+    if (act == "") return
+    enc = act; prev = act
+    for (i = 1; i <= na; i++) { enc = enc SEP a[i]; prev = prev " \"" a[i] "\"" }
+    nbinds++
+    KEY[nbinds] = pretty(key); TITLE[nbinds] = flat(title); CMT[nbinds] = ""
+    AUTO[nbinds] = auto_desc(act, a, na); CAT[nbinds] = cat
+    LN[nbinds] = stmt_line; ENC[nbinds] = enc; PREV[nbinds] = prev
+    last_end = NR
+}
+
+function on_comment(t,   c2) {
+    if (t ~ /^[ \t]*(─|-)(─|-)/) {
+        c2 = t
+        sub(/^[ \t]*(─|-)+[ \t]*/, "", c2)
+        sub(/[ \t]*(─|-)*[ \t]*$/, "", c2)
+        cat = toupper(substr(c2, 1, 1)) substr(c2, 2)
+    } else if (nbinds > 0 && last_end == NR && CMT[nbinds] == "") {
+        CMT[nbinds] = flat(trim(t))
+    }
+}
+
+BEGIN {
+    SEP = "\037"; NULLV = "\001NULL"; last_end = -1
+    n = split("return:Enter slash:/ comma:, period:. minus:- equal:= bracketleft:[ " \
+              "bracketright:] print:PrtSc space:Space tab:Tab delete:Del escape:Esc " \
+              "home:Home end:End left:Left right:Right up:Up down:Down " \
+              "xf86audioraisevolume:Vol+ xf86audiolowervolume:Vol- xf86audiomute:Mute " \
+              "xf86monbrightnessup:Bright+ xf86monbrightnessdown:Bright- " \
+              "xf86audioplay:Play/Pause xf86audionext:Next xf86audioprev:Prev", pairs, " ")
+    for (i = 1; i <= n; i++) { split(pairs[i], kv, ":"); KN[kv[1]] = kv[2] }
+}
+
+{
+    line = $0; n = length(line)
+    if (!inb) {
+        if (line ~ /^binds[ \t]*\{/) { inb = 1; depth = 1; cur = ""; i = index(line, "{") + 1 }
+        else next
+    } else i = 1
+    while (i <= n) {
+        c = substr(line, i, 1); c2 = substr(line, i + 1, 1)
+        if (c == "/" && c2 == "/") { on_comment(substr(line, i + 2)); break }
+        if (c == "/" && c2 == "*") {
+            e = index(substr(line, i + 2), "*/")
+            if (e == 0) break
+            i += e + 3; continue
+        }
+        prev = (i > 1) ? substr(line, i - 1, 1) : " "
+        if (c == "\"" || (c == "r" && prev !~ /[A-Za-z0-9_-]/ && is_raw(line, i))) {
+            read_str(line, i)
+            if (cur == "") stmt_line = NR
+            cur = cur substr(line, i, rs_end - i); i = rs_end; continue
+        }
+        if (c == "{") {
+            depth++
+            if (depth == 2) { head = trim(cur); cur = ""; i++; continue }
+        } else if (c == "}") {
+            depth--
+            if (depth == 1) { emit(head, trim(cur)); cur = ""; i++; continue }
+            if (depth == 0) exit
+        }
+        if (c ~ /[ \t]/) { if (cur != "") cur = cur c }
+        else { if (cur == "") stmt_line = NR; cur = cur c }
+        i++
+    }
+    if (cur != "") cur = cur " "
+}
+
+END {
+    if (nbinds == 0) exit 1
+    kw = 0; cw = 0; dw = 0
+    for (i = 1; i <= nbinds; i++) {
+        D[i] = (TITLE[i] != "") ? TITLE[i] : ((CMT[i] != "") ? CMT[i] : AUTO[i])
+        if (length(KEY[i]) > kw) kw = length(KEY[i])
+        if (length(CAT[i]) > cw) cw = length(CAT[i])
+        if (length(D[i]) > dw) dw = length(D[i])
+    }
+    lim = cols - kw - cw - 12; if (lim < 20) lim = 20
+    if (dw > lim) dw = lim
+    fk = "%-" kw "s"; fd = "%-" dw "s"; fc = "%-" cw "s"
+    for (i = 1; i <= nbinds; i++) {
+        d = D[i]
+        if (length(d) > dw) d = substr(d, 1, dw - 3) "..."
+        printf "%d\t\033[1;38;2;137;180;250m%s\033[0m  %s  \033[2m%s\033[0m\t%s\t%d\t%s\n", \
+            i - 1, sprintf(fk, KEY[i]), sprintf(fd, d), sprintf(fc, CAT[i]), PREV[i], LN[i], ENC[i]
+    }
+}
+AWK
+
+table=$(awk -v cols="$cols" "$AWK_PROG" "$config") || {
+    echo "niri-keybinds: no binds { } block or no keybinds found in $config" >&2
+    exit 1
+}
+
+if ((list)); then
+    while IFS=$'\t' read -r _ disp prev _; do
+        printf '%s  ->  %s\n' "$(sed 's/\x1b\[[0-9;]*m//g' <<<"$disp")" "$prev"
+    done <<<"$table"
+    exit 0
+fi
+
+command -v fzf >/dev/null || { echo "niri-keybinds: fzf not found" >&2; exit 1; }
+
+header="enter run · ctrl-e edit config · esc close"
+((norun)) && header="ctrl-e edit config · esc close"
+
+sel=$(fzf --ansi --delimiter=$'\t' --with-nth=2 \
+        --layout=reverse --info=inline-right --no-scrollbar \
+        --border=rounded --border-label=' Keybindings ' \
+        --prompt='  ' --pointer='▌' --header="$header" \
+        --preview='printf "%s\n" {3}' --preview-window=down,3,wrap,border-top \
+        --bind="ctrl-e:become(${EDITOR:-nvim} +{4} $(printf '%q' "$config"))" \
+        --color='bg+:#313244,fg+:#cdd6f4,hl:#f38ba8,hl+:#f38ba8,pointer:#cba6f7,prompt:#89b4fa,border:#89b4fa,label:#89b4fa,header:#6c7086,info:#6c7086,gutter:-1,preview-border:#313244' \
+        <<<"$table") || exit 0
+((norun)) && exit 0
+[[ -n $sel ]] || exit 0
+
+# Field 5 = action + args, separated by \037 (unit separator).
+IFS=$'\037' read -r -a parts <<<"$(cut -f5 <<<"$sel")"
+cmd=(niri msg action "${parts[0]}")
+if ((${#parts[@]} > 1)); then cmd+=(-- "${parts[@]:1}"); fi
+
+# Short delay so this overlay closes first (focus/move actions hit the right window).
+run=(sh -c 'sleep 0.25; exec "$@"' sh "${cmd[@]}")
+if command -v setsid >/dev/null; then
+    setsid -f "${run[@]}" </dev/null >/dev/null 2>&1
+else
+    nohup "${run[@]}" </dev/null >/dev/null 2>&1 &
+    disown
+fi

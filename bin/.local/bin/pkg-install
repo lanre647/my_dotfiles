@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Search official repos + AUR, select with TAB/Shift-TAB, press Enter to install
+
+selected=$(yay -Slq | fzf -m --preview 'yay -Si {}' --preview-window=right:60%:wrap --header="[Tab: Multi-select | Enter: Install]")
+
+if [ -n "$selected" ]; then
+    yay -S $selected
+fi
