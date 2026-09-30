@@ -469,10 +469,11 @@ window-rule {
 // ── Keybindings ────────────────────────────────────────────────────────────
 binds {
     // ── launchers ──
-    mod+shift+slash                                                                 { show-hotkey-overlay; }
+	mod+slash hotkey-overlay-title="Keybindings"                              { spawn "kitty" "--class" "tui-overlay" "-e" "niri-keybinds"; }
     mod+d                                                                           { spawn "bash" "-c" "pkill fuzzel || fuzzel"; }
     Mod+Return                                                                      { spawn "default-terminal"; }
     Mod+Alt+Return                                                                  { spawn "default-terminal" "-e" "tmux" "new-session" "-A" "-s" "main"; }
+    Mod+ctrl+P                                                                      { spawn "kitty" "--class" "tui-overlay" "-e" "pkg-manage"; }
     mod+b                                                                           { spawn "default-browser"; }
 	Mod+Shift+alt+b hotkey-overlay-title="Open Private Browser"                     { spawn "default-browser-private"; }
     mod+e                                                                           { spawn "default-fm"; }
