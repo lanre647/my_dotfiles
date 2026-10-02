@@ -267,6 +267,17 @@ function s() {
     w3m "https://duckduckgo.com/html/?q=$query"
 }
 
+# ------------------------------------------------------------
+# CORE ALIASES — Terminal Browsers & Web
+# ------------------------------------------------------------
+# Basic quick sync with progress and archive mode
+alias rsync-copy='rsync -avP'
+# Exact mirror sync (deletes extra files at destination)
+alias rsync-mirror='rsync -avP --delete'
+# Compressed sync over network
+alias rsync-net='rsync -avzP'
+# Safe dry run check (shows what would happen without transferring)
+alias rsync-check='rsync -avP --dry-run'
 
 # ------------------------------------------------------------
 # CORE ALIASES — Session Management
