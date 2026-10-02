@@ -1,3 +1,0 @@
-
-fruit = "orange"
-print(fruit) 
