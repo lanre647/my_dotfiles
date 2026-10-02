@@ -1,1 +1,1 @@
-exec ~/dotfiles/scripts/start_dwm.sh
+exec "$HOME/bin/start_dwm.sh"

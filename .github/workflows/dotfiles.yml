@@ -11,13 +11,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y stow zsh tmux vim
 
-      - name: Dry-run stow
+      - name: Dry-run installer
         run: |
-          mkdir -p "$HOME"
-          stow -n -v -R git tmux vim zsh starship 
+          mkdir -p "$RUNNER_TEMP/dotfiles-home"
+          ./install.sh --dry-run --no-packages --target "$RUNNER_TEMP/dotfiles-home"

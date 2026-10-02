@@ -15,6 +15,7 @@
 # OH MY ZSH SETUP
 # ------------------------------------------------------------
 export ZSH="$HOME/.oh-my-zsh"
+ZSH_CUSTOM="${ZSH_CUSTOM:-$ZSH/custom}"
 
 ZSH_THEME=""
 
@@ -45,37 +46,32 @@ INSERT_MODE_INDICATOR="%F{green}[INSERT]%f"
 # Force prompt redraw when changing modes
 VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
 
-plugins=(
-  git
-  vi-mode
-  sudo
-  fancy-ctrl-z
-  copypath
-  copyfile
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-  zsh-history-substring-search
-)
+plugins=(git vi-mode sudo copypath copyfile)
+for plugin in fancy-ctrl-z zsh-autosuggestions zsh-syntax-highlighting zsh-history-substring-search; do
+    if [[ -d "$ZSH_CUSTOM/plugins/$plugin" || -d "$ZSH/plugins/$plugin" ]]; then
+        plugins+=("$plugin")
+    fi
+done
 
-source $ZSH/oh-my-zsh.sh
+if [[ -r "$ZSH/oh-my-zsh.sh" ]]; then
+    source "$ZSH/oh-my-zsh.sh"
+fi
 
 
 # ------------------------------------------------------------
 # ENVIRONMENT & PATH
 # ------------------------------------------------------------
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
-export MANPATH="/usr/local/man:$MANPATH"
-export LANG=en_US.UTF-8
-export ARCHFLAGS="-arch $(uname -m)"
-export TERM="kitty"
+export MANPATH="/usr/local/man:${MANPATH:-}"
+export LANG="${LANG:-en_US.UTF-8}"
 export TERMINAL="kitty"
 export BROWSER="firefox"
 export FILEMANAGER="thunar"
 # export TERM="xterm-256color"
 
 # fnm (Fast Node Manager)
-FNM_PATH="/home/lanre/.local/share/fnm"
-if [ -d "$FNM_PATH" ]; then
+FNM_PATH="${XDG_DATA_HOME:-$HOME/.local/share}/fnm"
+if [[ -d "$FNM_PATH" ]] && command -v fnm >/dev/null 2>&1; then
   export PATH="$FNM_PATH:$PATH"
   eval "$(fnm env --shell zsh)"
 fi
@@ -101,9 +97,9 @@ export FCEDIT="nvim"
 # ------------------------------------------------------------
 # TOOL INITIALISATION
 # ------------------------------------------------------------
-eval "$(starship init zsh)"
-eval "$(zoxide init zsh)"
-source <(fzf --zsh)
+command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
+command -v fzf >/dev/null 2>&1 && source <(fzf --zsh)
 # eval "$(ssh-agent -s)"
 # ssh-add ~/.ssh/id_ed25519
 
@@ -116,8 +112,14 @@ alias q='exit'
 alias v='nvim'
 alias vi='nvim'
 alias nvim2="NVIM_APPNAME=nvim2 nvim"
-alias open="termux-open"
-alias ls='eza --icons -F -H --group-directories-first --git -1'
+if command -v termux-open >/dev/null 2>&1; then
+    alias open='termux-open'
+elif command -v xdg-open >/dev/null 2>&1; then
+    alias open='xdg-open'
+fi
+if command -v eza >/dev/null 2>&1; then
+    alias ls='eza --icons -F -H --group-directories-first --git -1'
+fi
 # alias ls='eza --all --long --group --group-directories-first --icons --header --time-style long-iso'
 
 alias ..='cd ..'

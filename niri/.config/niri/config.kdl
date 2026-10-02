@@ -500,17 +500,17 @@ binds {
 
     Mod+E { spawn "default-fm"; }
     Mod+C { spawn "default-editor"; }
-    Mod+Shift+S { spawn "kitty" "nvim" "/home/lanre/.config/niri/config.kdl"; }
+    Mod+Shift+S { spawn "bash" "-lc" "exec kitty nvim \"$HOME/.config/niri/config.kdl\""; }
 
     Mod+D { spawn "bash" "-c" "pkill fuzzel || fuzzel"; }
     Mod+Comma hotkey-overlay-title="Show Emojis" repeat=false { spawn "bash" "-c" "pkill fuzzel || fuzzel-emoji"; }
 
-    Mod+V { spawn "~/.local/bin/cliphist-picker"; }
-    Mod+W repeat=false { spawn "kitty" "--class" "tui-overlay" "-e" "/home/lanre/dotfiles/scripts/wallpaper-picker.sh"; }
+    Mod+V { spawn "cliphist-picker"; }
+    Mod+W repeat=false { spawn "kitty" "--class" "tui-overlay" "-e" "bash" "-lc" "exec \"$HOME/bin/wallpaper-picker.sh\""; }
     Mod+Alt+W hotkey-overlay-title="Random Wallpaper" { spawn "random-wallpaper"; }
 
     // Cycle night light state (Off -> 4500K -> 3500K -> 2700K)
-    Mod+N { spawn "~/.local/bin/nightlight-cycle"; }
+    Mod+N { spawn "nightlight-cycle"; }
 
     // ─────────────────────────────────────────────────────────────────
     // ── SYSTEM & OVERLAYS ────────────────────────────────────────────
