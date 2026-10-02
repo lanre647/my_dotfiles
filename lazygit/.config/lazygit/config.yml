@@ -9,6 +9,6 @@ gui:
   # Show icons (requires a Nerd Font installed in Termux)
   showIcons: true
 git:
-  pagers:
+  diffRenderers:
     - colorArg: always
-      pager: delta --dark --paging=never
+      command: delta --dark --paging=never
