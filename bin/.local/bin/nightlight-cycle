@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+STATE_FILE="${XDG_RUNTIME_DIR:-/tmp}/wlsunset_temp_state"
+
+# Levels: 0 = off, 1 = 4500K, 2 = 3500K, 3 = 2700K
+declare -A TEMPS=([1]=4500 [2]=3500 [3]=2700)
+declare -A LABELS=([0]="Off (6500K)" [1]="Mild (4500K)" [2]="Warm (3500K)" [3]="Deep Night (2700K)")
+
+CURRENT_STATE=0
+[[ -f "$STATE_FILE" ]] && CURRENT_STATE=$(<"$STATE_FILE")
+
+NEXT_STATE=$(((CURRENT_STATE + 1) % 4))
+
+pkill -x wlsunset 2>/dev/null
+sleep 0.2
+
+if ((NEXT_STATE > 0)); then
+	setsid wlsunset -t "${TEMPS[$NEXT_STATE]}" -T 6500 -s 00:00 -S 23:59 >/dev/null 2>&1 &
+fi
+
+echo "$NEXT_STATE" >"$STATE_FILE"
+notify-send -t 2000 -u low -h string:x-canonical-private-synchronous:nightlight "Night Light" "${LABELS[$NEXT_STATE]}"
