@@ -258,7 +258,7 @@ sel=$(fzf --ansi --delimiter=$'\t' --with-nth=2 \
         --border=rounded --border-label=' Keybindings ' \
         --prompt='  ' --pointer='▌' --header="$header" \
         --preview='printf "%s\n" {3}' --preview-window=down,3,wrap,border-top \
-        --bind="ctrl-e:become(${EDITOR:-nvim} +{4} $(printf '%q' "$config"))" \
+        --bind="ctrl-e:become(${EDITOR:-nvim} +{4} $(printf '\%q' "$config"))" \
         --color='bg+:#313244,fg+:#cdd6f4,hl:#f38ba8,hl+:#f38ba8,pointer:#cba6f7,prompt:#89b4fa,border:#89b4fa,label:#89b4fa,header:#6c7086,info:#6c7086,gutter:-1,preview-border:#313244' \
         <<<"$table") || exit 0
 ((norun)) && exit 0
