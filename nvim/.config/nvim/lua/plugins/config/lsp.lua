@@ -8,7 +8,7 @@ local mason_lspconfig = require("mason-lspconfig")
 local base_capabilities = vim.lsp.protocol.make_client_capabilities()
 local has_blink, blink = pcall(require, "blink.cmp")
 if has_blink then
-    base_capabilities = blink.get_lsp_capabilities(base_capabilities)
+	base_capabilities = blink.get_lsp_capabilities(base_capabilities)
 end
 
 -- Detect if we are running inside Termux
@@ -95,6 +95,8 @@ local mason_ensure = {
 	"pyright",
 	"ts_ls",
 	"omnisharp",
+	"bashls",
+	"html",
 }
 
 if not is_termux then
@@ -114,6 +116,8 @@ local servers = {
 	pyright = {},
 	ts_ls = {},
 	omnisharp = {},
+	bashls = {},
+	html = {},
 
 	clangd = {
 		capabilities = {
@@ -132,11 +136,11 @@ local servers = {
 	},
 }
 
-if is_termux then
-	servers.lua_ls = servers.lua_ls or {}
-	servers.lua_ls.cmd = { "lua-language-server" }
-	servers.clangd = servers.clangd or {}
-	servers.clangd.cmd = { "clangd", "--background-index" }
+if not is_termux then
+	table.insert(mason_ensure, "lua_ls")
+	table.insert(mason_ensure, "clangd")
+	table.insert(mason_ensure, "bashls")
+	table.insert(mason_ensure, "html")
 end
 
 for server, config in pairs(servers) do

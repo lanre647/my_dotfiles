@@ -9,29 +9,29 @@ end
 local max_filesize = 100 * 1024
 
 -- Ensure parsers are installed
-main.setup({
-	ensure_installed = {
-		"bash",
-		"c",
-		"cpp",
-		"css",
-		"dart",
-		"go",
-		"html",
-		"java",
-		"javascript",
-		"json",
-		"lua",
-		"markdown",
-		"markdown_inline",
-		"python",
-		"rust",
-		"tsx",
-		"typescript",
-		"vim",
-		"vimdoc",
-		"query",
-	},
+main.setup()
+
+main.install({
+	"bash",
+	"c",
+	"cpp",
+	"css",
+	"dart",
+	"go",
+	"html",
+	"java",
+	"javascript",
+	"json",
+	"lua",
+	"markdown",
+	"markdown_inline",
+	"python",
+	"rust",
+	"tsx",
+	"typescript",
+	"vim",
+	"vimdoc",
+	"query",
 })
 
 -- Global fold settings (keep folds open by default)
