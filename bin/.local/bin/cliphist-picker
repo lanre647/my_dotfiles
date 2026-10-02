@@ -1,7 +1,52 @@
 #!/usr/bin/env bash
+# cliphist-picker
 
-sel=$(cliphist list | fuzzel --dmenu | cut -f1)
+set -uo pipefail
 
-[ -z "$sel" ] && exit 0
+cfg="$HOME/.config/fuzzel/cliphist.ini"
+thumbs="${XDG_CACHE_HOME:-$HOME/.cache}/cliphist/thumbnails"
+mkdir -p "$thumbs"
+find "$thumbs" -type f -mtime +7 -delete 2>/dev/null
 
-printf %s "$sel" | cliphist decode | wl-copy
+list=$(cliphist list 2>/dev/null)
+[ -z "$list" ] && exit 0
+
+prog='
+match($2, /^\[\[ binary data .* (png|jpe?g|bmp|gif|webp) [0-9]+x[0-9]+ \]\]$/, m) {
+  # f = $1 "." m[1]
+  system("[ -f " dir "/" f " ] || cliphist decode " $1 " > " dir "/" f)
+  print $1 "\t" $2 "\0icon\x1f" dir "/" f
+  next
+}
+{ print $1 "\t" $2 }
+'
+
+id=$(gawk -F'\t' -v dir="$thumbs" "$prog" <<<"$list" | fuzzel --dmenu \
+	--config="$cfg" --counter --no-sort \
+	--with-nth 2 --accept-nth 1)
+exit_code=$?
+
+case $exit_code in
+0)
+	if [ -n "$id" ]; then
+		printf '%s' "$id" | cliphist decode | wl-copy
+	fi
+	;;
+10) # Ctrl+Shift+Delete: delete entry, reopen
+	if [ -n "$id" ]; then
+		printf '%s' "$id" | cliphist delete
+		rm -f "$thumbs/$id".* 2>/dev/null
+	fi
+	exec "$0" "$@"
+	;;
+11) # Ctrl+Shift+F12: wipe all, with confirmation
+	confirm=$(printf "No\nYes, wipe everything\n" | fuzzel --dmenu \
+		--config="$cfg" --prompt="Wipe history?  " --lines=2)
+	if [ "$confirm" = "Yes, wipe everything" ]; then
+		cliphist wipe
+		rm -rf "$thumbs"
+		notify-send "Clipboard" "History cleared!" -i edit-clear 2>/dev/null || true
+	fi
+	;;
+*) exit 0 ;;
+esac
